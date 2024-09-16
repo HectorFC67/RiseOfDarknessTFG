@@ -1,0 +1,84 @@
+# Blender 3.4.1 MTL File: 'caveira-strong.blend'
+# www.blender.org
+
+newmtl Body
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Texturas/Body.png
+
+newmtl Material
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Texturas/turban.png
+
+newmtl ProceduralIris
+Ns 0.000000
+Ka 0.500000 0.500000 0.500000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd Texturas/EyeCol.png
+map_Bump Texturas/EyeNor.png
+
+newmtl Pupil
+Ns 640.000000
+Ka 0.500000 0.500000 0.500000
+Kd 0.000718 0.000718 0.000718
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+
+newmtl Shirt
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Texturas/Shirt.png
+
+newmtl Shoes
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Texturas/Shoes.png
+
+newmtl Short
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Texturas/Short.png
+
+newmtl skull_full_mtl
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd Texturas/Head.png
+map_Bump -bm 1.000000 Texturas/Head-NormalMap.png

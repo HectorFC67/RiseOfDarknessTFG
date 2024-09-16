@@ -1,0 +1,3 @@
+There's an FBX  for each of the five characters with tails, and another version without tails or scouters (incase any software can't read properly the files).
+The tail has a rig of its own. The containing folder can be found in the hips bone, it can be extracted or repasted without problems. The scouters aren't rigged, just placed inside the head bone,
+so they can also be easily removed...
