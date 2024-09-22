@@ -27,16 +27,6 @@ public class DungeonCreator : MonoBehaviour
         }
     }
 
-    // Clase para definir las salidas de una sala o conector
-    [System.Serializable]
-    public class RoomExits
-    {
-        public string roomName;          // Nombre de la sala o conector (e.g., RoomI.2, HallTForm.3)
-        public Transform[] exits;        // Posiciones de las salidas
-    }
-
-    public RoomExits[] roomExitDefinitions;  // Lista de las definiciones de salidas para cada tipo de sala o conector
-
     void Start()
     {
         GenerateDungeon();
@@ -95,24 +85,20 @@ public class DungeonCreator : MonoBehaviour
         return connectors[Random.Range(0, connectors.Length)];
     }
 
-    // Esta función obtiene las salidas de una sala o conector según su tipo
+    // Esta función busca dinámicamente los objetos "Exit" en la sala o conector instanciado
     void AddExits(GameObject room)
     {
-        string roomName = room.name.Replace("(Clone)", "").Trim();
-        RoomExits roomExits = System.Array.Find(roomExitDefinitions, re => re.roomName == roomName);
+        // Buscar todos los objetos dentro de "room" que tengan "Exit" en el nombre
+        Transform[] exits = room.GetComponentsInChildren<Transform>();
 
-        if (roomExits != null)
+        foreach (Transform exit in exits)
         {
-            foreach (Transform exit in roomExits.exits)
+            if (exit.name.Contains("Exit"))
             {
                 // Crear un nuevo ExitPoint y añadirlo a la lista de salidas disponibles
                 ExitPoint exitPoint = new ExitPoint(exit, room);
                 availableExits.Add(exitPoint);
             }
-        }
-        else
-        {
-            Debug.LogWarning("No se encontraron definiciones de salidas para " + roomName);
         }
 
         Debug.Log("Salidas disponibles: " + availableExits.Count);
@@ -128,27 +114,29 @@ public class DungeonCreator : MonoBehaviour
 
     void SpawnRoomAtExit(GameObject roomPrefab, ExitPoint exitPoint)
     {
-        RoomExits roomExits = System.Array.Find(roomExitDefinitions, re => re.roomName == roomPrefab.name.Replace("(Clone)", "").Trim());
+        // Instanciar la nueva sala
+        GameObject newRoom = Instantiate(roomPrefab, exitPoint.exitTransform.position, Quaternion.identity);
 
-        if (roomExits != null && roomExits.exits.Length > 0)
+        // Añadir las salidas de la nueva sala
+        AddExits(newRoom);
+
+        // Ajustar la posición y rotación de la nueva sala para alinearla con la salida anterior
+        Transform newRoomExit = newRoom.GetComponentInChildren<Transform>();  // Suponiendo que la sala tiene al menos un Exit
+
+        if (newRoomExit != null)
         {
-            // Usamos la primera salida como referencia para posicionar y rotar la nueva sala
-            Transform newRoomExit = roomExits.exits[0];
-
             // Calcular la posición y rotación que alinee las dos salidas
             Vector3 offset = exitPoint.exitTransform.position - newRoomExit.position;
+            newRoom.transform.position += offset;
+
             Quaternion rotation = Quaternion.LookRotation(exitPoint.exitTransform.forward, Vector3.up) * Quaternion.Inverse(newRoomExit.rotation);
+            newRoom.transform.rotation = rotation;
 
-            // Instanciar la nueva sala
-            GameObject newRoom = Instantiate(roomPrefab, exitPoint.exitTransform.position - offset, rotation);
             spawnedRooms.Add(newRoom);
-
-            // Añadir las salidas de la nueva sala
-            AddExits(newRoom);
         }
         else
         {
-            Debug.LogWarning("No se encontraron salidas para " + roomPrefab.name);
+            Debug.LogWarning("No se encontraron salidas en la nueva sala.");
         }
     }
 }

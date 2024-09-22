@@ -285,82 +285,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rooms:
-  - {fileID: 6000440607596206403, guid: 476a2a79316189248a868cf1500e998f, type: 3}
-  - {fileID: 5945528436276355682, guid: 51ba939b9d0db1847b13cd2fc6af0010, type: 3}
-  - {fileID: 7741590752246478941, guid: 960b970bf33bf924390182301c73d92a, type: 3}
-  - {fileID: 5811421444909927301, guid: b0932b036dd5ec74daa5e9f79af003c8, type: 3}
-  - {fileID: 2868281079176034833, guid: 068a726a7f5fb1b4cb8b4e183d75abc5, type: 3}
+  - {fileID: 8390067836423753767, guid: c9c0d9af9517c964ab69b74709dc076f, type: 3}
+  - {fileID: 4355779169275666563, guid: c084f16525fe39e47be9d6871c020efa, type: 3}
+  - {fileID: 3921240834735033416, guid: 992ca01c7fa914a4180366b514fbfb59, type: 3}
+  - {fileID: 2234602531553145300, guid: 6780da6d5202ac642807b97ab59e71f8, type: 3}
   connectors:
-  - {fileID: 7264600922575026978, guid: d734e92a8ab4003489964910d0722058, type: 3}
-  - {fileID: 761198333817257701, guid: edcaef5f120d1b04cb272b7a8ecde786, type: 3}
-  - {fileID: 5081153587131680814, guid: e5d0ec84a2630db4e9b3a2ad1f6772a6, type: 3}
-  - {fileID: 8145383319449965268, guid: 3a8e2851367224245b39bd14d25b0182, type: 3}
-  - {fileID: 3160437040927100940, guid: 95cd3dffeadba5a429443365fecae960, type: 3}
-  - {fileID: 3487441731587541132, guid: bc0a9313e8e9d274f9d9552eea6c60db, type: 3}
-  - {fileID: 5748175799271379190, guid: 7d57d43b6e7937243aab8fd38cec1e55, type: 3}
-  - {fileID: 8071202626951077321, guid: 0ac10ac2e7c9cdc42a5a945f77407ccf, type: 3}
-  initialRoom: {fileID: 5945528436276355682, guid: 51ba939b9d0db1847b13cd2fc6af0010,
+  - {fileID: 1722618894570455239, guid: d734e92a8ab4003489964910d0722058, type: 3}
+  - {fileID: 4861579475363231401, guid: 335a47c682690d648921640474847a41, type: 3}
+  - {fileID: 5246935793390012973, guid: 156b48d4f072b9847a126364c68f8df8, type: 3}
+  - {fileID: 6747190708167339184, guid: 77c634c244d99394c9bf674ae9d3aa2f, type: 3}
+  - {fileID: 7791333190711904047, guid: 85e16231bdaf75e4094ed92a0ffae7f0, type: 3}
+  - {fileID: 4042424014282950550, guid: 69670da609f2e8343931b6619775e0e3, type: 3}
+  - {fileID: 4046648661038074531, guid: eeaece7e1d98b164b8c3450675bce079, type: 3}
+  - {fileID: 946109664947041502, guid: 0dd9469c102b59545b90edd1b84256e4, type: 3}
+  initialRoom: {fileID: 3478340288055043626, guid: 51ba939b9d0db1847b13cd2fc6af0010,
     type: 3}
-  minRooms: 1
-  maxRooms: 1
-  roomExitDefinitions:
-  - roomName: Doorway.2
-    exits:
-    - {fileID: 0}
-    - {fileID: 0}
-  - roomName: HallIForm.2
-    exits:
-    - {fileID: 0}
-    - {fileID: 0}
-  - roomName: HallLForm.2
-    exits:
-    - {fileID: 0}
-    - {fileID: 0}
-  - roomName: HallShort.2
-    exits:
-    - {fileID: 0}
-    - {fileID: 0}
-  - roomName: HallTForm.3
-    exits:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-  - roomName: HallXForm.4
-    exits:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-  - roomName: RoomI.2
-    exits:
-    - {fileID: 0}
-    - {fileID: 0}
-  - roomName: RoomInitial.1
-    exits:
-    - {fileID: 0}
-  - roomName: RoomL.2
-    exits:
-    - {fileID: 0}
-    - {fileID: 0}
-  - roomName: RoomT.3
-    exits:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-  - roomName: RoomX.4
-    exits:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-  - roomName: Stairs.2
-    exits:
-    - {fileID: 0}
-    - {fileID: 0}
-  - roomName: StairsL.2
-    exits:
-    - {fileID: 0}
-    - {fileID: 0}
+  minRooms: 2
+  maxRooms: 3
 --- !u!1 &961739749
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,7 +383,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
