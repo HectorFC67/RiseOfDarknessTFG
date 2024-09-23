@@ -112,27 +112,40 @@ public class DungeonCreator : MonoBehaviour
         return exit;
     }
 
+    // Función para instanciar y alinear la nueva sala en base a los Exits
     void SpawnRoomAtExit(GameObject roomPrefab, ExitPoint exitPoint)
     {
-        // Instanciar la nueva sala
-        GameObject newRoom = Instantiate(roomPrefab, exitPoint.exitTransform.position, Quaternion.identity);
+        // Instanciar la nueva sala en la posición del exit anterior
+        GameObject newRoom = Instantiate(roomPrefab);
 
-        // Añadir las salidas de la nueva sala
-        AddExits(newRoom);
+        // Buscar el Exit en la nueva sala
+        Transform[] newRoomExits = newRoom.GetComponentsInChildren<Transform>();
+        Transform newRoomExit = null;
 
-        // Ajustar la posición y rotación de la nueva sala para alinearla con la salida anterior
-        Transform newRoomExit = newRoom.GetComponentInChildren<Transform>();  // Suponiendo que la sala tiene al menos un Exit
+        // Buscar un "Exit" en la nueva sala (asumimos que todos los prefabs tienen al menos uno)
+        foreach (Transform exit in newRoomExits)
+        {
+            if (exit.name.Contains("Exit"))
+            {
+                newRoomExit = exit;
+                break;
+            }
+        }
 
         if (newRoomExit != null)
         {
-            // Calcular la posición y rotación que alinee las dos salidas
+            // 1. Ajustar la posición: Queremos que el nuevo Exit esté en el mismo lugar que el exit anterior.
             Vector3 offset = exitPoint.exitTransform.position - newRoomExit.position;
             newRoom.transform.position += offset;
 
+            // 2. Ajustar la rotación: Hacer que ambos Exits se alineen en la misma dirección.
             Quaternion rotation = Quaternion.LookRotation(exitPoint.exitTransform.forward, Vector3.up) * Quaternion.Inverse(newRoomExit.rotation);
             newRoom.transform.rotation = rotation;
 
             spawnedRooms.Add(newRoom);
+
+            // Añadir las salidas de la nueva sala a la lista de Exits disponibles
+            AddExits(newRoom);
         }
         else
         {
