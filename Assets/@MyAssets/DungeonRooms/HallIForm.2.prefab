@@ -56,13 +56,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9019815491818605985}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7578502208276522609}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1001 &6545421064169451610
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -75,6 +75,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: HallIForm.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1601170751177099659, guid: f8144e1d5370c9243b710503779491d6,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1601170751177099659, guid: f8144e1d5370c9243b710503779491d6,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1601170751177099659, guid: f8144e1d5370c9243b710503779491d6,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1601170751177099659, guid: f8144e1d5370c9243b710503779491d6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 3745374606294783531, guid: f8144e1d5370c9243b710503779491d6,
         type: 3}

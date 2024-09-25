@@ -286,9 +286,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rooms:
   - {fileID: 8390067836423753767, guid: c9c0d9af9517c964ab69b74709dc076f, type: 3}
-  - {fileID: 4355779169275666563, guid: c084f16525fe39e47be9d6871c020efa, type: 3}
   - {fileID: 3921240834735033416, guid: 992ca01c7fa914a4180366b514fbfb59, type: 3}
   - {fileID: 2234602531553145300, guid: 6780da6d5202ac642807b97ab59e71f8, type: 3}
+  - {fileID: 4355779169275666563, guid: c084f16525fe39e47be9d6871c020efa, type: 3}
   connectors:
   - {fileID: 1722618894570455239, guid: d734e92a8ab4003489964910d0722058, type: 3}
   - {fileID: 4861579475363231401, guid: 335a47c682690d648921640474847a41, type: 3}
@@ -300,8 +300,8 @@ MonoBehaviour:
   - {fileID: 946109664947041502, guid: 0dd9469c102b59545b90edd1b84256e4, type: 3}
   initialRoom: {fileID: 3478340288055043626, guid: 51ba939b9d0db1847b13cd2fc6af0010,
     type: 3}
-  minRooms: 1
-  maxRooms: 2
+  minRooms: 3
+  maxRooms: 3
 --- !u!1 &961739749
 GameObject:
   m_ObjectHideFlags: 0

@@ -115,14 +115,14 @@ public class DungeonCreator : MonoBehaviour
     // Función para instanciar y alinear la nueva sala en base a los Exits
     void SpawnRoomAtExit(GameObject roomPrefab, ExitPoint exitPoint)
     {
-        // Instanciar la nueva sala en la posición del exit anterior
-        GameObject newRoom = Instantiate(roomPrefab);
+        // Instanciar la nueva sala sin rotación inicial
+        GameObject newRoom = Instantiate(roomPrefab, Vector3.zero, Quaternion.identity);
 
         // Buscar el Exit en la nueva sala
         Transform[] newRoomExits = newRoom.GetComponentsInChildren<Transform>();
         Transform newRoomExit = null;
 
-        // Buscar un "Exit" en la nueva sala (asumimos que todos los prefabs tienen al menos uno)
+        // Buscar un "Exit" en la nueva sala
         foreach (Transform exit in newRoomExits)
         {
             if (exit.name.Contains("Exit"))
@@ -134,18 +134,23 @@ public class DungeonCreator : MonoBehaviour
 
         if (newRoomExit != null)
         {
-            // 1. Ajustar la posición: Queremos que el nuevo Exit esté en el mismo lugar que el exit anterior.
+            // 1. Ajustar la rotación: hacer que ambos Exits se alineen en la misma dirección
+            // Queremos que el nuevo Exit apunte en la misma dirección que el Exit al que se conecta.
+            Quaternion targetRotation = Quaternion.LookRotation(-exitPoint.exitTransform.forward, Vector3.up);
+            newRoom.transform.rotation = targetRotation * Quaternion.Inverse(newRoomExit.rotation);
+
+            // 2. Ajustar la posición: Queremos que el nuevo Exit esté en la misma posición que el Exit anterior.
             Vector3 offset = exitPoint.exitTransform.position - newRoomExit.position;
             newRoom.transform.position += offset;
 
-            // 2. Ajustar la rotación: Hacer que ambos Exits se alineen en la misma dirección.
-            Quaternion rotation = Quaternion.LookRotation(exitPoint.exitTransform.forward, Vector3.up) * Quaternion.Inverse(newRoomExit.rotation);
-            newRoom.transform.rotation = rotation;
-
+            // Agregar la nueva sala a la lista de salas instanciadas
             spawnedRooms.Add(newRoom);
 
             // Añadir las salidas de la nueva sala a la lista de Exits disponibles
             AddExits(newRoom);
+
+            // Eliminar las salidas conectadas (tanto de la nueva sala como de la anterior)
+            availableExits.RemoveAll(e => e.exitTransform == newRoomExit || e.exitTransform == exitPoint.exitTransform);
         }
         else
         {
