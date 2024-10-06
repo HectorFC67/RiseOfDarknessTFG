@@ -7,6 +7,7 @@ public class DungeonCreator : MonoBehaviour
     public GameObject[] rooms;   // Lista de objetos Room (RoomI.2, RoomL.2, etc.)
     public GameObject[] connectors;  // Lista de objetos Hall, Stairs o Doorway
     public GameObject initialRoom;  // Objeto RoomInitial.1, que será la sala inicial
+    public GameObject doorPrefab;  // Prefab de la puerta
 
     public int minRooms = 6;
     public int maxRooms = 10;
@@ -14,7 +15,8 @@ public class DungeonCreator : MonoBehaviour
     private List<GameObject> spawnedRooms = new List<GameObject>();  // Para almacenar las habitaciones generadas
     private List<ExitPoint> availableExits = new List<ExitPoint>();  // Para almacenar las salidas libres para conectar
 
-    // Clase para definir un punto de salida
+    private int stairAttempts = 0;  // Contador de intentos de instanciar sin escaleras
+
     public class ExitPoint
     {
         public Transform exitTransform;  // Transform de la salida
@@ -30,12 +32,13 @@ public class DungeonCreator : MonoBehaviour
     void Start()
     {
         GenerateDungeon();
+        PlaceDoorsOnUnconnectedExits();  // Colocar puertas al final de la generación
     }
 
     void GenerateDungeon()
     {
         // 1. Instanciar la sala inicial
-        GameObject currentRoom = Instantiate(initialRoom, transform.position, initialRoom.transform.rotation);  // Usar la rotación original del prefab
+        GameObject currentRoom = Instantiate(initialRoom, transform.position, initialRoom.transform.rotation);
         spawnedRooms.Add(currentRoom);
         AddExits(currentRoom);
 
@@ -49,10 +52,26 @@ public class DungeonCreator : MonoBehaviour
         {
             GameObject nextPrefab;
 
-            // Alternar entre Room y Connector
             if (lastWasRoom)
             {
-                nextPrefab = GetRandomConnector();
+                // Si se han hecho 3 intentos sin instanciar escaleras, forzar la creación de una
+                if (stairAttempts >= 3)
+                {
+                    nextPrefab = GetRandomStairs();  // Forzar Stairs
+                    stairAttempts = 0;  // Reiniciar el contador
+                }
+                else
+                {
+                    nextPrefab = GetRandomConnector();
+                    if (nextPrefab.name.Contains("Stairs"))
+                    {
+                        stairAttempts = 0;  // Si es escalera, reiniciar contador
+                    }
+                    else
+                    {
+                        stairAttempts++;  // Incrementar el contador si no es escalera
+                    }
+                }
                 lastWasRoom = false;
             }
             else
@@ -65,7 +84,7 @@ public class DungeonCreator : MonoBehaviour
             if (availableExits.Count > 0)
             {
                 ExitPoint exit = GetRandomExit();
-                SpawnRoomAtExit(nextPrefab, exit);
+                StartCoroutine(SpawnRoomAtExit(nextPrefab, exit));
             }
             else
             {
@@ -73,6 +92,20 @@ public class DungeonCreator : MonoBehaviour
                 break;
             }
         }
+    }
+
+    GameObject GetRandomStairs()
+    {
+        // Filtra el array de conectores para obtener solo las escaleras
+        List<GameObject> stairsOptions = new List<GameObject>();
+        foreach (GameObject connector in connectors)
+        {
+            if (connector.name.Contains("Stairs"))
+            {
+                stairsOptions.Add(connector);
+            }
+        }
+        return stairsOptions[Random.Range(0, stairsOptions.Count)];
     }
 
     GameObject GetRandomRoom()
@@ -85,17 +118,14 @@ public class DungeonCreator : MonoBehaviour
         return connectors[Random.Range(0, connectors.Length)];
     }
 
-    // Esta función busca dinámicamente los objetos "Exit" en la sala o conector instanciado
     void AddExits(GameObject room)
     {
-        // Buscar todos los objetos dentro de "room" que tengan "Exit" en el nombre
         Transform[] exits = room.GetComponentsInChildren<Transform>();
 
         foreach (Transform exit in exits)
         {
             if (exit.name.Contains("Exit"))
             {
-                // Crear un nuevo ExitPoint y añadirlo a la lista de salidas disponibles
                 ExitPoint exitPoint = new ExitPoint(exit, room);
                 availableExits.Add(exitPoint);
             }
@@ -112,20 +142,15 @@ public class DungeonCreator : MonoBehaviour
         return exit;
     }
 
-    // Función para instanciar y alinear la nueva sala en base a los Exits
-    void SpawnRoomAtExit(GameObject roomPrefab, ExitPoint exitPoint)
+    IEnumerator SpawnRoomAtExit(GameObject roomPrefab, ExitPoint exitPoint)
     {
-        // Instanciar la nueva sala sin rotación inicial
         GameObject newRoom = Instantiate(roomPrefab, Vector3.zero, Quaternion.identity);
-
-        // Buscar el Exit en la nueva sala
         Transform[] newRoomExits = newRoom.GetComponentsInChildren<Transform>();
         Transform newRoomExit = null;
 
-        // Buscar un "Exit" en la nueva sala
         foreach (Transform exit in newRoomExits)
         {
-            if (exit.name.Contains("Exit"))
+            if (exit.name.Contains("Exit1"))
             {
                 newRoomExit = exit;
                 break;
@@ -134,27 +159,169 @@ public class DungeonCreator : MonoBehaviour
 
         if (newRoomExit != null)
         {
-            // 1. Ajustar la rotación: hacer que ambos Exits se alineen en la misma dirección
-            // Queremos que el nuevo Exit apunte en la misma dirección que el Exit al que se conecta.
-            Quaternion targetRotation = Quaternion.LookRotation(-exitPoint.exitTransform.forward, Vector3.up);
-            newRoom.transform.rotation = targetRotation * Quaternion.Inverse(newRoomExit.rotation);
+            Quaternion baseRotation = exitPoint.room.transform.rotation;
+            newRoom.transform.position = exitPoint.exitTransform.position;
+            Quaternion rotationAdjustment = CalculateRotation(exitPoint.room, exitPoint.exitTransform);
+            newRoom.transform.rotation = baseRotation * rotationAdjustment;
 
-            // 2. Ajustar la posición: Queremos que el nuevo Exit esté en la misma posición que el Exit anterior.
             Vector3 offset = exitPoint.exitTransform.position - newRoomExit.position;
             newRoom.transform.position += offset;
 
-            // Agregar la nueva sala a la lista de salas instanciadas
-            spawnedRooms.Add(newRoom);
+            // Verificar si el espacio está libre antes de agregar la sala
+            if (IsSpaceFree(newRoom, newRoom.transform.position, newRoom.transform.rotation))
+            {
+                spawnedRooms.Add(newRoom);
+                AddExits(newRoom);
 
-            // Añadir las salidas de la nueva sala a la lista de Exits disponibles
-            AddExits(newRoom);
-
-            // Eliminar las salidas conectadas (tanto de la nueva sala como de la anterior)
-            availableExits.RemoveAll(e => e.exitTransform == newRoomExit || e.exitTransform == exitPoint.exitTransform);
+                availableExits.RemoveAll(e => e.exitTransform == newRoomExit || e.exitTransform == exitPoint.exitTransform);
+            }
+            else
+            {
+                Debug.LogWarning("Colisión detectada. No se puede instanciar la nueva sala aquí.");
+                Destroy(newRoom);  // Destruir la sala si está colisionando
+            }
         }
         else
         {
             Debug.LogWarning("No se encontraron salidas en la nueva sala.");
         }
+
+        yield return null;
     }
+
+
+    Quaternion CalculateRotation(GameObject connectedRoom, Transform exitTransform)
+    {
+        string roomName = connectedRoom.name;
+        string exitName = exitTransform.name;
+        Vector3 desiredRotation = Vector3.zero;
+
+        // Condiciones para establecer la rotación exacta según el room y el exit
+        if (roomName.Contains("RoomInitial.1") && exitName.Contains("Exit1"))
+        {
+            desiredRotation = new Vector3(0, 0, 0);
+        }
+        else if (roomName.Contains("RoomI.2") && exitName.Contains("Exit2"))
+        {
+            desiredRotation = new Vector3(0, 0, 0);
+        }
+        else if (roomName.Contains("RoomL.2") && exitName.Contains("Exit2"))
+        {
+            desiredRotation = new Vector3(0, -90, 0);
+        }
+        else if (roomName.Contains("RoomT.3"))
+        {
+            if (exitName.Contains("Exit2"))
+            {
+                desiredRotation = new Vector3(0, -90, 0);
+            }
+            else if (exitName.Contains("Exit3"))
+            {
+                desiredRotation = new Vector3(0, 90, 0);
+            }
+        }
+        else if (roomName.Contains("RoomX.4"))
+        {
+            if (exitName.Contains("Exit2"))
+            {
+                desiredRotation = new Vector3(0, -90, 0);
+            }
+            else if (exitName.Contains("Exit3"))
+            {
+                desiredRotation = new Vector3(0, 0, 0);
+            }
+            else if (exitName.Contains("Exit4"))
+            {
+                desiredRotation = new Vector3(0, 90, 0);
+            }
+        }
+        else if (roomName.Contains("Doorway.2") && exitName.Contains("Exit2"))
+        {
+            desiredRotation = new Vector3(0, 0, 0);
+        }
+        else if (roomName.Contains("HallIForm.2") && exitName.Contains("Exit2"))
+        {
+            desiredRotation = new Vector3(0, 0, 0);
+        }
+        else if (roomName.Contains("HallLForm.2") && exitName.Contains("Exit2"))
+        {
+            desiredRotation = new Vector3(0, -90, 0);
+        }
+        else if (roomName.Contains("HallShort.2") && exitName.Contains("Exit2"))
+        {
+            desiredRotation = new Vector3(0, 0, 0);
+        }
+        else if (roomName.Contains("HallTForm.3"))
+        {
+            if (exitName.Contains("Exit2"))
+            {
+                desiredRotation = new Vector3(0, -90, 0);
+            }
+            else if (exitName.Contains("Exit3"))
+            {
+                desiredRotation = new Vector3(0, 90, 0);
+            }
+        }
+        else if (roomName.Contains("HallXForm.4"))
+        {
+            if (exitName.Contains("Exit2"))
+            {
+                desiredRotation = new Vector3(0, 90, 0);
+            }
+            else if (exitName.Contains("Exit3"))
+            {
+                desiredRotation = new Vector3(0, 0, 0);
+            }
+            else if (exitName.Contains("Exit4"))
+            {
+                desiredRotation = new Vector3(0, -90, 0);
+            }
+        }
+        else if (roomName.Contains("Stairs.2") && exitName.Contains("Exit2"))
+        {
+            desiredRotation = new Vector3(0, 0, 0);
+        }
+        else if (roomName.Contains("StairsL.2") && exitName.Contains("Exit2"))
+        {
+            desiredRotation = new Vector3(0, 90, 0);
+        }
+
+        Debug.Log($"Rotación deseada para {roomName} en {exitName}: {desiredRotation}");
+        return Quaternion.Euler(desiredRotation);
+    }
+
+    // Función para colocar puertas en los exits no conectados
+    void PlaceDoorsOnUnconnectedExits()
+    {
+        foreach (ExitPoint exit in availableExits)
+        {
+            // Instanciar el prefab de la puerta en la posición de la salida no conectada
+            Instantiate(doorPrefab, exit.exitTransform.position, exit.exitTransform.rotation);
+            Debug.Log("Puerta colocada en: " + exit.exitTransform.position);
+        }
+    }
+
+    // Función para verificar que el lugar donde se va a instanciar esta libre
+    bool IsSpaceFree(GameObject roomPrefab, Vector3 position, Quaternion rotation)
+    {
+        // Obtener el collider del prefab de la sala o conector
+        Collider roomCollider = roomPrefab.GetComponentInChildren<Collider>();
+
+        if (roomCollider == null)
+        {
+            Debug.LogWarning("El prefab no tiene un Collider.");
+            return false;
+        }
+
+        // Calcular los límites del collider en la posición y rotación deseadas
+        Vector3 halfExtents = roomCollider.bounds.extents / 2;
+        Vector3 roomCenter = position + rotation * roomCollider.bounds.center;
+
+        // Realizar un chequeo de colisión con un OverlapBox para detectar si colisiona con algo
+        Collider[] hitColliders = Physics.OverlapBox(roomCenter, halfExtents, rotation);
+
+        // Devolver true si no hay colisiones
+        return hitColliders.Length == 0;
+    }
+
 }
