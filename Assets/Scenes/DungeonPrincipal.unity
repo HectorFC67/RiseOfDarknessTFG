@@ -303,7 +303,7 @@ MonoBehaviour:
   doorPrefab: {fileID: 6658434227317661579, guid: 4db538e79bef69d489befeb81a8cdb6a,
     type: 3}
   minRooms: 6
-  maxRooms: 10
+  maxRooms: 12
 --- !u!1 &961739749
 GameObject:
   m_ObjectHideFlags: 0
