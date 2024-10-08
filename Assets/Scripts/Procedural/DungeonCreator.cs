@@ -6,8 +6,8 @@ public class DungeonCreator : MonoBehaviour
 {
     public GameObject[] rooms;   // Lista de objetos Room (RoomI.2, RoomL.2, etc.)
     public GameObject[] connectors;  // Lista de objetos Hall, Stairs o Doorway
-    public GameObject initialRoom;  // Objeto RoomInitial.1, que será la sala inicial
-    public GameObject doorPrefab;  // Prefab de la puerta
+    public GameObject initialRoom;  // Objeto RoomInitial.1, que sera la sala inicial
+    public GameObject doorPrefab;  // Prefab puerta
 
     public int minRooms = 6;
     public int maxRooms = 10;
@@ -17,10 +17,12 @@ public class DungeonCreator : MonoBehaviour
 
     private int stairAttempts = 0;  // Contador de intentos de instanciar sin escaleras
 
+    private bool roomCreated = false;
+
     public class ExitPoint
     {
         public Transform exitTransform;  // Transform de la salida
-        public GameObject room;          // Referencia a la sala o conector donde está la salida
+        public GameObject room;          // Referencia a la sala o conector donde esta la salida
 
         public ExitPoint(Transform exitTransform, GameObject room)
         {
@@ -32,7 +34,7 @@ public class DungeonCreator : MonoBehaviour
     void Start()
     {
         GenerateDungeon();
-        PlaceDoorsOnUnconnectedExits();  // Colocar puertas al final de la generación
+        PlaceDoorsOnUnconnectedExits();  // Colocar puertas al final de la generacion
     }
 
     void GenerateDungeon()
@@ -54,7 +56,7 @@ public class DungeonCreator : MonoBehaviour
 
             if (lastWasRoom)
             {
-                // Si se han hecho 3 intentos sin instanciar escaleras, forzar la creación de una
+                // Si se han hecho 3 intentos sin instanciar escaleras, forzar la creacion de una
                 if (stairAttempts >= 3)
                 {
                     nextPrefab = GetRandomStairs();  // Forzar Stairs
@@ -83,12 +85,15 @@ public class DungeonCreator : MonoBehaviour
             // 3. Conectar la sala al azar con una salida disponible
             if (availableExits.Count > 0)
             {
-                ExitPoint exit = GetRandomExit();
-                StartCoroutine(SpawnRoomAtExit(nextPrefab, exit));
+                ExitPoint exit = GetRandomExit();            
+               StartCoroutine(SpawnRoomAtExit(nextPrefab, exit));
+               if(roomCreated==false){
+                    nextPrefab = GetRandomRoom();
+                }
             }
             else
             {
-                Debug.LogWarning("No hay más salidas disponibles para conectar.");
+                Debug.LogWarning("No hay mas salidas disponibles para conectar.");
                 break;
             }
         }
@@ -143,52 +148,63 @@ public class DungeonCreator : MonoBehaviour
     }
 
     IEnumerator SpawnRoomAtExit(GameObject roomPrefab, ExitPoint exitPoint)
+{
+    GameObject newRoom = Instantiate(roomPrefab, Vector3.zero, Quaternion.identity);
+    Transform[] newRoomExits = newRoom.GetComponentsInChildren<Transform>();
+    Transform newRoomExit = null;
+
+    foreach (Transform exit in newRoomExits)
     {
-        GameObject newRoom = Instantiate(roomPrefab, Vector3.zero, Quaternion.identity);
-        Transform[] newRoomExits = newRoom.GetComponentsInChildren<Transform>();
-        Transform newRoomExit = null;
-
-        foreach (Transform exit in newRoomExits)
+        if (exit.name.Contains("Exit1"))
         {
-            if (exit.name.Contains("Exit1"))
-            {
-                newRoomExit = exit;
-                break;
-            }
+            newRoomExit = exit;
+            break;
         }
+    }
 
-        if (newRoomExit != null)
+    if (newRoomExit != null)
+    {
+        Quaternion baseRotation = exitPoint.room.transform.rotation;
+        newRoom.transform.position = exitPoint.exitTransform.position;
+        Quaternion rotationAdjustment = CalculateRotation(exitPoint.room, exitPoint.exitTransform);
+        newRoom.transform.rotation = baseRotation * rotationAdjustment;
+
+        Vector3 offset = exitPoint.exitTransform.position - newRoomExit.position;
+        newRoom.transform.position += offset;
+
+        // Intentar instanciar la sala o conector en diferentes salidas si hay colisiÃ³n
+        bool instantiated = false;
+        for (int i = 0; i < availableExits.Count; i++)
         {
-            Quaternion baseRotation = exitPoint.room.transform.rotation;
-            newRoom.transform.position = exitPoint.exitTransform.position;
-            Quaternion rotationAdjustment = CalculateRotation(exitPoint.room, exitPoint.exitTransform);
-            newRoom.transform.rotation = baseRotation * rotationAdjustment;
-
-            Vector3 offset = exitPoint.exitTransform.position - newRoomExit.position;
-            newRoom.transform.position += offset;
-
-            // Verificar si el espacio está libre antes de agregar la sala
             if (IsSpaceFree(newRoom, newRoom.transform.position, newRoom.transform.rotation))
             {
+                instantiated = true;
                 spawnedRooms.Add(newRoom);
                 AddExits(newRoom);
-
                 availableExits.RemoveAll(e => e.exitTransform == newRoomExit || e.exitTransform == exitPoint.exitTransform);
+                break; // Salir del bucle si se ha instanciado correctamente
             }
             else
             {
-                Debug.LogWarning("Colisión detectada. No se puede instanciar la nueva sala aquí.");
-                Destroy(newRoom);  // Destruir la sala si está colisionando
+                Debug.LogWarning("ColisiÃ³n detectada. Intentando en la siguiente salida.");
+                newRoom.transform.position = availableExits[i].exitTransform.position;
             }
         }
-        else
-        {
-            Debug.LogWarning("No se encontraron salidas en la nueva sala.");
-        }
 
-        yield return null;
+        if (!instantiated)
+        {
+            Debug.LogWarning("No se pudo instanciar la sala. Destruyendo el objeto.");
+            Destroy(newRoom);
+        }
+    }
+    else
+    {
+        Debug.LogWarning("No se encontraron salidas en la nueva sala.");
+        Destroy(newRoom); // Asegurarse de destruir el objeto si no tiene salidas
     }
 
+    yield return null;
+}
 
     Quaternion CalculateRotation(GameObject connectedRoom, Transform exitTransform)
     {
@@ -196,7 +212,7 @@ public class DungeonCreator : MonoBehaviour
         string exitName = exitTransform.name;
         Vector3 desiredRotation = Vector3.zero;
 
-        // Condiciones para establecer la rotación exacta según el room y el exit
+        // Condiciones para establecer la rotacion exacta segun el room y el exit
         if (roomName.Contains("RoomInitial.1") && exitName.Contains("Exit1"))
         {
             desiredRotation = new Vector3(0, 0, 0);
@@ -286,22 +302,22 @@ public class DungeonCreator : MonoBehaviour
             desiredRotation = new Vector3(0, 90, 0);
         }
 
-        Debug.Log($"Rotación deseada para {roomName} en {exitName}: {desiredRotation}");
+        Debug.Log($"Rotacion deseada para {roomName} en {exitName}: {desiredRotation}");
         return Quaternion.Euler(desiredRotation);
     }
 
-    // Función para colocar puertas en los exits no conectados
+    // Funcion para colocar puertas en los exits no conectados
     void PlaceDoorsOnUnconnectedExits()
     {
         foreach (ExitPoint exit in availableExits)
         {
-            // Instanciar el prefab de la puerta en la posición de la salida no conectada
+            // Instanciar el prefab de la puerta en la posicion de la salida no conectada
             Instantiate(doorPrefab, exit.exitTransform.position, exit.exitTransform.rotation);
             Debug.Log("Puerta colocada en: " + exit.exitTransform.position);
         }
     }
 
-    // Función para verificar que el lugar donde se va a instanciar esta libre
+    // Funcion para verificar que el lugar donde se va a instanciar esta libre
     bool IsSpaceFree(GameObject roomPrefab, Vector3 position, Quaternion rotation)
     {
         // Obtener el collider del prefab de la sala o conector
@@ -313,11 +329,11 @@ public class DungeonCreator : MonoBehaviour
             return false;
         }
 
-        // Calcular los límites del collider en la posición y rotación deseadas
+        // Calcular los limites del collider en la posicion y rotacion deseadas
         Vector3 halfExtents = roomCollider.bounds.extents / 2;
         Vector3 roomCenter = position + rotation * roomCollider.bounds.center;
 
-        // Realizar un chequeo de colisión con un OverlapBox para detectar si colisiona con algo
+        // Realizar un chequeo de colision con un OverlapBox para detectar si colisiona con algo
         Collider[] hitColliders = Physics.OverlapBox(roomCenter, halfExtents, rotation);
 
         // Devolver true si no hay colisiones
