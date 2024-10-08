@@ -7,7 +7,7 @@ public class DungeonCreator : MonoBehaviour
     public GameObject[] rooms;   // Lista de objetos Room (RoomI.2, RoomL.2, etc.)
     public GameObject[] connectors;  // Lista de objetos Hall, Stairs o Doorway
     public GameObject initialRoom;  // Objeto RoomInitial.1, que sera la sala inicial
-    public GameObject doorPrefab;  // Prefab puerta
+    public GameObject doorPrefab;  // Prefab de la puerta
 
     public int minRooms = 6;
     public int maxRooms = 10;
@@ -172,35 +172,28 @@ public class DungeonCreator : MonoBehaviour
         Vector3 offset = exitPoint.exitTransform.position - newRoomExit.position;
         newRoom.transform.position += offset;
 
-        // Intentar instanciar la sala o conector en diferentes salidas si hay colisión
-        bool instantiated = false;
-        for (int i = 0; i < availableExits.Count; i++)
+        // Verificar si el espacio está libre antes de agregar la sala
+        if (IsSpaceFree(newRoom, newRoom.transform.position, newRoom.transform.rotation))
         {
-            if (IsSpaceFree(newRoom, newRoom.transform.position, newRoom.transform.rotation))
-            {
-                instantiated = true;
-                spawnedRooms.Add(newRoom);
-                AddExits(newRoom);
-                availableExits.RemoveAll(e => e.exitTransform == newRoomExit || e.exitTransform == exitPoint.exitTransform);
-                break; // Salir del bucle si se ha instanciado correctamente
-            }
-            else
-            {
-                Debug.LogWarning("Colisión detectada. Intentando en la siguiente salida.");
-                newRoom.transform.position = availableExits[i].exitTransform.position;
-            }
+            spawnedRooms.Add(newRoom);
+            AddExits(newRoom);
+            // Eliminamos solo las salidas correctamente conectadas
+            availableExits.RemoveAll(e => e.exitTransform == newRoomExit || e.exitTransform == exitPoint.exitTransform);
+            roomCreated = true;
         }
-
-        if (!instantiated)
+        else
         {
-            Debug.LogWarning("No se pudo instanciar la sala. Destruyendo el objeto.");
-            Destroy(newRoom);
+            Debug.LogWarning("Colisión detectada. No se puede instanciar la nueva sala aquí.");
+            Destroy(newRoom);  // Destruir la sala si está colisionando
+            roomCreated = false;  // Indicar que la sala no se pudo crear
+
+            // Mantener la salida no conectada en la lista
+            availableExits.Add(exitPoint);
         }
     }
     else
     {
         Debug.LogWarning("No se encontraron salidas en la nueva sala.");
-        Destroy(newRoom); // Asegurarse de destruir el objeto si no tiene salidas
     }
 
     yield return null;
