@@ -40,6 +40,10 @@ public class DungeonCreator : MonoBehaviour
         // Limpiar cualquier nivel generado anteriormente
         ClearDungeon();
 
+        // Contador de reintentos
+        int retryCount = 0;
+        int maxRetries = 5;  // Máximo número de reintentos para evitar bucles infinitos
+
         // 1. Instanciar la sala inicial
         GameObject currentRoom = Instantiate(initialRoom, transform.position, initialRoom.transform.rotation);
         spawnedRooms.Add(currentRoom);
@@ -50,52 +54,62 @@ public class DungeonCreator : MonoBehaviour
 
         bool lastWasRoom = true; // Bandera para alternar entre Room y Connector
 
-        // 2. Generar el resto de las salas
-        for (int i = 1; i < roomCount * 2; i++)  // *2 para alternar entre Room y Connector
+        while (retryCount < maxRetries)
         {
-            GameObject nextPrefab;
-
-            if (lastWasRoom)
+            // 2. Generar el resto de las salas
+            for (int i = 1; i < roomCount * 2; i++)  // *2 para alternar entre Room y Connector
             {
-                nextPrefab = GetRandomConnector();  // Alternar con un conector
-                lastWasRoom = false;
-            }
-            else
-            {
-                nextPrefab = GetRandomRoom();  // Alternar con una sala
-                lastWasRoom = true;
-            }
+                GameObject nextPrefab;
 
-            // 3. Intentar conectar la sala con una salida disponible
-            if (availableExits.Count > 0)
-            {
-                ExitPoint exit = GetRandomExit();            
-                StartCoroutine(SpawnRoomAtExit(nextPrefab, exit));
-
-                // Si la sala no fue creada, probar con la siguiente
-                if (roomCreated == false)
+                if (lastWasRoom)
                 {
-                    nextPrefab = GetRandomRoom();
+                    nextPrefab = GetRandomConnector();  // Alternar con un conector
+                    lastWasRoom = false;
+                }
+                else
+                {
+                    nextPrefab = GetRandomRoom();  // Alternar con una sala
+                    lastWasRoom = true;
+                }
+
+                // 3. Intentar conectar la sala con una salida disponible
+                if (availableExits.Count > 0)
+                {
+                    ExitPoint exit = GetRandomExit();
+                    StartCoroutine(SpawnRoomAtExit(nextPrefab, exit));
+
+                    // Si la sala no fue creada, probar con la siguiente
+                    if (!roomCreated)
+                    {
+                        nextPrefab = GetRandomRoom();
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning("No hay más salidas disponibles para conectar.");
+                    break;
                 }
             }
+
+            // Verificar si se han generado suficientes salas
+            if (spawnedRooms.Count < minRooms)
+            {
+                Debug.LogWarning($"Número de salas generado ({spawnedRooms.Count}) es menor al mínimo ({minRooms}). Reintentando generación...");
+                ClearDungeon();  // Borrar el nivel actual
+                retryCount++;  // Incrementar el contador de reintentos
+            }
             else
             {
-                Debug.LogWarning("No hay más salidas disponibles para conectar.");
-                break;
+                // Colocar puertas al final si todo está bien
+                PlaceDoorsOnUnconnectedExits();
+                break;  // Salir del bucle si la generación fue exitosa
             }
-        }
 
-        // Verificar si se han generado suficientes salas
-        if (spawnedRooms.Count < minRooms)
-        {
-            Debug.LogWarning($"Número de salas generado ({spawnedRooms.Count}) es menor al mínimo ({minRooms}). Reintentando generación...");
-            ClearDungeon();  // Borrar el nivel actual
-            GenerateDungeon();  // Volver a generar
-        }
-        else
-        {
-            // Colocar puertas al final si todo está bien
-            PlaceDoorsOnUnconnectedExits();
+            if (retryCount >= maxRetries)
+            {
+                Debug.LogError("Generación fallida tras varios intentos. Por favor revisa las configuraciones.");
+                break;  // Salir si se alcanza el límite de reintentos
+            }
         }
     }
 
@@ -282,6 +296,14 @@ public class DungeonCreator : MonoBehaviour
             {
                 desiredRotation = new Vector3(0, -90, 0);
             }
+        }
+        else if (roomName.Contains("Stairs.2") && exitName.Contains("Exit2"))
+        {
+            desiredRotation = new Vector3(0, 0, 0);
+        }
+        else if (roomName.Contains("StairsL.2") && exitName.Contains("Exit2"))
+        {
+            desiredRotation = new Vector3(0, 90, 0);
         }
 
         Debug.Log($"Rotación deseada para {roomName} en {exitName}: {desiredRotation}");
