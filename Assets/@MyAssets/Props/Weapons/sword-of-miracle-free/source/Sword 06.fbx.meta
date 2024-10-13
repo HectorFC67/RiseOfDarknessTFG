@@ -3,7 +3,22 @@ guid: 638cf6679579d6845bf81688350ef922
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Inside
+    second: {fileID: 2100000, guid: 6b1b1f12597ad9d499087b7dd503f353, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Outside
+    second: {fileID: 2100000, guid: 58a1bacb4baa1bd43a6d99da51611af2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sword
+    second: {fileID: 2100000, guid: c4119c93f11318040983e3db93103397, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
