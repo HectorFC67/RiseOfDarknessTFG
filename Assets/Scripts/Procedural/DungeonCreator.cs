@@ -20,6 +20,17 @@ public class DungeonCreator : MonoBehaviour
     public List<GameObject> decorationList;
     public List<GameObject> portalList;
 
+    public List<GameObject> enemiesList;
+
+    // Probabilidad inicial de spawnear enemigos (20%)
+    private float enemySpawnChance = 0.2f;
+
+    // Incremento de probabilidad por cada sala generada
+    private float spawnIncreasePerRoom = 0.05f;
+
+    // Límite máximo de probabilidad de aparición de enemigos (90%)
+    private float maxEnemySpawnChance = 0.9f;
+
     private List<GameObject> spawnedRooms = new List<GameObject>(); 
     private List<ExitPoint> availableExits = new List<ExitPoint>(); 
 
@@ -91,6 +102,11 @@ public class DungeonCreator : MonoBehaviour
                     {
                         nextPrefab = GetRandomRoom();
                     }
+                    else
+                    {
+                        // Intentar spawnear un enemigo tras crear una sala
+                        TrySpawnEnemy(nextPrefab);
+                    }
                 }
                 else
                 {
@@ -119,6 +135,25 @@ public class DungeonCreator : MonoBehaviour
                 break;  // Salir si se alcanza el límite de reintentos
             }
         }
+    }
+
+    void TrySpawnEnemy(GameObject room)
+    {
+        if (enemiesList.Count > 0 && Random.value < enemySpawnChance)
+        {
+            Transform enemySpawnPoint = room.transform.Find("enemySpawn");
+
+            if (enemySpawnPoint)
+            {
+                GameObject enemyPrefab = enemiesList[Random.Range(0, enemiesList.Count)];
+                Instantiate(enemyPrefab, enemySpawnPoint.position, Quaternion.identity);
+                Debug.Log("Enemigo generado.");
+            }
+        }
+
+        // Incrementar la probabilidad de spawn de enemigos, pero no exceder el límite máximo
+        enemySpawnChance = Mathf.Min(enemySpawnChance + spawnIncreasePerRoom, maxEnemySpawnChance);
+        Debug.Log($"Probabilidad de spawnear enemigo incrementada a: {enemySpawnChance * 100}%");
     }
 
     // Función para destruir todas las salas generadas
