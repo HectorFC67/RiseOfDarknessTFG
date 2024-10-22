@@ -4,16 +4,24 @@ using UnityEngine;
 
 public class DungeonCreator : MonoBehaviour
 {
-    public GameObject[] rooms;   // Lista de objetos Room (RoomI.2, RoomL.2, etc.)
-    public GameObject[] connectors;  // Lista de objetos Hall, Stairs o Doorway
-    public GameObject initialRoom;  // Objeto RoomInitial.1, que será la sala inicial
-    public GameObject doorPrefab;  // Prefab de la puerta
+    public GameObject[] rooms;   
+    public GameObject[] connectors;  
+    public GameObject initialRoom;  
+    public GameObject doorPrefab;  
 
     public int minRooms = 6;
     public int maxRooms = 10;
 
-    private List<GameObject> spawnedRooms = new List<GameObject>();  // Para almacenar las habitaciones generadas
-    private List<ExitPoint> availableExits = new List<ExitPoint>();  // Para almacenar las salidas libres para conectar
+    // Listas públicas para los objetos de decoración
+    public List<GameObject> paintsList;
+    public List<GameObject> weaponsList;
+    public List<GameObject> storageList;
+    public List<GameObject> statuesList;
+    public List<GameObject> decorationList;
+    public List<GameObject> portalList;
+
+    private List<GameObject> spawnedRooms = new List<GameObject>(); 
+    private List<ExitPoint> availableExits = new List<ExitPoint>(); 
 
     private bool roomCreated = false;
 
@@ -190,6 +198,7 @@ public class DungeonCreator : MonoBehaviour
                 AddExits(newRoom);
                 // Eliminamos solo las salidas correctamente conectadas
                 availableExits.RemoveAll(e => e.exitTransform == newRoomExit || e.exitTransform == exitPoint.exitTransform);
+                PlaceDecorations(newRoom);
                 roomCreated = true;
             }
             else
@@ -308,6 +317,49 @@ public class DungeonCreator : MonoBehaviour
 
         Debug.Log($"Rotación deseada para {roomName} en {exitName}: {desiredRotation}");
         return Quaternion.Euler(desiredRotation);
+    }
+
+void PlaceDecorations(GameObject room)
+    {
+        // Spawns para cada tipo de decoración
+        Transform paintsSpawn = room.transform.Find("paintsSpawn");
+        Transform storageSpawn = room.transform.Find("storageSpawn");
+        Transform statueSpawn = room.transform.Find("statueSpawn");
+        Transform decorationSpawn = room.transform.Find("decorationSpawn");
+        Transform portalSpawn = room.transform.Find("portalSpawn");
+
+        // Instanciar aleatoriamente objetos de cada lista en su spawn correspondiente
+        if (paintsSpawn && Random.value < 0.5f && paintsList.Count > 0)
+        {
+            Instantiate(paintsList[Random.Range(0, paintsList.Count)], paintsSpawn.position, Quaternion.identity);
+        }
+
+        if (storageSpawn && Random.value < 0.5f && storageList.Count > 0)
+        {
+            GameObject storageItem = Instantiate(storageList[Random.Range(0, storageList.Count)], storageSpawn.position, Quaternion.identity);
+            
+            // Instanciar arma dentro del storage
+            Transform weaponSpawn = storageItem.transform.Find("weaponSpawn");
+            if (weaponSpawn && Random.value < 0.5f && weaponsList.Count > 0)
+            {
+                Instantiate(weaponsList[Random.Range(0, weaponsList.Count)], weaponSpawn.position, Quaternion.identity);
+            }
+        }
+
+        if (statueSpawn && Random.value < 0.5f && statuesList.Count > 0)
+        {
+            Instantiate(statuesList[Random.Range(0, statuesList.Count)], statueSpawn.position, Quaternion.identity);
+        }
+
+        if (decorationSpawn && Random.value < 0.5f && decorationList.Count > 0)
+        {
+            Instantiate(decorationList[Random.Range(0, decorationList.Count)], decorationSpawn.position, Quaternion.identity);
+        }
+
+        if (portalSpawn && Random.value < 0.5f && portalList.Count > 0)
+        {
+            Instantiate(portalList[Random.Range(0, portalList.Count)], portalSpawn.position, Quaternion.identity);
+        }
     }
 
     // Función para colocar puertas en los exits no conectados
