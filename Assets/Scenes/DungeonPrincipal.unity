@@ -304,7 +304,12 @@ MonoBehaviour:
     type: 3}
   minRooms: 5
   maxRooms: 7
-  paintsList: []
+  paintsList:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   weaponsList:
   - {fileID: 5181494411761360807, guid: 7efe259af5fe2f14a90724d2c5bc60d5, type: 3}
   - {fileID: 8604547404196383025, guid: 3f7ed2a5772d4e541bf6187f56a3afa1, type: 3}
@@ -336,11 +341,35 @@ MonoBehaviour:
   - {fileID: 4926703055965546900, guid: bc956f77213138048b30d54ab626e70a, type: 3}
   - {fileID: 8133399767090564659, guid: fa7576413fbf339459d948aa3d3ebbe5, type: 3}
   - {fileID: 323333351367080586, guid: 87b744073f89d274ea9986018a77d4e4, type: 3}
-  storageList: []
-  statuesList: []
-  decorationList: []
-  portalList: []
-  enemiesList: []
+  storageList:
+  - {fileID: 2731465206210111506, guid: 4995dd91264436a49863978e55f96784, type: 3}
+  - {fileID: 136754, guid: 97a5370926a5afe459de07335829d2d3, type: 3}
+  statuesList:
+  - {fileID: 100000, guid: 7a93e07023f417142881f9ebea0e642b, type: 3}
+  - {fileID: 7533909720330111876, guid: cbf5ec02b38e66940a3b40b12a843def, type: 3}
+  - {fileID: 4165226130708327733, guid: 28747e2bf0ea0bc44b1750295911c9a6, type: 3}
+  - {fileID: 1402383095147615330, guid: a2b49473b073c3d4fa1d67932bba6004, type: 3}
+  - {fileID: 6954404123863198478, guid: 250abee48d70ed949b444a0ca6ec360c, type: 3}
+  - {fileID: 919132149155446097, guid: 168ae3db1b31a31409ada65fdd508f68, type: 3}
+  decorationList:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  portalList:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  enemiesList:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &961739749
 GameObject:
   m_ObjectHideFlags: 0
