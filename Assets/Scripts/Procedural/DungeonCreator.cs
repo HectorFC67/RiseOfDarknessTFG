@@ -364,7 +364,7 @@ public class DungeonCreator : MonoBehaviour
         //Transform portalSpawn = room.transform.Find("portalSpawn");
 
         // Instanciar aleatoriamente objetos de cada lista en su spawn correspondiente
-        if (paintsSpawn && Random.value < 0.5f && paintsList.Count > 0)
+        if (paintsSpawn && Random.value < 0.6f && paintsList.Count > 0)
         {
             Debug.Log("Instanciando pintura en paintsSpawn.");
             Instantiate(paintsList[Random.Range(0, paintsList.Count)], paintsSpawn.position, Quaternion.identity);
@@ -381,7 +381,7 @@ public class DungeonCreator : MonoBehaviour
 
             // Instanciar arma dentro del storage
             Transform weaponSpawn = storageItem.transform.Find("weaponSpawn");
-            if (weaponSpawn && Random.value < 0.5f && weaponsList.Count > 0)
+            if (weaponSpawn && weaponsList.Count > 0)
             {
                 Debug.Log("Instanciando arma dentro del storage en weaponSpawn.");
                 Instantiate(weaponsList[Random.Range(0, weaponsList.Count)], weaponSpawn.position, Quaternion.identity);
@@ -396,7 +396,7 @@ public class DungeonCreator : MonoBehaviour
             Debug.Log("No se instanció storage en storageSpawn.");
         }
 
-        if (statueSpawn && Random.value < 0.5f && statuesList.Count > 0)
+        if (statueSpawn && Random.value < 0.7f && statuesList.Count > 0)
         {
             Debug.Log("Instanciando estatua en statueSpawn.");
             Instantiate(statuesList[Random.Range(0, statuesList.Count)], statueSpawn.position, Quaternion.identity);
@@ -406,7 +406,7 @@ public class DungeonCreator : MonoBehaviour
             Debug.Log("No se instanció estatua en statueSpawn.");
         }
 
-        if (decorationSpawn && Random.value < 0.5f && decorationList.Count > 0)
+        if (decorationSpawn && Random.value < 0.8f && decorationList.Count > 0)
         {
             Debug.Log("Instanciando decoración en decorationSpawn.");
             Instantiate(decorationList[Random.Range(0, decorationList.Count)], decorationSpawn.position, Quaternion.identity);
