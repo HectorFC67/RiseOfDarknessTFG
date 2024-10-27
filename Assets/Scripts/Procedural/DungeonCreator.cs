@@ -61,7 +61,7 @@ public class DungeonCreator : MonoBehaviour
 
         // Contador de reintentos
         int retryCount = 0;
-        int maxRetries = 5;  // Máximo número de reintentos para evitar bucles infinitos
+        int maxRetries = 10;  // Máximo número de reintentos para evitar bucles infinitos
 
         // 1. Instanciar la sala inicial
         GameObject currentRoom = Instantiate(initialRoom, transform.position, initialRoom.transform.rotation);
@@ -354,47 +354,77 @@ public class DungeonCreator : MonoBehaviour
         return Quaternion.Euler(desiredRotation);
     }
 
-void PlaceDecorations(GameObject room)
+    void PlaceDecorations(GameObject room)
     {
         // Spawns para cada tipo de decoración
         Transform paintsSpawn = room.transform.Find("paintsSpawn");
         Transform storageSpawn = room.transform.Find("storageSpawn");
         Transform statueSpawn = room.transform.Find("statueSpawn");
         Transform decorationSpawn = room.transform.Find("decorationSpawn");
-        Transform portalSpawn = room.transform.Find("portalSpawn");
+        //Transform portalSpawn = room.transform.Find("portalSpawn");
 
         // Instanciar aleatoriamente objetos de cada lista en su spawn correspondiente
         if (paintsSpawn && Random.value < 0.5f && paintsList.Count > 0)
         {
+            Debug.Log("Instanciando pintura en paintsSpawn.");
             Instantiate(paintsList[Random.Range(0, paintsList.Count)], paintsSpawn.position, Quaternion.identity);
+        }
+        else
+        {
+            Debug.Log("No se instanció pintura en paintsSpawn.");
         }
 
         if (storageSpawn && Random.value < 0.5f && storageList.Count > 0)
         {
+            Debug.Log("Instanciando storage en storageSpawn.");
             GameObject storageItem = Instantiate(storageList[Random.Range(0, storageList.Count)], storageSpawn.position, Quaternion.identity);
-            
+
             // Instanciar arma dentro del storage
             Transform weaponSpawn = storageItem.transform.Find("weaponSpawn");
             if (weaponSpawn && Random.value < 0.5f && weaponsList.Count > 0)
             {
+                Debug.Log("Instanciando arma dentro del storage en weaponSpawn.");
                 Instantiate(weaponsList[Random.Range(0, weaponsList.Count)], weaponSpawn.position, Quaternion.identity);
             }
+            else
+            {
+                Debug.Log("No se instanció arma en weaponSpawn dentro del storage.");
+            }
+        }
+        else
+        {
+            Debug.Log("No se instanció storage en storageSpawn.");
         }
 
         if (statueSpawn && Random.value < 0.5f && statuesList.Count > 0)
         {
+            Debug.Log("Instanciando estatua en statueSpawn.");
             Instantiate(statuesList[Random.Range(0, statuesList.Count)], statueSpawn.position, Quaternion.identity);
+        }
+        else
+        {
+            Debug.Log("No se instanció estatua en statueSpawn.");
         }
 
         if (decorationSpawn && Random.value < 0.5f && decorationList.Count > 0)
         {
+            Debug.Log("Instanciando decoración en decorationSpawn.");
             Instantiate(decorationList[Random.Range(0, decorationList.Count)], decorationSpawn.position, Quaternion.identity);
         }
-
-        if (portalSpawn && Random.value < 0.5f && portalList.Count > 0)
+        else
         {
+            Debug.Log("No se instanció decoración en decorationSpawn.");
+        }
+
+        /*if (portalSpawn && Random.value < 0.5f && portalList.Count > 0)
+        {
+            Debug.Log("Instanciando portal en portalSpawn.");
             Instantiate(portalList[Random.Range(0, portalList.Count)], portalSpawn.position, Quaternion.identity);
         }
+        else
+        {
+            Debug.Log("No se instanció portal en portalSpawn.");
+        }*/
     }
 
     // Función para colocar puertas en los exits no conectados
