@@ -48,13 +48,14 @@ public class DungeonCreator : MonoBehaviour
         }
     }
 
-    void Start()
+    public bool GenerateDungeonWithResult()
     {
-        GenerateDungeon();
-        PlaceDoorsOnUnconnectedExits();  // Colocar puertas al final de la generación
+        bool isCreated = GenerateDungeon(); // Ejecuta la generación y recoge el resultado.
+        PlaceDoorsOnUnconnectedExits();  // Coloca puertas al final, si corresponde
+        return isCreated; // Devuelve el resultado a DungeonManager
     }
 
-    void GenerateDungeon()
+    bool GenerateDungeon()
     {
         // Limpiar cualquier nivel generado anteriormente
         ClearDungeon();
@@ -116,25 +117,18 @@ public class DungeonCreator : MonoBehaviour
             }
 
             // Verificar si se han generado suficientes salas
-            if (spawnedRooms.Count < minRooms)
+            if (spawnedRooms.Count >= minRooms)
             {
-                Debug.LogWarning($"Número de salas generado ({spawnedRooms.Count}) es menor al mínimo ({minRooms}). Reintentando generación...");
-                ClearDungeon();  // Borrar el nivel actual
-                retryCount++;  // Incrementar el contador de reintentos
+                return true;
             }
             else
             {
-                // Colocar puertas al final si todo está bien
-                PlaceDoorsOnUnconnectedExits();
-                break;  // Salir del bucle si la generación fue exitosa
-            }
-
-            if (retryCount >= maxRetries)
-            {
-                Debug.LogError("Generación fallida tras varios intentos. Por favor revisa las configuraciones.");
-                break;  // Salir si se alcanza el límite de reintentos
+                retryCount++;
             }
         }
+
+        Debug.LogError("Generación fallida tras varios intentos. Por favor revisa las configuraciones.");
+        return false;
     }
 
     void TrySpawnEnemy(GameObject room)
