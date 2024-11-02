@@ -302,16 +302,16 @@ MonoBehaviour:
     type: 3}
   doorPrefab: {fileID: 6658434227317661579, guid: 4db538e79bef69d489befeb81a8cdb6a,
     type: 3}
-  minRooms: 5
-  maxRooms: 7
+  minRooms: 10
+  maxRooms: 15
   paintsList:
-  - {fileID: 919132149155446097, guid: 8a8bbc9565143064795b28c294745b74, type: 3}
-  - {fileID: 919132149155446097, guid: 4926964e40094c34d87ab29988ff2182, type: 3}
-  - {fileID: 919132149155446097, guid: 268b989a28e3cf046bc6db3e3384a75e, type: 3}
-  - {fileID: 919132149155446097, guid: 2f9b8d5d647ea004ab30943070d43ae0, type: 3}
-  - {fileID: 919132149155446097, guid: 0affcab6d53ffdd4f949fe82d5dc4a24, type: 3}
-  - {fileID: 919132149155446097, guid: 8d9a4d6eb03ec10438ed2bf5873d0ebe, type: 3}
-  - {fileID: 919132149155446097, guid: db25da7a8a875bb418bb03133af2b251, type: 3}
+  - {fileID: 7660780983348420266, guid: 47a722fa937a5454ca27a755065ac45e, type: 3}
+  - {fileID: 1747413719958682709, guid: b79650bd5492c484b86b3b324034bbc8, type: 3}
+  - {fileID: 551053879576152732, guid: 7d1621ee5d1d4194cbd0f7040ed9d0d7, type: 3}
+  - {fileID: 8812831748877270475, guid: b04fe598b4050f042abde21a7e8603ae, type: 3}
+  - {fileID: 8518285885207910517, guid: 5f604c2e8bd1eb444ac83000d8eb9ca2, type: 3}
+  - {fileID: 2376073463677413535, guid: 1c04c29f6b78a9143964cd31df2c937c, type: 3}
+  - {fileID: 602581795487524619, guid: c540ff979ab158d4d81d6e0be544f3a0, type: 3}
   - {fileID: 919132149155446097, guid: 112109879f8c8b04699796fd79374f62, type: 3}
   - {fileID: 0}
   - {fileID: 0}
@@ -357,7 +357,7 @@ MonoBehaviour:
   - {fileID: 5161247336033207489, guid: 9151b1ca6738ebf428d833c855394306, type: 3}
   - {fileID: 1402383095147615330, guid: a2b49473b073c3d4fa1d67932bba6004, type: 3}
   - {fileID: 6954404123863198478, guid: 250abee48d70ed949b444a0ca6ec360c, type: 3}
-  - {fileID: 919132149155446097, guid: 168ae3db1b31a31409ada65fdd508f68, type: 3}
+  - {fileID: 3822083580728151505, guid: 8d68963868e2b4a43a7fa7db409b4eea, type: 3}
   decorationList:
   - {fileID: 0}
   - {fileID: 0}
