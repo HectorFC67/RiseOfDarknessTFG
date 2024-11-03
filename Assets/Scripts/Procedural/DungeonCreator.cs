@@ -151,7 +151,7 @@ public class DungeonCreator : MonoBehaviour
     }
 
     // Función para destruir todas las salas generadas
-    void ClearDungeon()
+    public void ClearDungeon()
     {
         foreach (GameObject room in spawnedRooms)
         {

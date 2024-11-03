@@ -26,6 +26,7 @@ public class DungeonManager : MonoBehaviour
             else
             {
                 Debug.LogWarning("Falló la generación del dungeon. Reintentando...");
+                dungeonCreator.ClearDungeon();
                 yield return null; // Espera un frame antes de reintentar
             }
         }
