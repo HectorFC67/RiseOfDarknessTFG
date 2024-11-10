@@ -302,8 +302,8 @@ MonoBehaviour:
     type: 3}
   doorPrefab: {fileID: 6658434227317661579, guid: 4db538e79bef69d489befeb81a8cdb6a,
     type: 3}
-  minRooms: 10
-  maxRooms: 15
+  minRooms: 6
+  maxRooms: 10
   paintsList:
   - {fileID: 7660780983348420266, guid: 47a722fa937a5454ca27a755065ac45e, type: 3}
   - {fileID: 1747413719958682709, guid: b79650bd5492c484b86b3b324034bbc8, type: 3}
