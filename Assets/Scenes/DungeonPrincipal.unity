@@ -313,8 +313,6 @@ MonoBehaviour:
   - {fileID: 2376073463677413535, guid: 1c04c29f6b78a9143964cd31df2c937c, type: 3}
   - {fileID: 602581795487524619, guid: c540ff979ab158d4d81d6e0be544f3a0, type: 3}
   - {fileID: 501970102681779696, guid: 09733cbb757b9c3408b10ba8031aa51a, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
   weaponsList:
   - {fileID: 5181494411761360807, guid: 7efe259af5fe2f14a90724d2c5bc60d5, type: 3}
   - {fileID: 8604547404196383025, guid: 3f7ed2a5772d4e541bf6187f56a3afa1, type: 3}
@@ -347,10 +345,7 @@ MonoBehaviour:
   - {fileID: 8133399767090564659, guid: fa7576413fbf339459d948aa3d3ebbe5, type: 3}
   - {fileID: 323333351367080586, guid: 87b744073f89d274ea9986018a77d4e4, type: 3}
   storageList:
-  - {fileID: 6200720779111275133, guid: 1083f87f08232f541942f4a22a00127e, type: 3}
-  - {fileID: 136754, guid: 97a5370926a5afe459de07335829d2d3, type: 3}
   - {fileID: 3609407761283190997, guid: b5c1413245acb9a4caaa28d8994e4dcf, type: 3}
-  - {fileID: 1000014188511100, guid: 5dcae5adf53292945adef517afe8041e, type: 3}
   statuesList:
   - {fileID: 100000, guid: 7a93e07023f417142881f9ebea0e642b, type: 3}
   - {fileID: 7533909720330111876, guid: cbf5ec02b38e66940a3b40b12a843def, type: 3}
