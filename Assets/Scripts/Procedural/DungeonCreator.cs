@@ -431,7 +431,13 @@ public class DungeonCreator : MonoBehaviour
             if (weaponSpawn && weaponsList.Count > 0)
             {
                 Debug.Log("Instanciando arma dentro del storage en weaponSpawn.");
-                Instantiate(weaponsList[Random.Range(0, weaponsList.Count)], weaponSpawn.position, Quaternion.identity);
+
+                // Toma la rotación del weaponSpawn para instanciar el arma
+                GameObject weapon = Instantiate(
+                    weaponsList[Random.Range(0, weaponsList.Count)],
+                    weaponSpawn.position,
+                    weaponSpawn.rotation 
+                );
             }
             else
             {
