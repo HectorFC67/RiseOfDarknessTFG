@@ -9,14 +9,14 @@ public class SliceObject : MonoBehaviour
     public Transform startSlicePoint;
     public Transform endSlicePoint;
     public VelocityEstimator velocityEstimator;
-    public LayerMask sliceableMask;
+    public LayerMask sliceableLayer;
 
     public Material crossSection;
     public float cutForce = 2000;
 
-    void FixUpdate()
+    void FixedUpdate()
     {
-        bool hasHit = Physics.Linecast(startSlicePoint.position, endSlicePoint.position, out RaycastHit hit, sliceableMask);
+        bool hasHit = Physics.Linecast(startSlicePoint.position, endSlicePoint.position, out RaycastHit hit, sliceableLayer);
         if (hasHit)
         {
             GameObject target = hit.transform.gameObject;
@@ -46,6 +46,7 @@ public class SliceObject : MonoBehaviour
 
     public void SetupSlicedComponent(GameObject slicedObject)
     {
+        slicedObject.layer = LayerMask.NameToLayer("Sliceable");
         Rigidbody rb = slicedObject.AddComponent<Rigidbody>();
         MeshCollider collider = slicedObject.AddComponent<MeshCollider>();
         collider.convex = true;
