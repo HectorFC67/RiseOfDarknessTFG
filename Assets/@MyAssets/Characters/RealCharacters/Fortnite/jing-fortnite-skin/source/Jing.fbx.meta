@@ -3,7 +3,22 @@ guid: 0aefd95891903d544a4725732477524e
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MI_SphericalDefense_Body
+    second: {fileID: 2100000, guid: 576abf1b323cab04bb0df2fc995bf0a1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MI_SphericalDefense_FaceAcc
+    second: {fileID: 2100000, guid: d2d3163f2a382a64f9d666eb9d55f893, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MI_SphericalDefense_Mask
+    second: {fileID: 2100000, guid: 2898a0936ecebc2429bf72be9c82ea8b, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
