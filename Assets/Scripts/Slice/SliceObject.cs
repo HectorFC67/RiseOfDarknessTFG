@@ -10,12 +10,19 @@ public class SliceObject : MonoBehaviour
     public Transform endSlicePoint;
     public VelocityEstimator velocityEstimator;
     public LayerMask sliceableLayer;
+    // public GameObject target; //debugPlane
+    // public GameObject debugPlane; //debugPlane
 
     public Material crossSection;
     public float cutForce = 2000;
 
     void FixedUpdate()
     {
+       /*if (Keyboard.current.spaceKey.wasPressedThisFrame) //debugPlane
+        {
+            Slice(target); //debugPlane
+        }*/
+
         bool hasHit = Physics.Linecast(startSlicePoint.position, endSlicePoint.position, out RaycastHit hit, sliceableLayer);
         if (hasHit)
         {
@@ -31,8 +38,9 @@ public class SliceObject : MonoBehaviour
         planeNormal.Normalize();
 
         SlicedHull hull = target.Slice(endSlicePoint.position, planeNormal);
+        //SlicedHull hull = target.Slice(endSlicePoint.position, planeNormal); //debugPlane
 
-        if(hull != null)
+        if (hull != null)
         {
             GameObject upperHull = hull.CreateUpperHull(target, crossSection);
             SetupSlicedComponent(upperHull);

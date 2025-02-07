@@ -1,19 +1,9 @@
 fileFormatVersion: 2
-guid: 45e21bd9762357540a93a8cdfd6ed7f0
+guid: 7638d5dabf33eba45adf74624ffd06c9
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: TP_Wraith_Head_S0_MI
-    second: {fileID: 2100000, guid: 65292d1cd1260d24ba8da06fdf46d0ec, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: TP_Wraith_V5_S0_MI
-    second: {fileID: 2100000, guid: 2311b4f260aa0764fbf9ff1106517a21, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
