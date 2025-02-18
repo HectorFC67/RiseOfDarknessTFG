@@ -369,7 +369,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   enemiesList:
-  - {fileID: 0}
+  - {fileID: 919132149155446097, guid: 8061a3079ea4e5846afcfbb01f25fe24, type: 3}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
