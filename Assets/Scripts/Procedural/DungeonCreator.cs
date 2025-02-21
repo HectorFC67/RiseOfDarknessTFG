@@ -23,7 +23,7 @@ public class DungeonCreator : MonoBehaviour
     public List<GameObject> enemiesList;
 
     // Probabilidad inicial de spawnear enemigos (20%)
-    private float enemySpawnChance = 0.2f;
+    private float enemySpawnChance = 0.9f;
 
     // Incremento de probabilidad por cada sala generada
     private float spawnIncreasePerRoom = 0.05f;
