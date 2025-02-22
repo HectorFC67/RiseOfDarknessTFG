@@ -296,8 +296,6 @@ MonoBehaviour:
   - {fileID: 6747190708167339184, guid: 77c634c244d99394c9bf674ae9d3aa2f, type: 3}
   - {fileID: 7791333190711904047, guid: 85e16231bdaf75e4094ed92a0ffae7f0, type: 3}
   - {fileID: 4042424014282950550, guid: 69670da609f2e8343931b6619775e0e3, type: 3}
-  - {fileID: 4046648661038074531, guid: eeaece7e1d98b164b8c3450675bce079, type: 3}
-  - {fileID: 946109664947041502, guid: 0dd9469c102b59545b90edd1b84256e4, type: 3}
   initialRoom: {fileID: 3478340288055043626, guid: 51ba939b9d0db1847b13cd2fc6af0010,
     type: 3}
   doorPrefab: {fileID: 6658434227317661579, guid: 4db538e79bef69d489befeb81a8cdb6a,
@@ -310,7 +308,6 @@ MonoBehaviour:
   - {fileID: 551053879576152732, guid: 7d1621ee5d1d4194cbd0f7040ed9d0d7, type: 3}
   - {fileID: 8812831748877270475, guid: b04fe598b4050f042abde21a7e8603ae, type: 3}
   - {fileID: 8518285885207910517, guid: 5f604c2e8bd1eb444ac83000d8eb9ca2, type: 3}
-  - {fileID: 2376073463677413535, guid: 1c04c29f6b78a9143964cd31df2c937c, type: 3}
   - {fileID: 602581795487524619, guid: c540ff979ab158d4d81d6e0be544f3a0, type: 3}
   - {fileID: 501970102681779696, guid: 09733cbb757b9c3408b10ba8031aa51a, type: 3}
   weaponsList:
