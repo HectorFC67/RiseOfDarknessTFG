@@ -18,9 +18,39 @@ public class SliceObject : MonoBehaviour
         bool hasHit = Physics.Linecast(startSlicePoint.position, endSlicePoint.position, out RaycastHit hit, sliceableLayer);
         if (hasHit)
         {
-            GameObject target = hit.transform.gameObject;
+            GameObject target = hit.transform.root.gameObject; // Buscar el objeto raíz del enemigo
+            DeactivateEnemyAI(target);
+            ActivateRagdoll(target);
             Slice(target);
         }
+    }
+
+    public void DeactivateEnemyAI(GameObject target)
+    {
+        RandomMovement enemyAI = target.GetComponent<RandomMovement>();
+        if (enemyAI != null)
+        {
+            enemyAI.enabled = false;
+            Debug.Log("✅ AI desactivada en el enemigo.");
+        }
+    }
+
+    public void ActivateRagdoll(GameObject target)
+    {
+        Rigidbody[] rigidbodies = target.GetComponentsInChildren<Rigidbody>();
+        Animator animator = target.GetComponent<Animator>();
+
+        if (animator != null)
+        {
+            animator.enabled = false;
+        }
+
+        foreach (Rigidbody rb in rigidbodies)
+        {
+            rb.isKinematic = false;
+        }
+
+        Debug.Log("✅ Ragdoll activado en el enemigo.");
     }
 
     public void Slice(GameObject target)
@@ -44,19 +74,7 @@ public class SliceObject : MonoBehaviour
             return;
         }
 
-        // Crear un GameObject temporal con MeshFilter para EzySlice
-        GameObject tempObject = new GameObject("TempSliceObject");
-        MeshFilter tempMeshFilter = tempObject.AddComponent<MeshFilter>();
-        tempMeshFilter.mesh = meshToSlice;
-        MeshRenderer tempMeshRenderer = tempObject.AddComponent<MeshRenderer>();
-        tempMeshRenderer.materials = target.GetComponent<Renderer>().materials;
-
-        // Usar EzySlice en el MeshFilter
-        SlicedHull hull = tempObject.Slice(endSlicePoint.position, planeNormal);
-
-        // 🔹 Destruir inmediatamente el objeto temporal después de cortar
-        Destroy(tempObject);
-
+        SlicedHull hull = target.Slice(endSlicePoint.position, planeNormal);
         if (hull != null)
         {
             GameObject upperHull = hull.CreateUpperHull(target, crossSection);
@@ -65,20 +83,13 @@ public class SliceObject : MonoBehaviour
             GameObject lowerHull = hull.CreateLowerHull(target, crossSection);
             SetupSlicedComponent(lowerHull);
 
-            // 🔹 Si el objeto cortado tenía SkinnedMeshToMeshFilter, destruir su malla bakeada
-            SkinnedMeshToMeshFilter meshBaker = target.GetComponent<SkinnedMeshToMeshFilter>();
-            if (meshBaker != null)
-            {
-                meshBaker.DestroyBakedMesh();
-            }
-
-            Destroy(target); // 🔹 Eliminar el objeto original
+            Destroy(target);
         }
     }
 
     private Mesh GetMeshFromObject(GameObject target)
     {
-        SkinnedMeshRenderer skinnedMeshRenderer = target.GetComponent<SkinnedMeshRenderer>();
+        SkinnedMeshRenderer skinnedMeshRenderer = target.GetComponentInParent<SkinnedMeshRenderer>(); // Buscar en el padre
         if (skinnedMeshRenderer != null)
         {
             Mesh bakedMesh = new Mesh();
@@ -94,7 +105,7 @@ public class SliceObject : MonoBehaviour
             return bakedMesh;
         }
 
-        MeshFilter meshFilter = target.GetComponent<MeshFilter>();
+        MeshFilter meshFilter = target.GetComponentInChildren<MeshFilter>();
         if (meshFilter != null)
         {
             return meshFilter.mesh;
@@ -126,6 +137,6 @@ public class SliceObject : MonoBehaviour
         collider.convex = true;
         rb.AddExplosionForce(cutForce, slicedObject.transform.position, 1);
 
-        Debug.Log($"✅ SetupSlicedComponent() - Se agregó Rigidbody y MeshCollider correctamente.");
+        Debug.Log("✅ SetupSlicedComponent() - Se agregó Rigidbody y MeshCollider correctamente.");
     }
 }
