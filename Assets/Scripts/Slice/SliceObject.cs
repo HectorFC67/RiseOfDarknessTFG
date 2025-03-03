@@ -14,6 +14,9 @@ public class SliceObject : MonoBehaviour
     public Material crossSection;
     public float cutForce = 2000;
 
+    // Lista de armas para spawnear si el objeto cortado tiene el TAG "Crate".
+    public List<GameObject> randomWeapons;
+
     void FixedUpdate()
     {
         bool hasHit = Physics.Linecast(startSlicePoint.position, endSlicePoint.position, out RaycastHit hit, sliceableLayer);
@@ -111,6 +114,18 @@ public class SliceObject : MonoBehaviour
         SlicedHull hull = target.Slice(endSlicePoint.position, planeNormal);
         if (hull != null)
         {
+            // Si el objeto tiene el tag "Crate", spawneamos un arma aleatoria
+            if (target.CompareTag("Crate") && randomWeapons != null && randomWeapons.Count > 0)
+            {
+                Vector3 spawnPos = target.transform.position;
+                Quaternion spawnRot = target.transform.rotation;
+
+                int randomIndex = Random.Range(0, randomWeapons.Count);
+                Instantiate(randomWeapons[randomIndex], spawnPos, spawnRot);
+
+                Debug.Log("✅ Crate cortado: se ha instanciado un arma aleatoria.");
+            }
+
             // Creamos las dos partes
             GameObject upperHull = hull.CreateUpperHull(target, crossSection);
             SetupSlicedComponent(upperHull);
