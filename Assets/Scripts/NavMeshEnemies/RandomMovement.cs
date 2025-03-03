@@ -37,7 +37,7 @@ public class RandomMovement : MonoBehaviour
     {
         if (isAttacking) return;
 
-        playerObj = GameObject.FindGameObjectWithTag("Character");
+        playerObj = GameObject.FindGameObjectWithTag("Player");
 
         if (playerObj != null && PlayerInSight())
         {
