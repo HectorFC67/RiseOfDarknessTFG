@@ -2584,6 +2584,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 559300212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!137 &897335055 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1151784350687211047, guid: 2ff76e5c137430c4c8ccbba0b8c02f42,
+    type: 3}
+  m_PrefabInstance: {fileID: 6282390185396651817}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &920544294
 GameObject:
   m_ObjectHideFlags: 0
@@ -6624,7 +6630,7 @@ PrefabInstance:
     - target: {fileID: 635459993289312208, guid: 2ff76e5c137430c4c8ccbba0b8c02f42,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 635459993289312208, guid: 2ff76e5c137430c4c8ccbba0b8c02f42,
         type: 3}
@@ -6644,7 +6650,7 @@ PrefabInstance:
     - target: {fileID: 787731943412604151, guid: 2ff76e5c137430c4c8ccbba0b8c02f42,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.188986
+      value: -2.75
       objectReference: {fileID: 0}
     - target: {fileID: 787731943412604151, guid: 2ff76e5c137430c4c8ccbba0b8c02f42,
         type: 3}
@@ -6684,8 +6690,13 @@ PrefabInstance:
     - target: {fileID: 943732233001172890, guid: 2ff76e5c137430c4c8ccbba0b8c02f42,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 943732233001172890, guid: 2ff76e5c137430c4c8ccbba0b8c02f42,
+        type: 3}
+      propertyPath: skinnedMeshRenderer
+      value: 
+      objectReference: {fileID: 897335055}
     - target: {fileID: 1151784350687211047, guid: 2ff76e5c137430c4c8ccbba0b8c02f42,
         type: 3}
       propertyPath: m_Materials.Array.data[0]

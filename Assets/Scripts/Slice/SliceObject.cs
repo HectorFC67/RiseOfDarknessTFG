@@ -14,7 +14,6 @@ public class SliceObject : MonoBehaviour
     public Material crossSection;
     public float cutForce = 2000;
 
-    // Lista de armas para spawnear si el objeto cortado tiene el TAG "Crate".
     public List<GameObject> randomWeapons;
 
     void FixedUpdate()
@@ -22,20 +21,37 @@ public class SliceObject : MonoBehaviour
         bool hasHit = Physics.Linecast(startSlicePoint.position, endSlicePoint.position, out RaycastHit hit, sliceableLayer);
         if (hasHit)
         {
-            // Obtenemos la raíz del objeto que recibe el corte
             GameObject target = hit.transform.root.gameObject;
 
-            // Desactivamos la IA del propio target (por si fuera necesario)
+            // Desactivamos IA y ragdoll
             DeactivateEnemyAI(target);
-
-            // Activamos el ragdoll y desactivamos RandomMovement en el padre del target
             ActivateRagdoll(target);
 
-            // Realizamos la "slice"
-            Slice(target);
+            // 1) Preparamos la malla bakeada en el enemigo (si tiene DynamicBakeMesh)
+            DynamicBakeMesh bakeMeshComp = target.GetComponentInChildren<DynamicBakeMesh>();
+            if (bakeMeshComp != null)
+            {
+                bakeMeshComp.BakeCurrentMesh();
+                bakeMeshComp.SwitchToBakedMesh();
+            }
+            else
+            {
+                Debug.LogWarning($"SliceObject: El enemigo {target.name} no tiene DynamicBakeMesh. " +
+                                 "Se intentará cortar su malla 'tal cual'.");
+            }
+
+            // 2) Realizamos la slice
+            //    - Si existe la malla dinámica, cortamos esa
+            //    - Si no, cortamos el target original (quedaría en manos de GetMeshFromObject)
+            GameObject objectToSlice = (bakeMeshComp != null) ? bakeMeshComp.GetDynamicMeshObject() : target;
+
+            Slice(objectToSlice, target);
         }
     }
 
+    /// <summary>
+    /// Desactiva (si existe) la IA del enemigo.
+    /// </summary>
     public void DeactivateEnemyAI(GameObject target)
     {
         RandomMovement enemyAI = target.GetComponent<RandomMovement>();
@@ -46,13 +62,15 @@ public class SliceObject : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Activa el ragdoll en el target y su padre, desactiva animación y AI.
+    /// </summary>
     public void ActivateRagdoll(GameObject target)
     {
-        // 1. Buscar el padre del objeto que está recibiendo el corte
+        // 1. Desactivar RandomMovement en el padre, si existiera
         Transform parentTransform = target.transform.parent;
         if (parentTransform != null)
         {
-            // 2. Desactivar el RandomMovement en el padre
             RandomMovement parentRandomMovement = parentTransform.GetComponent<RandomMovement>();
             if (parentRandomMovement != null)
             {
@@ -61,23 +79,23 @@ public class SliceObject : MonoBehaviour
             }
         }
 
-        // 3. Desactivar el NavMeshAgent (si existe) en el target
+        // 2. Detener y desactivar NavMeshAgent
         NavMeshAgent agent = target.GetComponent<NavMeshAgent>();
         if (agent != null)
         {
-            agent.isStopped = true;   // Detiene el movimiento actual
-            agent.ResetPath();        // Limpia cualquier ruta pendiente
+            agent.isStopped = true;
+            agent.ResetPath();
             Debug.Log("✅ NavMeshAgent detenido y desactivado en el enemigo.");
         }
 
-        // 4. Deshabilitar el Animator en el target
+        // 3. Desactivar Animator
         Animator animator = target.GetComponent<Animator>();
         if (animator != null)
         {
             animator.enabled = false;
         }
 
-        // 5. Activar físicas en todos los rigidbodies hijos
+        // 4. Activar físicas en todos los rigidbodies hijos
         Rigidbody[] rigidbodies = target.GetComponentsInChildren<Rigidbody>();
         foreach (Rigidbody rb in rigidbodies)
         {
@@ -87,38 +105,35 @@ public class SliceObject : MonoBehaviour
         Debug.Log("✅ Ragdoll activado en el enemigo.");
     }
 
-    public void Slice(GameObject target)
+    /// <summary>
+    /// Realiza el corte usando EzySlice en el objeto "objectToSlice".
+    /// El parámetro "originalRoot" se usa para destruir el objeto original, 
+    /// o para checks como el tag "Crate".
+    /// </summary>
+    public void Slice(GameObject objectToSlice, GameObject originalRoot)
     {
-        if (target == null)
+        if (objectToSlice == null)
         {
-            Debug.Log("❌ Slice() - No se encontró el objeto a cortar.");
+            Debug.Log("❌ Slice() - El objeto a cortar es nulo.");
             return;
         }
 
-        Debug.Log($"✅ Slice() - Intentando cortar: {target.name}");
+        Debug.Log($"✅ Slice() - Intentando cortar: {objectToSlice.name}");
 
-        // Obtenemos la velocidad estimada y calculamos la normal del plano de corte
+        // Calculamos la normal del plano de corte usando la velocidad
         Vector3 velocity = velocityEstimator.GetVelocityEstimate();
         Vector3 planeNormal = Vector3.Cross(endSlicePoint.position - startSlicePoint.position, velocity);
         planeNormal.Normalize();
 
-        // Obtenemos la malla del objeto a cortar
-        Mesh meshToSlice = GetMeshFromObject(target);
-        if (meshToSlice == null)
-        {
-            Debug.Log("❌ Slice() - No se encontró una malla válida en el objeto.");
-            return;
-        }
-
-        // Realizamos el corte con EzySlice
-        SlicedHull hull = target.Slice(endSlicePoint.position, planeNormal);
+        // Opción: si quieres usar la sobrecarga con crossSection:
+        SlicedHull hull = objectToSlice.Slice(endSlicePoint.position, planeNormal, crossSection);
         if (hull != null)
         {
-            // Si el objeto tiene el tag "Crate", spawneamos un arma aleatoria
-            if (target.CompareTag("Crate") && randomWeapons != null && randomWeapons.Count > 0)
+            // Si el root original tiene el tag "Crate", generamos un arma aleatoria
+            if (originalRoot.CompareTag("Crate") && randomWeapons != null && randomWeapons.Count > 0)
             {
-                Vector3 spawnPos = target.transform.position;
-                Quaternion spawnRot = target.transform.rotation;
+                Vector3 spawnPos = originalRoot.transform.position;
+                Quaternion spawnRot = originalRoot.transform.rotation;
 
                 int randomIndex = Random.Range(0, randomWeapons.Count);
                 Instantiate(randomWeapons[randomIndex], spawnPos, spawnRot);
@@ -127,47 +142,28 @@ public class SliceObject : MonoBehaviour
             }
 
             // Creamos las dos partes
-            GameObject upperHull = hull.CreateUpperHull(target, crossSection);
+            GameObject upperHull = hull.CreateUpperHull(objectToSlice, crossSection);
             SetupSlicedComponent(upperHull);
 
-            GameObject lowerHull = hull.CreateLowerHull(target, crossSection);
+            GameObject lowerHull = hull.CreateLowerHull(objectToSlice, crossSection);
             SetupSlicedComponent(lowerHull);
 
-            // Destruimos el objeto original
-            Destroy(target);
+            // Finalmente, destruimos el objeto que hemos cortado (el mesh bakeado)
+            // y opcionalmente también el originalRoot si ya no lo necesitas
+            Destroy(objectToSlice);
+
+            // Si quieres destruir completamente al enemigo (raíz), puedes hacerlo:
+            // Destroy(originalRoot);
+        }
+        else
+        {
+            Debug.Log("❌ Slice() - No se generó hull (posiblemente la malla no es válida).");
         }
     }
 
-    private Mesh GetMeshFromObject(GameObject target)
-    {
-        // Primero buscamos un SkinnedMeshRenderer en el padre para ver si hay animaciones
-        SkinnedMeshRenderer skinnedMeshRenderer = target.GetComponentInParent<SkinnedMeshRenderer>();
-        if (skinnedMeshRenderer != null)
-        {
-            Mesh bakedMesh = new Mesh();
-            skinnedMeshRenderer.BakeMesh(bakedMesh);
-
-            if (bakedMesh.vertexCount == 0)
-            {
-                Debug.Log("❌ GetMeshFromObject() - BakeMesh() no generó una malla válida.");
-                return null;
-            }
-
-            Debug.Log($"✅ GetMeshFromObject() - Se bakeó la malla con {bakedMesh.vertexCount} vértices.");
-            return bakedMesh;
-        }
-
-        // Si no hay SkinnedMeshRenderer, buscamos un MeshFilter
-        MeshFilter meshFilter = target.GetComponentInChildren<MeshFilter>();
-        if (meshFilter != null)
-        {
-            return meshFilter.mesh;
-        }
-
-        Debug.Log("❌ GetMeshFromObject() - No se encontró un MeshFilter o SkinnedMeshRenderer.");
-        return null;
-    }
-
+    /// <summary>
+    /// Añade RigidBody, MeshCollider y fuerza de "explosión" a cada parte.
+    /// </summary>
     public void SetupSlicedComponent(GameObject slicedObject)
     {
         if (slicedObject == null)
@@ -176,21 +172,19 @@ public class SliceObject : MonoBehaviour
             return;
         }
 
-        // Ajustamos el layer para que siga siendo "sliceable" si así lo deseas
+        // Ajustar el layer si se desea
         slicedObject.layer = LayerMask.NameToLayer("Sliceable");
 
-        // Agregamos Rigidbody y MeshCollider para que el trozo cortado tenga físicas
+        // Añadir Rigidbody y MeshCollider
         Rigidbody rb = slicedObject.AddComponent<Rigidbody>();
         MeshCollider collider = slicedObject.AddComponent<MeshCollider>();
 
-        // Verificamos que el collider tenga asignada la malla
         if (collider.sharedMesh == null)
         {
             Debug.Log("❌ SetupSlicedComponent() - El MeshCollider no tiene una malla asignada.");
             return;
         }
 
-        // Hacemos el MeshCollider "convexo" y aplicamos una fuerza de “explosión”
         collider.convex = true;
         rb.AddExplosionForce(cutForce, slicedObject.transform.position, 1);
 
