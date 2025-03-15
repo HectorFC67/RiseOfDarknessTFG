@@ -2101,7 +2101,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &313895775
@@ -2129,7 +2129,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &326535900
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4197,7 +4197,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &615508765
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4412,9 +4412,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8897d0c3fbd45634fb65a3a92dee951d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  volumeSlider: {fileID: 1772790341}
-  turnDropdown: {fileID: 0}
-  turnTypeFromPlayerPref: {fileID: 0}
+  volumeScrollbar: {fileID: 1772790341}
+  brightnessScrollbar: {fileID: 1403658821}
+  colorBlindToggle: {fileID: 759080655}
+  fullBodyToggle: {fileID: 884286904}
+  bgMusicToggle: {fileID: 1359179485}
+  animSoundToggle: {fileID: 1775992112}
+  backToMainMenuButton: {fileID: 277450328}
+  goToOptionsInGameButton: {fileID: 1740997650}
+  gameStartMenuObject: {fileID: 1981943355}
 --- !u!1 &717177073
 GameObject:
   m_ObjectHideFlags: 0
@@ -4523,7 +4529,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &735392968
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4558,12 +4564,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 735392967}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8897d0c3fbd45634fb65a3a92dee951d, type: 3}
+  m_Script: {fileID: 11500000, guid: fe4cebe7a1167f441a0767dc58d5e312, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  volumeSlider: {fileID: 0}
-  turnDropdown: {fileID: 0}
-  turnTypeFromPlayerPref: {fileID: 0}
+  difficultyDropdown: {fileID: 0}
+  sliceToggle: {fileID: 1735602810}
+  stickToggle: {fileID: 129537269}
+  familyFriendlyToggle: {fileID: 796563365}
+  exitButton: {fileID: 2017784689}
+  previousButton: {fileID: 142266857}
+  gameStartMenuObject: {fileID: 1981943355}
 --- !u!1 &759080653
 GameObject:
   m_ObjectHideFlags: 0
@@ -8208,7 +8218,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1402797995
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12210,8 +12220,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainMenu: {fileID: 615508764}
-  options: {fileID: 712259209}
+  optionsGeneral: {fileID: 0}
   about: {fileID: 145555819}
+  optionsInGame: {fileID: 0}
   startButton: {fileID: 1471884747}
   optionButton: {fileID: 190226551}
   aboutButton: {fileID: 521920245}

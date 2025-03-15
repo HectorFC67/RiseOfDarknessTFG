@@ -7,8 +7,9 @@ public class GameStartMenu : MonoBehaviour
 {
     [Header("UI Pages")]
     public GameObject mainMenu;
-    public GameObject options;
+    public GameObject optionsGeneral;
     public GameObject about;
+    public GameObject optionsInGame;
 
     [Header("Main Menu Buttons")]
     public Button startButton;
@@ -18,7 +19,6 @@ public class GameStartMenu : MonoBehaviour
 
     public List<Button> returnButtons;
 
-    // Start is called before the first frame update
     void Start()
     {
         EnableMainMenu();
@@ -49,26 +49,40 @@ public class GameStartMenu : MonoBehaviour
     public void HideAll()
     {
         mainMenu.SetActive(false);
-        options.SetActive(false);
+        optionsGeneral.SetActive(false);
         about.SetActive(false);
+        optionsInGame.SetActive(false);
     }
 
     public void EnableMainMenu()
     {
         mainMenu.SetActive(true);
-        options.SetActive(false);
+        optionsGeneral.SetActive(false);
         about.SetActive(false);
+        optionsInGame.SetActive(false);
     }
+
     public void EnableOption()
     {
         mainMenu.SetActive(false);
-        options.SetActive(true);
+        optionsGeneral.SetActive(true);
         about.SetActive(false);
+        optionsInGame.SetActive(false);
     }
+
     public void EnableAbout()
     {
         mainMenu.SetActive(false);
-        options.SetActive(false);
+        optionsGeneral.SetActive(false);
         about.SetActive(true);
+        optionsInGame.SetActive(false);
+    }
+
+    public void EnableOptionsInGame()
+    {
+        optionsGeneral.SetActive(false);
+        optionsInGame.SetActive(true);
+        mainMenu.SetActive(false);
+        about.SetActive(false);
     }
 }
