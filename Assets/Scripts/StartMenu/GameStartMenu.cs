@@ -23,7 +23,6 @@ public class GameStartMenu : MonoBehaviour
     {
         EnableMainMenu();
 
-        //Hook events
         startButton.onClick.AddListener(StartGame);
         optionButton.onClick.AddListener(EnableOption);
         aboutButton.onClick.AddListener(EnableAbout);

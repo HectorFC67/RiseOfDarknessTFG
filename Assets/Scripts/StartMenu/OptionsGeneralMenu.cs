@@ -20,22 +20,33 @@ public class OptionsGeneralMenu : MonoBehaviour
     [Header("Game Objects")]
     public GameObject gameStartMenuObject;
 
+    [Header("Player's Parts")]
+    public GameObject avatar;
+    public GameObject rightHand;
+    public GameObject leftHand;
+
     private GameStartMenu gameStartMenu;
+
+    // Variables booleanas para cada modo:
+    private bool isColorBlindModeOn = false;
+    private bool isFullBodyModeOn   = false;
+    private bool isBGMusicOn        = true;
+    private bool isAnimSoundOn      = true;
 
     private void Start()
     {
         // Obtenemos el componente 'GameStartMenu' del GameObject asignado
         gameStartMenu = gameStartMenuObject.GetComponent<GameStartMenu>();
 
-        // Cargar los valores de PlayerPrefs o establecerlos en default
-        volumeScrollbar.value = PlayerPrefs.GetFloat("globalVolume", 1f);
+        // Cargar los valores de PlayerPrefs
+        volumeScrollbar.value     = PlayerPrefs.GetFloat("globalVolume", 1f);
         brightnessScrollbar.value = PlayerPrefs.GetFloat("globalBrightness", 1f);
 
         // Toggles
         colorBlindToggle.isOn = (PlayerPrefs.GetInt("colorBlindMode", 0) == 1);
-        fullBodyToggle.isOn = (PlayerPrefs.GetInt("fullBodyMode", 0) == 1);
-        bgMusicToggle.isOn = (PlayerPrefs.GetInt("bgMusicOn", 1) == 1);
-        animSoundToggle.isOn = (PlayerPrefs.GetInt("animSoundOn", 1) == 1);
+        fullBodyToggle.isOn   = (PlayerPrefs.GetInt("fullBodyMode", 0) == 1);
+        bgMusicToggle.isOn    = (PlayerPrefs.GetInt("bgMusicOn", 1) == 1);
+        animSoundToggle.isOn  = (PlayerPrefs.GetInt("animSoundOn", 1) == 1);
 
         // Suscribir métodos a los eventos
         volumeScrollbar.onValueChanged.AddListener(OnVolumeChanged);
@@ -46,7 +57,7 @@ public class OptionsGeneralMenu : MonoBehaviour
         bgMusicToggle.onValueChanged.AddListener(OnBGMusicToggle);
         animSoundToggle.onValueChanged.AddListener(OnAnimSoundToggle);
 
-        // Botones: llamamos al script que obtuvimos
+        // Botones
         backToMainMenuButton.onClick.AddListener(gameStartMenu.EnableMainMenu);
         goToOptionsInGameButton.onClick.AddListener(gameStartMenu.EnableOptionsInGame);
 
@@ -105,28 +116,46 @@ public class OptionsGeneralMenu : MonoBehaviour
 
     private void ApplyBrightness(float value)
     {
-        // Placeholder de brillo
         RenderSettings.ambientLight = Color.white * value;
     }
 
     private void ApplyColorBlindMode(bool value)
     {
-        Debug.Log("ColorBlindMode -> " + value);
+        isColorBlindModeOn = value;
+        Debug.Log("ColorBlindMode -> " + isColorBlindModeOn);
+        // Aquí podrías activar lógica específica o cambios de materiales
     }
 
     private void ApplyFullBodyMode(bool value)
     {
-        // Ejemplo: activar/desactivar cuerpo entero vs. manos
-        Debug.Log("FullBodyMode -> " + value);
+        isFullBodyModeOn = value;
+        Debug.Log("FullBodyMode -> " + isFullBodyModeOn);
+
+        if (isFullBodyModeOn)
+        {
+            avatar.SetActive(true);
+            leftHand.SetActive(false);
+            rightHand.SetActive(false);
+        }
+        else
+        {
+            avatar.SetActive(false);
+            leftHand.SetActive(true);
+            rightHand.SetActive(true);
+        }
     }
 
     private void ApplyBGMusic(bool value)
     {
-        Debug.Log("BGMusicOn -> " + value);
+        isBGMusicOn = value;
+        Debug.Log("BGMusicOn -> " + isBGMusicOn);
+        // sourceBGMusic.mute = !isBGMusicOn;
     }
 
     private void ApplyAnimSound(bool value)
     {
-        Debug.Log("AnimationSoundOn -> " + value);
+        isAnimSoundOn = value;
+        Debug.Log("AnimationSoundOn -> " + isAnimSoundOn);
+        // footstepSource.mute = !isAnimSoundOn;
     }
 }

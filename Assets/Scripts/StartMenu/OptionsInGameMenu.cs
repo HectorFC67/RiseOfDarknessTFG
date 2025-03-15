@@ -21,7 +21,7 @@ public class OptionsInGameMenu : MonoBehaviour
     public Button exitButton;       // Vuelve al menú principal
     public Button previousButton;   // Vuelve a OptionsGeneral
 
-    [Header("Game Object que contiene GameStartMenu")]
+    [Header("GameStartMenu")]
     public GameObject gameStartMenuObject;
 
     private GameStartMenu gameStartMenu;
@@ -34,7 +34,6 @@ public class OptionsInGameMenu : MonoBehaviour
         // ------------------------
         // 1. Cargar PlayerPrefs
         // ------------------------
-        // Dificultad (integer 0..4, default: Normal -> 2)
         int savedDifficulty = PlayerPrefs.GetInt("gameDifficulty", 2);
         difficultyDropdown.SetValueWithoutNotify(savedDifficulty);
 
