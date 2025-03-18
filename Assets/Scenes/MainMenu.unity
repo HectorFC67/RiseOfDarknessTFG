@@ -4197,7 +4197,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &615508765
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4421,6 +4421,9 @@ MonoBehaviour:
   backToMainMenuButton: {fileID: 277450328}
   goToOptionsInGameButton: {fileID: 1740997650}
   gameStartMenuObject: {fileID: 1981943355}
+  avatar: {fileID: 0}
+  rightHand: {fileID: 0}
+  leftHand: {fileID: 0}
 --- !u!1 &717177073
 GameObject:
   m_ObjectHideFlags: 0
@@ -4529,7 +4532,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &735392968
 RectTransform:
   m_ObjectHideFlags: 0
