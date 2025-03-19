@@ -107,8 +107,7 @@ public class SliceObject : MonoBehaviour
 
     /// <summary>
     /// Realiza el corte usando EzySlice en el objeto "objectToSlice".
-    /// El parámetro "originalRoot" se usa para destruir el objeto original, 
-    /// o para checks como el tag "Crate".
+    /// El parámetro "originalRoot" se usa para checks como el tag "Crate", o para destruir el root.
     /// </summary>
     public void Slice(GameObject objectToSlice, GameObject originalRoot)
     {
@@ -125,7 +124,7 @@ public class SliceObject : MonoBehaviour
         Vector3 planeNormal = Vector3.Cross(endSlicePoint.position - startSlicePoint.position, velocity);
         planeNormal.Normalize();
 
-        // Opción: si quieres usar la sobrecarga con crossSection:
+        // Usamos la sobrecarga con crossSection
         SlicedHull hull = objectToSlice.Slice(endSlicePoint.position, planeNormal, crossSection);
         if (hull != null)
         {
@@ -143,16 +142,17 @@ public class SliceObject : MonoBehaviour
 
             // Creamos las dos partes
             GameObject upperHull = hull.CreateUpperHull(objectToSlice, crossSection);
+            ApplyOriginalTransform(objectToSlice, upperHull);
             SetupSlicedComponent(upperHull);
 
             GameObject lowerHull = hull.CreateLowerHull(objectToSlice, crossSection);
+            ApplyOriginalTransform(objectToSlice, lowerHull);
             SetupSlicedComponent(lowerHull);
 
-            // Finalmente, destruimos el objeto que hemos cortado (el mesh bakeado)
-            // y opcionalmente también el originalRoot si ya no lo necesitas
+            // Finalmente, destruimos el objeto que se ha cortado
             Destroy(objectToSlice);
 
-            // Si quieres destruir completamente al enemigo (raíz), puedes hacerlo:
+            // Si quisieras destruir completamente al enemigo (raíz):
             // Destroy(originalRoot);
         }
         else
@@ -189,5 +189,21 @@ public class SliceObject : MonoBehaviour
         rb.AddExplosionForce(cutForce, slicedObject.transform.position, 1);
 
         Debug.Log("✅ SetupSlicedComponent() - Se agregó Rigidbody y MeshCollider correctamente.");
+    }
+
+    /// <summary>
+    /// Copia la posición, rotación y escala del objeto original al nuevo trozo cortado.
+    /// </summary>
+    private void ApplyOriginalTransform(GameObject original, GameObject slicedPart)
+    {
+        if (original == null || slicedPart == null) return;
+
+        // Si quieres mantener la misma jerarquía, también puedes hacer:
+        // slicedPart.transform.SetParent(original.transform.parent);
+
+        // Copiamos posición/rotación/escala.
+        slicedPart.transform.position = original.transform.position;
+        slicedPart.transform.rotation = original.transform.rotation;
+        slicedPart.transform.localScale = original.transform.localScale;
     }
 }
