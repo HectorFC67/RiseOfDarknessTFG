@@ -27,7 +27,7 @@ public class OptionsGeneralMenu : MonoBehaviour
 
     private GameStartMenu gameStartMenu;
 
-    // Variables booleanas para cada modo:
+    // Variables booleanas para cada modo
     private bool isColorBlindModeOn = false;
     private bool isFullBodyModeOn   = false;
     private bool isBGMusicOn        = true;
@@ -35,8 +35,25 @@ public class OptionsGeneralMenu : MonoBehaviour
 
     private void Start()
     {
+        // Comprobamos referencias
+        if (!volumeScrollbar) Debug.LogWarning("[OptionsGeneralMenu] volumeScrollbar no asignado.");
+        if (!brightnessScrollbar) Debug.LogWarning("[OptionsGeneralMenu] brightnessScrollbar no asignado.");
+        if (!colorBlindToggle) Debug.LogWarning("[OptionsGeneralMenu] colorBlindToggle no asignado.");
+        if (!fullBodyToggle) Debug.LogWarning("[OptionsGeneralMenu] fullBodyToggle no asignado.");
+        if (!bgMusicToggle) Debug.LogWarning("[OptionsGeneralMenu] bgMusicToggle no asignado.");
+        if (!animSoundToggle) Debug.LogWarning("[OptionsGeneralMenu] animSoundToggle no asignado.");
+        if (!backToMainMenuButton) Debug.LogWarning("[OptionsGeneralMenu] backToMainMenuButton no asignado.");
+        if (!goToOptionsInGameButton) Debug.LogWarning("[OptionsGeneralMenu] goToOptionsInGameButton no asignado.");
+        if (!avatar) Debug.LogWarning("[OptionsGeneralMenu] avatar no asignado.");
+        if (!rightHand) Debug.LogWarning("[OptionsGeneralMenu] rightHand no asignado.");
+        if (!leftHand) Debug.LogWarning("[OptionsGeneralMenu] leftHand no asignado.");
+        if (!gameStartMenuObject) Debug.LogWarning("[OptionsGeneralMenu] gameStartMenuObject no asignado.");
+
         // Obtenemos el componente 'GameStartMenu' del GameObject asignado
-        gameStartMenu = gameStartMenuObject.GetComponent<GameStartMenu>();
+        if (gameStartMenuObject)
+            gameStartMenu = gameStartMenuObject.GetComponent<GameStartMenu>();
+        if (!gameStartMenu)
+            Debug.LogError("[OptionsGeneralMenu] No se encontrÃ³ GameStartMenu en gameStartMenuObject.");
 
         // Cargar los valores de PlayerPrefs
         volumeScrollbar.value     = PlayerPrefs.GetFloat("globalVolume", 1f);
@@ -48,7 +65,7 @@ public class OptionsGeneralMenu : MonoBehaviour
         bgMusicToggle.isOn    = (PlayerPrefs.GetInt("bgMusicOn", 1) == 1);
         animSoundToggle.isOn  = (PlayerPrefs.GetInt("animSoundOn", 1) == 1);
 
-        // Suscribir métodos a los eventos
+        // Suscribir mÃ©todos a los eventos
         volumeScrollbar.onValueChanged.AddListener(OnVolumeChanged);
         brightnessScrollbar.onValueChanged.AddListener(OnBrightnessChanged);
 
@@ -58,8 +75,11 @@ public class OptionsGeneralMenu : MonoBehaviour
         animSoundToggle.onValueChanged.AddListener(OnAnimSoundToggle);
 
         // Botones
-        backToMainMenuButton.onClick.AddListener(gameStartMenu.EnableMainMenu);
-        goToOptionsInGameButton.onClick.AddListener(gameStartMenu.EnableOptionsInGame);
+        if (backToMainMenuButton && gameStartMenu)
+            backToMainMenuButton.onClick.AddListener(gameStartMenu.EnableMainMenu);
+
+        if (goToOptionsInGameButton && gameStartMenu)
+            goToOptionsInGameButton.onClick.AddListener(gameStartMenu.EnableOptionsInGame);
 
         // Aplicar los valores iniciales
         ApplyVolume(volumeScrollbar.value);
@@ -72,42 +92,48 @@ public class OptionsGeneralMenu : MonoBehaviour
 
     private void OnVolumeChanged(float value)
     {
+        Debug.Log("[OptionsGeneralMenu] Volume cambiado a: " + value);
         PlayerPrefs.SetFloat("globalVolume", value);
         ApplyVolume(value);
     }
 
     private void OnBrightnessChanged(float value)
     {
+        Debug.Log("[OptionsGeneralMenu] Brightness cambiado a: " + value);
         PlayerPrefs.SetFloat("globalBrightness", value);
         ApplyBrightness(value);
     }
 
     private void OnColorBlindToggle(bool value)
     {
+        Debug.Log("[OptionsGeneralMenu] Toggle ColorBlind -> " + value);
         PlayerPrefs.SetInt("colorBlindMode", value ? 1 : 0);
         ApplyColorBlindMode(value);
     }
 
     private void OnFullBodyToggle(bool value)
     {
+        Debug.Log("[OptionsGeneralMenu] Toggle FullBody -> " + value);
         PlayerPrefs.SetInt("fullBodyMode", value ? 1 : 0);
         ApplyFullBodyMode(value);
     }
 
     private void OnBGMusicToggle(bool value)
     {
+        Debug.Log("[OptionsGeneralMenu] Toggle BGMusic -> " + value);
         PlayerPrefs.SetInt("bgMusicOn", value ? 1 : 0);
         ApplyBGMusic(value);
     }
 
     private void OnAnimSoundToggle(bool value)
     {
+        Debug.Log("[OptionsGeneralMenu] Toggle AnimSound -> " + value);
         PlayerPrefs.SetInt("animSoundOn", value ? 1 : 0);
         ApplyAnimSound(value);
     }
 
     // -----------------------
-    // Métodos de Aplicación 
+    // MÃ©todos de AplicaciÃ³n 
     // -----------------------
     private void ApplyVolume(float value)
     {
@@ -116,46 +142,51 @@ public class OptionsGeneralMenu : MonoBehaviour
 
     private void ApplyBrightness(float value)
     {
+        // OJO: En URP/HDRP, RenderSettings.ambientLight no es el mÃ©todo principal
+        // de modificar el brillo. AquÃ­ podrÃ­a no notarse. PodrÃ­as usar PostProcess (Exposure).
         RenderSettings.ambientLight = Color.white * value;
     }
 
     private void ApplyColorBlindMode(bool value)
     {
         isColorBlindModeOn = value;
-        Debug.Log("ColorBlindMode -> " + isColorBlindModeOn);
-        // Aquí podrías activar lógica específica o cambios de materiales
+        Debug.Log("[OptionsGeneralMenu] ApplyColorBlindMode -> " + isColorBlindModeOn);
+        // AquÃ­ podrÃ­as activar lÃ³gicas o cambios de materiales especÃ­ficos
     }
 
     private void ApplyFullBodyMode(bool value)
     {
         isFullBodyModeOn = value;
-        Debug.Log("FullBodyMode -> " + isFullBodyModeOn);
+        Debug.Log("[OptionsGeneralMenu] ApplyFullBodyMode -> " + isFullBodyModeOn);
 
-        if (isFullBodyModeOn)
+        if (avatar && leftHand && rightHand)
         {
-            avatar.SetActive(true);
-            leftHand.SetActive(false);
-            rightHand.SetActive(false);
-        }
-        else
-        {
-            avatar.SetActive(false);
-            leftHand.SetActive(true);
-            rightHand.SetActive(true);
+            if (isFullBodyModeOn)
+            {
+                avatar.SetActive(true);
+                leftHand.SetActive(false);
+                rightHand.SetActive(false);
+            }
+            else
+            {
+                avatar.SetActive(false);
+                leftHand.SetActive(true);
+                rightHand.SetActive(true);
+            }
         }
     }
 
     private void ApplyBGMusic(bool value)
     {
         isBGMusicOn = value;
-        Debug.Log("BGMusicOn -> " + isBGMusicOn);
-        // sourceBGMusic.mute = !isBGMusicOn;
+        Debug.Log("[OptionsGeneralMenu] ApplyBGMusic -> " + isBGMusicOn);
+        // Ejemplo: sourceBGMusic.mute = !isBGMusicOn;
     }
 
     private void ApplyAnimSound(bool value)
     {
         isAnimSoundOn = value;
-        Debug.Log("AnimationSoundOn -> " + isAnimSoundOn);
-        // footstepSource.mute = !isAnimSoundOn;
+        Debug.Log("[OptionsGeneralMenu] ApplyAnimSound -> " + isAnimSoundOn);
+        // Ejemplo: footstepSource.mute = !isAnimSoundOn;
     }
 }

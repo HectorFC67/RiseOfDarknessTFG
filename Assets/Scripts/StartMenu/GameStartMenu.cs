@@ -19,8 +19,18 @@ public class GameStartMenu : MonoBehaviour
 
     public List<Button> returnButtons;
 
-    void Start()
+    private void Start()
     {
+        // Comprobamos que todos los elementos están asignados
+        if (!mainMenu) Debug.LogWarning("[GameStartMenu] MainMenu no asignado.");
+        if (!optionsGeneral) Debug.LogWarning("[GameStartMenu] OptionsGeneral no asignado.");
+        if (!optionsInGame) Debug.LogWarning("[GameStartMenu] OptionsInGame no asignado.");
+        if (!about) Debug.LogWarning("[GameStartMenu] About no asignado.");
+        if (!startButton) Debug.LogWarning("[GameStartMenu] startButton no asignado.");
+        if (!optionButton) Debug.LogWarning("[GameStartMenu] optionButton no asignado.");
+        if (!aboutButton) Debug.LogWarning("[GameStartMenu] aboutButton no asignado.");
+        if (!quitButton) Debug.LogWarning("[GameStartMenu] quitButton no asignado.");
+
         EnableMainMenu();
 
         startButton.onClick.AddListener(StartGame);
@@ -30,20 +40,35 @@ public class GameStartMenu : MonoBehaviour
 
         foreach (var item in returnButtons)
         {
+            if (!item) continue;
             item.onClick.AddListener(EnableMainMenu);
         }
     }
 
     public void QuitGame()
     {
+        Debug.Log("[GameStartMenu] QuitGame pulsado. Cerrando aplicación...");
         Application.Quit();
     }
 
-    public void StartGame()
+public void StartGame()
+{
+    Debug.Log("[GameStartMenu] StartGame pulsado. Ocultando UI y cargando escena 1 de inmediato...");
+    HideAll();
+
+    if (!SceneTransitionManager.singleton)
     {
-        HideAll();
-        SceneTransitionManager.singleton.GoToSceneAsync(1);
+        Debug.LogError("[GameStartMenu] No hay SceneTransitionManager en la escena. " +
+                       "Se cargará directamente la escena con SceneManager.LoadScene(1).");
+        UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+        return;
     }
+
+    // Carga inmediata asíncrona
+    SceneTransitionManager.singleton.GoToSceneAsync(1);
+    // (o si deseas sincrónico):
+    // SceneTransitionManager.singleton.GoToScene(1);
+}
 
     public void HideAll()
     {
@@ -55,6 +80,7 @@ public class GameStartMenu : MonoBehaviour
 
     public void EnableMainMenu()
     {
+        Debug.Log("[GameStartMenu] Volviendo al Menú Principal.");
         mainMenu.SetActive(true);
         optionsGeneral.SetActive(false);
         about.SetActive(false);
@@ -63,6 +89,7 @@ public class GameStartMenu : MonoBehaviour
 
     public void EnableOption()
     {
+        Debug.Log("[GameStartMenu] Mostrando Options General.");
         mainMenu.SetActive(false);
         optionsGeneral.SetActive(true);
         about.SetActive(false);
@@ -71,6 +98,7 @@ public class GameStartMenu : MonoBehaviour
 
     public void EnableAbout()
     {
+        Debug.Log("[GameStartMenu] Mostrando About.");
         mainMenu.SetActive(false);
         optionsGeneral.SetActive(false);
         about.SetActive(true);
@@ -79,6 +107,7 @@ public class GameStartMenu : MonoBehaviour
 
     public void EnableOptionsInGame()
     {
+        Debug.Log("[GameStartMenu] Mostrando Options InGame.");
         optionsGeneral.SetActive(false);
         optionsInGame.SetActive(true);
         mainMenu.SetActive(false);
