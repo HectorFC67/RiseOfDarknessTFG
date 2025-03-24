@@ -14,7 +14,7 @@ public class OptionsGeneralMenu : MonoBehaviour
     public Toggle bgMusicToggle;      // default: true
     public Toggle animSoundToggle;    // default: true
 
-    [Header("Sección General (GameObjects para mostrar/ocultar)")]
+    [Header("Sección General (Mostrar/ocultar)")]
     public GameObject volumeOptions;
     public GameObject brightnessOptions;
     public GameObject backgroundMusicOptions;
@@ -23,14 +23,14 @@ public class OptionsGeneralMenu : MonoBehaviour
     public GameObject fullBodyOptions;
     public Button nextButton;
 
-    [Header("Sección InGame (GameObjects para mostrar/ocultar)")]
+    [Header("Sección InGame (Mostrar/ocultar)")]
     public GameObject difficultyOptions;
     public GameObject familyFriendlyOptions;
     public GameObject sliceOptions;
     public GameObject stickOptions;
     public Button previousButton;
 
-    [Header("Botón que siempre se mantiene visible")]
+    [Header("Botón Exit")]
     public Button exitButton;
 
     [Header("Dropdown (InGame)")]
@@ -41,12 +41,12 @@ public class OptionsGeneralMenu : MonoBehaviour
     public Toggle stickToggle;           // default: OFF
     public Toggle familyFriendlyToggle;  // default: OFF
 
-    [Header("Player's Parts (para FullBody)")]
+    [Header("Player's Parts")]
     public GameObject avatar;
     public GameObject rightHand;
     public GameObject leftHand;
 
-    [Header("GameStartMenu (si necesitas volver al menú principal)")]
+    [Header("GameStartMenu")]
     public GameObject gameStartMenuObject;
 
     private GameStartMenu gameStartMenu;

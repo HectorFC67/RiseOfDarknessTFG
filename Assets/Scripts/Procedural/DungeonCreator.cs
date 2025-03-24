@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class DungeonCreator : MonoBehaviour
 {
@@ -22,6 +24,8 @@ public class DungeonCreator : MonoBehaviour
 
     public List<GameObject> enemiesList;
 
+    [Header("NavMesh")]
+    public NavMeshSurface navMeshSurface;
     // Probabilidad inicial de spawnear enemigos (20%)
     private float enemySpawnChance = 0.9f;
 
@@ -51,7 +55,13 @@ public class DungeonCreator : MonoBehaviour
     public bool GenerateDungeonWithResult()
     {
         bool isCreated = GenerateDungeon(); // Ejecuta la generación y recoge el resultado.
-        PlaceDoorsOnUnconnectedExits();  // Coloca puertas al final, si corresponde
+        PlaceDoorsOnUnconnectedExits();  // Coloca puertas al final
+        // Al final de la generación, "horneamos" el NavMesh
+        if (navMeshSurface)
+        {
+            navMeshSurface.BuildNavMesh();
+            Debug.Log("NavMesh reconstruido tras generar el dungeon.");
+        }
         return isCreated; // Devuelve el resultado a DungeonManager
     }
 
