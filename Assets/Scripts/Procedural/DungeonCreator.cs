@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class DungeonCreator : MonoBehaviour
 {
+    [Header("Referencia al XR")]
+    public GameObject xrRig;
+
     public GameObject[] rooms;
     public GameObject[] connectors;
     public GameObject initialRoom;
@@ -54,15 +58,27 @@ public class DungeonCreator : MonoBehaviour
 
     public bool GenerateDungeonWithResult()
     {
-        bool isCreated = GenerateDungeon(); // Ejecuta la generación y recoge el resultado.
-        PlaceDoorsOnUnconnectedExits();  // Coloca puertas al final
+        bool isCreated = GenerateDungeon(); 
+        PlaceDoorsOnUnconnectedExits();  
+        
         // Al final de la generación, "horneamos" el NavMesh
         if (navMeshSurface)
         {
             navMeshSurface.BuildNavMesh();
             Debug.Log("NavMesh reconstruido tras generar el dungeon.");
         }
-        return isCreated; // Devuelve el resultado a DungeonManager
+
+        // Mover el XR al (0,0,0)
+        if (xrRig != null)
+        {
+            xrRig.transform.position = Vector3.zero;
+        }
+        else
+        {
+            Debug.LogWarning("No se encontró un objeto XRRig en la escena.");
+        }
+        
+        return isCreated;
     }
 
     bool GenerateDungeon()
