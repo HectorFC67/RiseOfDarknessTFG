@@ -5,15 +5,18 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MainMenu.unity
     guid: 02f4eb515f477a443a175a0e4c8d691b
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/PruebasVR.unity
     guid: 3fc2d16154f2c6c458ad1d76761acebd
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/DungeonPrincipal.unity
     guid: f48e994e09bd33f4abea81a4dd64585f
+  - enabled: 1
+    path: Assets/Scenes/FinalRoom.unity
+    guid: ed56de38e9775a74c83fe2f062e55fad
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: d51f3eefc20566149b235ee312d24b27,
       type: 2}

@@ -3,7 +3,72 @@ guid: ea61844432e88ce44ac58b4a53f21cff
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Arabic Wood Flooring Material
+    second: {fileID: 2100000, guid: 72c6193eb2957c641a054b09c5d8a483, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Fabric
+    second: {fileID: 2100000, guid: 7af1967a209849149a0f9cfaeb2f3c99, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Fire
+    second: {fileID: 2100000, guid: 0a4cf20e78b51664394b170b7175e7b2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Madeira
+    second: {fileID: 2100000, guid: b1d4ac71597ada64ea8e5812bc102a01, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mandala
+    second: {fileID: 2100000, guid: 005523badb4a7cb4cafa026a2e03f8ca, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mandala.003
+    second: {fileID: 2100000, guid: 0da59ed32077d41468a9b03c5f596e63, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: "Mosa\xEFc Floor"
+    second: {fileID: 2100000, guid: 584bc601a74802a40b153eb91bd3c857, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Preto
+    second: {fileID: 2100000, guid: a0efb880f46e78d44b7f2fba75da1cd3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Scratched Gold
+    second: {fileID: 2100000, guid: 687f9203209b8b848b9c8124758e4799, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Stone Slate Wall
+    second: {fileID: 2100000, guid: 4c690cd386377b947b484732b099be6c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tiles Floor 02
+    second: {fileID: 2100000, guid: 2046250a714056d4fab286c77d59c5ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: rock wall
+    second: {fileID: 2100000, guid: fb0559878c282c74ea9c7bb36e26fdc6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: vERMELHO
+    second: {fileID: 2100000, guid: 6c968493dc9c76446b1c79d863842a08, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
