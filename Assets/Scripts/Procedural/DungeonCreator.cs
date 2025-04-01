@@ -15,8 +15,8 @@ public class DungeonCreator : MonoBehaviour
     public GameObject initialRoom;
     public GameObject doorPrefab;
 
-    public int minRooms = 9;
-    public int maxRooms = 18;
+    public int minRooms = 6;
+    public int maxRooms = 10;
 
     // Listas públicas para los objetos de decoración
     public List<GameObject> paintsList;
@@ -30,10 +30,6 @@ public class DungeonCreator : MonoBehaviour
 
     [Header("NavMesh")]
     public NavMeshSurface navMeshSurface;
-
-    [Header("Portal")]
-    public GameObject portalPrefab;
-
     // Probabilidad inicial de spawnear enemigos (20%)
     private float enemySpawnChance = 0.9f;
 
@@ -62,7 +58,7 @@ public class DungeonCreator : MonoBehaviour
 
     public bool GenerateDungeonWithResult()
     {
-        bool isCreated = GenerateDungeon(); 
+        bool isCreated = GenerateDungeon();
         PlaceDoorsOnUnconnectedExits();
 
         // Al final de la generación, "horneamos" el NavMesh
@@ -81,7 +77,7 @@ public class DungeonCreator : MonoBehaviour
         {
             Debug.LogWarning("No se encontró un objeto XRRig en la escena.");
         }
-        
+
         return isCreated;
     }
 
@@ -423,31 +419,26 @@ public class DungeonCreator : MonoBehaviour
         return Quaternion.Euler(desiredRotation);
     }
 
-    public void PlaceDecorations(GameObject room, int index, int totalIterations)
+    void PlaceDecorations(GameObject room)
     {
         // Spawns para cada tipo de decoración
         Transform paintsSpawn = room.transform.Find("paintsSpawn");
         Transform storageSpawn = room.transform.Find("storageSpawn");
         Transform statueSpawn = room.transform.Find("statueSpawn");
         Transform decorationSpawn = room.transform.Find("decorationSpawn");
-        Transform portalSpawn = room.transform.Find("portalSpawn");
+        //Transform portalSpawn = room.transform.Find("portalSpawn");
 
-        // -------------------
-        // 1) SPAWN DE PINTURAS
-        // -------------------
+        // Instanciar aleatoriamente objetos de cada lista en su spawn correspondiente
         if (paintsSpawn && Random.value < 0.6f && paintsList.Count > 0)
         {
             Debug.Log("Instanciando pintura en paintsSpawn.");
-            GameObject paintPrefab = paintsList[Random.Range(0, paintsList.Count)];
 
-            // Mantener Z original del prefab pero X,Y del spawn
-            Quaternion originalRot = paintPrefab.transform.rotation;
-            Quaternion spawnRot = paintsSpawn.rotation;
-            Quaternion finalRotation = Quaternion.Euler(
-                spawnRot.eulerAngles.x,
-                spawnRot.eulerAngles.y,
-                originalRot.eulerAngles.z
-            );
+            GameObject paintPrefab = paintsList[Random.Range(0, paintsList.Count)];
+            Quaternion originalRotation = paintPrefab.transform.rotation;
+            Quaternion spawnRotation = paintsSpawn.rotation;
+
+            // Crear una nueva rotación que conserve el Z del prefab original pero use X e Y del spawn
+            Quaternion finalRotation = Quaternion.Euler(spawnRotation.eulerAngles.x, spawnRotation.eulerAngles.y, originalRotation.eulerAngles.z);
 
             Instantiate(paintPrefab, paintsSpawn.position, finalRotation);
         }
@@ -456,24 +447,19 @@ public class DungeonCreator : MonoBehaviour
             Debug.Log("No se instanció pintura en paintsSpawn.");
         }
 
-        // -------------------
-        // 2) SPAWN DE STORAGE
-        // -------------------
         if (storageSpawn && Random.value < 0.5f && storageList.Count > 0)
         {
             Debug.Log("Instanciando storage en storageSpawn.");
-            GameObject storageItem = Instantiate(
-                storageList[Random.Range(0, storageList.Count)],
-                storageSpawn.position,
-                Quaternion.identity
-            );
+            GameObject storageItem = Instantiate(storageList[Random.Range(0, storageList.Count)], storageSpawn.position, Quaternion.identity);
 
             // Instanciar arma dentro del storage
             Transform weaponSpawn = storageItem.transform.Find("weaponSpawn");
             if (weaponSpawn && weaponsList.Count > 0)
             {
                 Debug.Log("Instanciando arma dentro del storage en weaponSpawn.");
-                Instantiate(
+
+                // Toma la rotación del weaponSpawn para instanciar el arma
+                GameObject weapon = Instantiate(
                     weaponsList[Random.Range(0, weaponsList.Count)],
                     weaponSpawn.position,
                     weaponSpawn.rotation
@@ -489,53 +475,38 @@ public class DungeonCreator : MonoBehaviour
             Debug.Log("No se instanció storage en storageSpawn.");
         }
 
-        // -------------------
-        // 3) ESTATUA O PORTAL SEGÚN SI ES ÚLTIMA ROOM
-        // -------------------
-        if (index < totalIterations - 1)
+        if (statueSpawn && Random.value < 0.7f && statuesList.Count > 0)
         {
-            // AÚN NO ES LA ÚLTIMA => INTENTAMOS SPAWNEAR ESTATUA
-            if (statueSpawn && Random.value < 0.7f && statuesList.Count > 0)
-            {
-                Debug.Log("Instanciando estatua en statueSpawn.");
-                GameObject statuePrefab = statuesList[Random.Range(0, statuesList.Count)];
-                Instantiate(statuePrefab, statueSpawn.position, statuePrefab.transform.rotation);
-            }
-            else
-            {
-                Debug.Log("No se instanció estatua en statueSpawn.");
-            }
+            Debug.Log("Instanciando estatua en statueSpawn.");
+            GameObject statuePrefab = statuesList[Random.Range(0, statuesList.Count)];
+
+            // Usar la rotación original del prefab
+            Instantiate(statuePrefab, statueSpawn.position, statuePrefab.transform.rotation);
         }
         else
         {
-            // ES LA ÚLTIMA => INSTANCIAMOS PORTAL
-            if (portalSpawn && portalList.Count > 0)
-            {
-                Debug.Log("Instanciando portal en portalSpawn (última sala).");
-                Instantiate(portalList[Random.Range(0, portalList.Count)],
-                            portalSpawn.position,
-                            portalSpawn.rotation);
-            }
-            else
-            {
-                Debug.Log("No se instanció portal en portalSpawn.");
-            }
+            Debug.Log("No se instanció estatua en statueSpawn.");
         }
 
-        // -------------------
-        // 4) DECORACIÓN ADICIONAL
-        // -------------------
         if (decorationSpawn && Random.value < 0.8f && decorationList.Count > 0)
         {
             Debug.Log("Instanciando decoración en decorationSpawn.");
-            Instantiate(decorationList[Random.Range(0, decorationList.Count)],
-                        decorationSpawn.position,
-                        Quaternion.identity);
+            Instantiate(decorationList[Random.Range(0, decorationList.Count)], decorationSpawn.position, Quaternion.identity);
         }
         else
         {
             Debug.Log("No se instanció decoración en decorationSpawn.");
         }
+
+        /*if (portalSpawn && Random.value < 0.5f && portalList.Count > 0)
+        {
+            Debug.Log("Instanciando portal en portalSpawn.");
+            Instantiate(portalList[Random.Range(0, portalList.Count)], portalSpawn.position, Quaternion.identity);
+        }
+        else
+        {
+            Debug.Log("No se instanció portal en portalSpawn.");
+        }*/
     }
 
     // Función para colocar puertas en los exits no conectados
