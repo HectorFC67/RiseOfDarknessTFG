@@ -9,10 +9,10 @@ public class OptionsGeneralMenu : MonoBehaviour
     public Scrollbar brightnessScrollbar;
 
     [Header("Toggles (General)")]
-    public Toggle colorBlindToggle;   // default: false
-    public Toggle fullBodyToggle;     // default: false
-    public Toggle bgMusicToggle;      // default: true
-    public Toggle animSoundToggle;    // default: true
+    public Toggle colorBlindToggle;
+    public Toggle fullBodyToggle;
+    public Toggle bgMusicToggle;
+    public Toggle animSoundToggle;
 
     [Header("Sección General (Mostrar/ocultar)")]
     public GameObject volumeOptions;
@@ -37,9 +37,9 @@ public class OptionsGeneralMenu : MonoBehaviour
     public TMP_Dropdown difficultyDropdown;
 
     [Header("Toggles (InGame)")]
-    public Toggle sliceToggle;           // default: ON
-    public Toggle stickToggle;           // default: OFF
-    public Toggle familyFriendlyToggle;  // default: OFF
+    public Toggle sliceToggle;
+    public Toggle stickToggle;
+    public Toggle familyFriendlyToggle;
 
     [Header("Player's Parts")]
     public GameObject avatar;
@@ -48,33 +48,31 @@ public class OptionsGeneralMenu : MonoBehaviour
 
     [Header("GameStartMenu")]
     public GameObject gameStartMenuObject;
-
     private GameStartMenu gameStartMenu;
 
-    // -----------------------
-    // Variables internas
-    // -----------------------
-    private bool isColorBlindModeOn = false;
-    private bool isFullBodyModeOn = false;
-    private bool isBGMusicOn = true;
-    private bool isAnimSoundOn = true;
-
+    // -------------------------------------------------------------------------
+    // Métodos de Unity
+    // -------------------------------------------------------------------------
     private void Start()
     {
-        // Referencia al GameStartMenu si fuera necesario
-        if (gameStartMenuObject)
+        if (gameStartMenuObject != null)
             gameStartMenu = gameStartMenuObject.GetComponent<GameStartMenu>();
 
-        // ---------- 1. Cargar y asignar valores (General) ----------
-        volumeScrollbar.value = PlayerPrefs.GetFloat("globalVolume", 1f);
-        brightnessScrollbar.value = PlayerPrefs.GetFloat("globalBrightness", 1f);
+        // -- 1. Asignamos a cada UI el valor del GameManager
+        volumeScrollbar.value        = GameManager.Instance.globalVolume;
+        brightnessScrollbar.value    = GameManager.Instance.globalBrightness;
 
-        colorBlindToggle.isOn = (PlayerPrefs.GetInt("colorBlindMode", 0) == 1);
-        fullBodyToggle.isOn = (PlayerPrefs.GetInt("fullBodyMode", 0) == 1);
-        bgMusicToggle.isOn = (PlayerPrefs.GetInt("bgMusicOn", 1) == 1);
-        animSoundToggle.isOn = (PlayerPrefs.GetInt("animSoundOn", 1) == 1);
+        colorBlindToggle.isOn        = GameManager.Instance.isColorBlindModeOn;
+        fullBodyToggle.isOn          = GameManager.Instance.isFullBodyModeOn;
+        bgMusicToggle.isOn           = GameManager.Instance.isBGMusicOn;
+        animSoundToggle.isOn         = GameManager.Instance.isAnimSoundOn;
 
-        // Suscribir eventos (General)
+        difficultyDropdown.SetValueWithoutNotify(GameManager.Instance.gameDifficulty);
+        sliceToggle.isOn             = GameManager.Instance.slice;
+        stickToggle.isOn             = GameManager.Instance.stick;
+        familyFriendlyToggle.isOn    = GameManager.Instance.familyFriendly;
+
+        // -- 2. Suscribimos eventos
         volumeScrollbar.onValueChanged.AddListener(OnVolumeChanged);
         brightnessScrollbar.onValueChanged.AddListener(OnBrightnessChanged);
 
@@ -83,133 +81,117 @@ public class OptionsGeneralMenu : MonoBehaviour
         bgMusicToggle.onValueChanged.AddListener(OnBGMusicToggle);
         animSoundToggle.onValueChanged.AddListener(OnAnimSoundToggle);
 
-        // ---------- 2. Cargar y asignar valores (InGame) ----------
-        int savedDifficulty = PlayerPrefs.GetInt("gameDifficulty", 2);
-        difficultyDropdown.SetValueWithoutNotify(savedDifficulty);
-
-        bool savedSlice = (PlayerPrefs.GetInt("optionSlice", 1) == 1);
-        bool savedStick = (PlayerPrefs.GetInt("optionStick", 0) == 1);
-        bool savedFamilyFriendly = (PlayerPrefs.GetInt("familyFriendly", 0) == 1);
-
         difficultyDropdown.onValueChanged.AddListener(OnDifficultyChanged);
         sliceToggle.onValueChanged.AddListener(OnSliceChanged);
         stickToggle.onValueChanged.AddListener(OnStickChanged);
         familyFriendlyToggle.onValueChanged.AddListener(OnFamilyFriendlyChanged);
 
-        // ---------- 3. Botones Next, Previous y Exit ----------
-        if (nextButton) nextButton.onClick.AddListener(OnNextClicked);
-        if (previousButton) previousButton.onClick.AddListener(OnPreviousClicked);
+        if (nextButton != null)     
+            nextButton.onClick.AddListener(OnNextClicked);
 
-        // Si quieres que el botón Exit vuelva al menú principal (por ejemplo):
-        if (exitButton && gameStartMenu)
+        if (previousButton != null) 
+            previousButton.onClick.AddListener(OnPreviousClicked);
+
+        if (exitButton != null && gameStartMenu != null)
             exitButton.onClick.AddListener(gameStartMenu.EnableMainMenu);
 
-        // ---------- 4. Aplicar valores iniciales ----------
-        // General
-        ApplyVolume(volumeScrollbar.value);
-        ApplyBrightness(brightnessScrollbar.value);
-        ApplyColorBlindMode(colorBlindToggle.isOn);
-        ApplyFullBodyMode(fullBodyToggle.isOn);
-        ApplyBGMusic(bgMusicToggle.isOn);
-        ApplyAnimSound(animSoundToggle.isOn);
+        // -- 3. Aplicar la configuración inicial
+        ApplyVolume(GameManager.Instance.globalVolume);
+        ApplyBrightness(GameManager.Instance.globalBrightness);
+        ApplyColorBlindMode(GameManager.Instance.isColorBlindModeOn);
+        ApplyFullBodyMode(GameManager.Instance.isFullBodyModeOn);
+        ApplyBGMusic(GameManager.Instance.isBGMusicOn);
+        ApplyAnimSound(GameManager.Instance.isAnimSoundOn);
 
-        // InGame
-        ApplyDifficulty(savedDifficulty);
-        familyFriendlyToggle.isOn = savedFamilyFriendly; // Asignación en el toggle
-        ApplyFamilyFriendly(savedFamilyFriendly);
+        ApplyDifficulty(GameManager.Instance.gameDifficulty);
+        ApplyFamilyFriendly(GameManager.Instance.familyFriendly);
+        ApplySlice(GameManager.Instance.slice);
+        ApplyStick(GameManager.Instance.stick);
 
-        // Si FamilyFriendly estaba desactivado, aplicamos slice y stick normalmente
-        if (!savedFamilyFriendly)
-        {
-            sliceToggle.isOn = savedSlice;
-            stickToggle.isOn = savedStick;
-
-            ApplySlice(savedSlice);
-            ApplyStick(savedStick);
-        }
-
-        // Al arrancar, asumimos que estás en la sección "General"
+        // -- 4. Mostrar la sección "General" al arrancar
         ShowGeneralSection();
     }
 
     // -------------------------------------------------------------------------
-    // Eventos de Scrollbar y Toggles (General)
+    // Listeners (General)
     // -------------------------------------------------------------------------
     private void OnVolumeChanged(float value)
     {
-        PlayerPrefs.SetFloat("globalVolume", value);
+        GameManager.Instance.globalVolume = value;
         ApplyVolume(value);
+        // No usamos PlayerPrefs, así que no llamamos a SavePrefs
     }
 
     private void OnBrightnessChanged(float value)
     {
-        PlayerPrefs.SetFloat("globalBrightness", value);
+        GameManager.Instance.globalBrightness = value;
         ApplyBrightness(value);
     }
 
     private void OnColorBlindToggle(bool value)
     {
-        PlayerPrefs.SetInt("colorBlindMode", value ? 1 : 0);
+        GameManager.Instance.isColorBlindModeOn = value;
         ApplyColorBlindMode(value);
     }
 
     private void OnFullBodyToggle(bool value)
     {
-        PlayerPrefs.SetInt("fullBodyMode", value ? 1 : 0);
+        GameManager.Instance.isFullBodyModeOn = value;
         ApplyFullBodyMode(value);
     }
 
     private void OnBGMusicToggle(bool value)
     {
-        PlayerPrefs.SetInt("bgMusicOn", value ? 1 : 0);
+        GameManager.Instance.isBGMusicOn = value;
         ApplyBGMusic(value);
     }
 
     private void OnAnimSoundToggle(bool value)
     {
-        PlayerPrefs.SetInt("animSoundOn", value ? 1 : 0);
+        GameManager.Instance.isAnimSoundOn = value;
         ApplyAnimSound(value);
     }
 
     // -------------------------------------------------------------------------
-    // Eventos de Dropdown y Toggles (InGame)
+    // Listeners (InGame)
     // -------------------------------------------------------------------------
     private void OnDifficultyChanged(int value)
     {
-        PlayerPrefs.SetInt("gameDifficulty", value);
+        GameManager.Instance.gameDifficulty = value;
         ApplyDifficulty(value);
     }
 
     private void OnSliceChanged(bool value)
     {
-        PlayerPrefs.SetInt("optionSlice", value ? 1 : 0);
+        GameManager.Instance.slice = value;
         ApplySlice(value);
     }
 
     private void OnStickChanged(bool value)
     {
-        PlayerPrefs.SetInt("optionStick", value ? 1 : 0);
+        GameManager.Instance.stick = value;
         ApplyStick(value);
     }
 
     private void OnFamilyFriendlyChanged(bool value)
     {
-        PlayerPrefs.SetInt("familyFriendly", value ? 1 : 0);
+        GameManager.Instance.familyFriendly = value;
         ApplyFamilyFriendly(value);
 
         // Si FamilyFriendly se activa, forzamos slice=OFF y stick=ON
         if (value)
         {
-            PlayerPrefs.SetInt("optionSlice", 0);
-            PlayerPrefs.SetInt("optionStick", 1);
+            GameManager.Instance.slice = false;
+            GameManager.Instance.stick = true;
 
+            // Cambiamos también en la UI
             sliceToggle.isOn = false;
             stickToggle.isOn = true;
         }
     }
 
     // -------------------------------------------------------------------------
-    // Métodos "Apply" (General)
+    // Métodos APPLY
     // -------------------------------------------------------------------------
     private void ApplyVolume(float value)
     {
@@ -219,21 +201,17 @@ public class OptionsGeneralMenu : MonoBehaviour
 
     private void ApplyBrightness(float value)
     {
-        // En URP/HDRP se hace de otra forma, pero aquí un ejemplo:
         RenderSettings.ambientLight = Color.white * value;
         Debug.Log($"[OptionsGeneralMenu] Brightness => {value}");
     }
 
     private void ApplyColorBlindMode(bool value)
     {
-        isColorBlindModeOn = value;
         Debug.Log($"[OptionsGeneralMenu] ColorBlind => {value}");
-        // Lógica extra para materiales, shaders, etc.
     }
 
     private void ApplyFullBodyMode(bool value)
     {
-        isFullBodyModeOn = value;
         Debug.Log($"[OptionsGeneralMenu] FullBody => {value}");
 
         if (avatar && leftHand && rightHand)
@@ -257,24 +235,18 @@ public class OptionsGeneralMenu : MonoBehaviour
 
     private void ApplyBGMusic(bool value)
     {
-        isBGMusicOn = value;
         Debug.Log($"[OptionsGeneralMenu] BGMusic => {value}");
         // Ejemplo: sourceBGMusic.mute = !value;
     }
 
     private void ApplyAnimSound(bool value)
     {
-        isAnimSoundOn = value;
         Debug.Log($"[OptionsGeneralMenu] AnimSound => {value}");
         // Ejemplo: footstepSource.mute = !value;
     }
 
-    // -------------------------------------------------------------------------
-    // Métodos "Apply" (InGame)
-    // -------------------------------------------------------------------------
     private void ApplyDifficulty(int difficultyValue)
     {
-        // Lógica según valor
         string textDiff = "Normal";
         switch (difficultyValue)
         {
@@ -290,14 +262,11 @@ public class OptionsGeneralMenu : MonoBehaviour
     private void ApplySlice(bool value)
     {
         Debug.Log($"[OptionsGeneralMenu] Slice => {value}");
-        // sliceSystem.enabled = value; etc.
     }
 
     private void ApplyStick(bool value)
     {
         Debug.Log($"[OptionsGeneralMenu] Stick => {value}");
-        // swordPrefab.SetActive(!value);
-        // stickPrefab.SetActive(value);
     }
 
     private void ApplyFamilyFriendly(bool value)
@@ -320,11 +289,11 @@ public class OptionsGeneralMenu : MonoBehaviour
     }
 
     // -------------------------------------------------------------------------
-    // Métodos para cambiar de sección (Botones Next y Previous)
+    // Métodos para cambiar de sección
     // -------------------------------------------------------------------------
     private void OnNextClicked()
     {
-        // Desactivamos los elementos de la sección "General"
+        // Ocultamos la sección "General"
         volumeOptions.SetActive(false);
         brightnessOptions.SetActive(false);
         backgroundMusicOptions.SetActive(false);
@@ -333,7 +302,7 @@ public class OptionsGeneralMenu : MonoBehaviour
         fullBodyOptions.SetActive(false);
         nextButton.gameObject.SetActive(false);
 
-        // Activamos la sección "InGame"
+        // Mostramos la sección "InGame"
         difficultyOptions.SetActive(true);
         familyFriendlyOptions.SetActive(true);
         sliceOptions.SetActive(true);
@@ -343,7 +312,7 @@ public class OptionsGeneralMenu : MonoBehaviour
 
     private void OnPreviousClicked()
     {
-        // Sección "General" visible
+        // Mostramos la sección "General"
         volumeOptions.SetActive(true);
         brightnessOptions.SetActive(true);
         backgroundMusicOptions.SetActive(true);
@@ -352,7 +321,7 @@ public class OptionsGeneralMenu : MonoBehaviour
         fullBodyOptions.SetActive(true);
         nextButton.gameObject.SetActive(true);
 
-        // Sección "InGame" la ocultamos
+        // Ocultamos la sección "InGame"
         difficultyOptions.SetActive(false);
         familyFriendlyOptions.SetActive(false);
         sliceOptions.SetActive(false);
@@ -360,10 +329,9 @@ public class OptionsGeneralMenu : MonoBehaviour
         previousButton.gameObject.SetActive(false);
     }
 
-    // Método auxiliar para arrancar mostrando la sección "General"
     private void ShowGeneralSection()
     {
-        // Activa General, Desactiva InGame
+        // Forzamos la vista a la sección "General"
         OnPreviousClicked();
     }
 }

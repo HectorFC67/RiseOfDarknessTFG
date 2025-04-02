@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 964125}
   - component: {fileID: 964124}
   - component: {fileID: 964123}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -494,7 +494,7 @@ PrefabInstance:
     - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -615,7 +615,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 122312237}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Head VR Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1041,6 +1041,11 @@ MonoBehaviour:
   - {fileID: 3921240834735033416, guid: 992ca01c7fa914a4180366b514fbfb59, type: 3}
   - {fileID: 2234602531553145300, guid: 6780da6d5202ac642807b97ab59e71f8, type: 3}
   - {fileID: 4355779169275666563, guid: c084f16525fe39e47be9d6871c020efa, type: 3}
+  roomsDaltonic:
+  - {fileID: 3921240834735033416, guid: 5a2df29a4ef5ebd48bb7a789a2b06b35, type: 3}
+  - {fileID: 2234602531553145300, guid: 22cb347168c281441a950199271e9157, type: 3}
+  - {fileID: 8390067836423753767, guid: 892754c4dcdb6e1409f22f78086eed30, type: 3}
+  - {fileID: 4355779169275666563, guid: 31bc5333bc2197744a9fe079dff1af9e, type: 3}
   connectors:
   - {fileID: 1722618894570455239, guid: d734e92a8ab4003489964910d0722058, type: 3}
   - {fileID: 4861579475363231401, guid: 335a47c682690d648921640474847a41, type: 3}
@@ -1048,9 +1053,20 @@ MonoBehaviour:
   - {fileID: 6747190708167339184, guid: 77c634c244d99394c9bf674ae9d3aa2f, type: 3}
   - {fileID: 7791333190711904047, guid: 85e16231bdaf75e4094ed92a0ffae7f0, type: 3}
   - {fileID: 4042424014282950550, guid: 69670da609f2e8343931b6619775e0e3, type: 3}
+  connectorsDaltonic:
+  - {fileID: 1722618894570455239, guid: eac0d97f6d91bbe45a7cc7801f49d2f9, type: 3}
+  - {fileID: 4861579475363231401, guid: b67fce6a3cde1344dac376154e8ab8c5, type: 3}
+  - {fileID: 5246935793390012973, guid: f6e644d12f58b124fb613be47ea41ef7, type: 3}
+  - {fileID: 6747190708167339184, guid: 1d22e8cff4d07f142ba021d5b1426ef2, type: 3}
+  - {fileID: 7791333190711904047, guid: 0a77f63be9b073a4f9ad8fc7ccaffd95, type: 3}
+  - {fileID: 4042424014282950550, guid: 2c1bfb1c0eb453c4895411e031ab6476, type: 3}
   initialRoom: {fileID: 3478340288055043626, guid: 51ba939b9d0db1847b13cd2fc6af0010,
     type: 3}
+  initialRoomDaltonic: {fileID: 3478340288055043626, guid: 99a1a92e388b68f48bf9c6dd158969d8,
+    type: 3}
   doorPrefab: {fileID: 6658434227317661579, guid: 4db538e79bef69d489befeb81a8cdb6a,
+    type: 3}
+  doorPrefabDaltonic: {fileID: 1765526149126914803, guid: 9e7f55127186d61428cf46ea3b602363,
     type: 3}
   minRooms: 9
   maxRooms: 18
@@ -1117,8 +1133,6 @@ MonoBehaviour:
   enemiesList:
   - {fileID: 118578669540492877, guid: 2ff76e5c137430c4c8ccbba0b8c02f42, type: 3}
   navMeshSurface: {fileID: 1138385872}
-  portalPrefab: {fileID: 5128254484241848099, guid: 4f39778b7acd8cf4690e5e7fac5bb23d,
-    type: 3}
 --- !u!1 &502989396
 GameObject:
   m_ObjectHideFlags: 0
@@ -1221,7 +1235,7 @@ GameObject:
   - component: {fileID: 529366667}
   - component: {fileID: 529366669}
   - component: {fileID: 529366668}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Left Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1919,9 +1933,9 @@ GameObject:
   - component: {fileID: 837693372}
   - component: {fileID: 837693371}
   - component: {fileID: 837693370}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: XR Origin (XR Rig)
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2215,6 +2229,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Right Direct Interactor
       objectReference: {fileID: 0}
+    - target: {fileID: 8841706926471734270, guid: 2fd3e07afe5b461490fb8e314976b1b0,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2472,7 +2491,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1182387902}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Right Hand VR Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2617,11 +2636,96 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1774284043}
     m_Modifications:
+    - target: {fileID: 293538851353931378, guid: 06cd9e9af97d88946893bd961c4d7f4f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 306310567232586746, guid: 06cd9e9af97d88946893bd961c4d7f4f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417413420058953786, guid: 06cd9e9af97d88946893bd961c4d7f4f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2460329498544802733, guid: 06cd9e9af97d88946893bd961c4d7f4f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2487254165497732813, guid: 06cd9e9af97d88946893bd961c4d7f4f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2581444142311833954, guid: 06cd9e9af97d88946893bd961c4d7f4f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3667613475862525610, guid: 06cd9e9af97d88946893bd961c4d7f4f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3942036234739736809, guid: 06cd9e9af97d88946893bd961c4d7f4f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4207169014095945448, guid: 06cd9e9af97d88946893bd961c4d7f4f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4932858022260504794, guid: 06cd9e9af97d88946893bd961c4d7f4f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959276746948945103, guid: 06cd9e9af97d88946893bd961c4d7f4f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5215121254309628554, guid: 06cd9e9af97d88946893bd961c4d7f4f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5291795384926291915, guid: 06cd9e9af97d88946893bd961c4d7f4f,
         type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 100f4140933c12440bc055241fa5264f, type: 2}
+    - target: {fileID: 5572870169652086187, guid: 06cd9e9af97d88946893bd961c4d7f4f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6262424130470691175, guid: 06cd9e9af97d88946893bd961c4d7f4f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6346944873821235348, guid: 06cd9e9af97d88946893bd961c4d7f4f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6642145199101254194, guid: 06cd9e9af97d88946893bd961c4d7f4f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6918443025704755427, guid: 06cd9e9af97d88946893bd961c4d7f4f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7079028628379841702, guid: 06cd9e9af97d88946893bd961c4d7f4f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2672,10 +2776,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90
       objectReference: {fileID: 0}
+    - target: {fileID: 7381989784501244254, guid: 06cd9e9af97d88946893bd961c4d7f4f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7476791769866421509, guid: 06cd9e9af97d88946893bd961c4d7f4f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7599283048136764956, guid: 06cd9e9af97d88946893bd961c4d7f4f,
         type: 3}
       propertyPath: m_Name
       value: Right Terminator
+      objectReference: {fileID: 0}
+    - target: {fileID: 7599283048136764956, guid: 06cd9e9af97d88946893bd961c4d7f4f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7692122348367664425, guid: 06cd9e9af97d88946893bd961c4d7f4f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8276346108430684230, guid: 06cd9e9af97d88946893bd961c4d7f4f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8897757243866444889, guid: 06cd9e9af97d88946893bd961c4d7f4f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 9174025346950501687, guid: 06cd9e9af97d88946893bd961c4d7f4f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2841,6 +2980,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Left Direct Interactor
+      objectReference: {fileID: 0}
+    - target: {fileID: 8841706926471734270, guid: 2fd3e07afe5b461490fb8e314976b1b0,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4278,7 +4422,7 @@ GameObject:
   - component: {fileID: 1599998266}
   - component: {fileID: 1599998265}
   - component: {fileID: 1599998264}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Left Ray Interactor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4947,15 +5091,135 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 529366667}
     m_Modifications:
+    - target: {fileID: 1736862539630680919, guid: b7ee10ba487867d47a2942e352102583,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1749776643871504095, guid: b7ee10ba487867d47a2942e352102583,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2768186193703906253, guid: b7ee10ba487867d47a2942e352102583,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3079514715861669324, guid: b7ee10ba487867d47a2942e352102583,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3381557112174543759, guid: b7ee10ba487867d47a2942e352102583,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4432720650356194591, guid: b7ee10ba487867d47a2942e352102583,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4480122734965767816, guid: b7ee10ba487867d47a2942e352102583,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4507205187730861032, guid: b7ee10ba487867d47a2942e352102583,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4601392964196250695, guid: b7ee10ba487867d47a2942e352102583,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4622360752863031063, guid: b7ee10ba487867d47a2942e352102583,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4907991193175809457, guid: b7ee10ba487867d47a2942e352102583,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5395548549300548674, guid: b7ee10ba487867d47a2942e352102583,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5863265207310053518, guid: b7ee10ba487867d47a2942e352102583,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077495988918140847, guid: b7ee10ba487867d47a2942e352102583,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6158800709001278190, guid: b7ee10ba487867d47a2942e352102583,
         type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 100f4140933c12440bc055241fa5264f, type: 2}
+    - target: {fileID: 6376331248962457087, guid: b7ee10ba487867d47a2942e352102583,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6402619682315801066, guid: b7ee10ba487867d47a2942e352102583,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7158718116641284114, guid: b7ee10ba487867d47a2942e352102583,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7454407715993272700, guid: b7ee10ba487867d47a2942e352102583,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7985783392041313635, guid: b7ee10ba487867d47a2942e352102583,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8466306517634800441, guid: b7ee10ba487867d47a2942e352102583,
         type: 3}
       propertyPath: m_Name
       value: Left Terminator
+      objectReference: {fileID: 0}
+    - target: {fileID: 8466306517634800441, guid: b7ee10ba487867d47a2942e352102583,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8554490485382111244, guid: b7ee10ba487867d47a2942e352102583,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8825463006086751355, guid: b7ee10ba487867d47a2942e352102583,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8920128656317575200, guid: b7ee10ba487867d47a2942e352102583,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8938361058549929414, guid: b7ee10ba487867d47a2942e352102583,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 9094329260281299331, guid: b7ee10ba487867d47a2942e352102583,
         type: 3}
@@ -5087,7 +5351,7 @@ GameObject:
   - component: {fileID: 1611428107}
   - component: {fileID: 1611428106}
   - component: {fileID: 1611428105}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Right Ray Interactor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5819,7 +6083,7 @@ GameObject:
   - component: {fileID: 1774284043}
   - component: {fileID: 1774284045}
   - component: {fileID: 1774284044}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Right Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6108,7 +6372,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1791409437}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Camera Offset
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6202,7 +6466,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1837491418}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Left Hand VR Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6224,6 +6488,60 @@ Transform:
   m_Children: []
   m_Father: {fileID: 529366667}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 98}
+--- !u!1 &2013384608
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2013384610}
+  - component: {fileID: 2013384609}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2013384609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013384608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3a2aa41d5a842647aa1d71a21d5a93c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  globalVolume: 1
+  globalBrightness: 1
+  isColorBlindModeOn: 0
+  isFullBodyModeOn: 0
+  isBGMusicOn: 1
+  isAnimSoundOn: 1
+  gameDifficulty: 2
+  slice: 1
+  stick: 0
+  familyFriendly: 0
+--- !u!4 &2013384610
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013384608}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -6239,3 +6557,4 @@ SceneRoots:
   - {fileID: 615425637}
   - {fileID: 1138385871}
   - {fileID: 452047861}
+  - {fileID: 2013384610}

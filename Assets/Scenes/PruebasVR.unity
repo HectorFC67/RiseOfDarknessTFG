@@ -7987,6 +7987,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: PortalToEnd
       objectReference: {fileID: 0}
+    - target: {fileID: 6476706391609394485, guid: 4f39778b7acd8cf4690e5e7fac5bb23d,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 1.0571206
+      objectReference: {fileID: 0}
+    - target: {fileID: 6476706391609394485, guid: 4f39778b7acd8cf4690e5e7fac5bb23d,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 1.1276737
+      objectReference: {fileID: 0}
+    - target: {fileID: 6476706391609394485, guid: 4f39778b7acd8cf4690e5e7fac5bb23d,
+        type: 3}
+      propertyPath: m_Center.x
+      value: 0.1086055
+      objectReference: {fileID: 0}
+    - target: {fileID: 6476706391609394485, guid: 4f39778b7acd8cf4690e5e7fac5bb23d,
+        type: 3}
+      propertyPath: m_Center.z
+      value: -0.09051763
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

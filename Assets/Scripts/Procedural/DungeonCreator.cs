@@ -11,9 +11,13 @@ public class DungeonCreator : MonoBehaviour
     public GameObject xrRig;
 
     public GameObject[] rooms;
+    public GameObject[] roomsDaltonic;
     public GameObject[] connectors;
+    public GameObject[] connectorsDaltonic;
     public GameObject initialRoom;
+    public GameObject initialRoomDaltonic;
     public GameObject doorPrefab;
+    public GameObject doorPrefabDaltonic;
 
     public int minRooms = 6;
     public int maxRooms = 10;
@@ -44,6 +48,8 @@ public class DungeonCreator : MonoBehaviour
 
     private bool roomCreated = false;
 
+    private List<GameObject> spawnedStatues = new List<GameObject>();
+
     public class ExitPoint
     {
         public Transform exitTransform;  // Transform de la salida
@@ -58,6 +64,15 @@ public class DungeonCreator : MonoBehaviour
 
     public bool GenerateDungeonWithResult()
     {
+        // Revisa si el modo daltonic está activado
+        if (GameManager.Instance != null && GameManager.Instance.isColorBlindModeOn)
+        {
+            rooms = roomsDaltonic;
+            connectors = connectorsDaltonic;
+            initialRoom = initialRoomDaltonic;
+            doorPrefab = doorPrefabDaltonic;
+        }
+
         bool isCreated = GenerateDungeon();
         PlaceDoorsOnUnconnectedExits();
 
@@ -77,6 +92,8 @@ public class DungeonCreator : MonoBehaviour
         {
             Debug.LogWarning("No se encontró un objeto XRRig en la escena.");
         }
+
+        PlacePortalAtFarthestStatue();
 
         return isCreated;
     }
@@ -474,20 +491,21 @@ public class DungeonCreator : MonoBehaviour
         {
             Debug.Log("No se instanció storage en storageSpawn.");
         }
-
         if (statueSpawn && Random.value < 0.7f && statuesList.Count > 0)
         {
             Debug.Log("Instanciando estatua en statueSpawn.");
             GameObject statuePrefab = statuesList[Random.Range(0, statuesList.Count)];
 
-            // Usar la rotación original del prefab
-            Instantiate(statuePrefab, statueSpawn.position, statuePrefab.transform.rotation);
+            // Guarda la referencia de la estatua que instancias
+            GameObject newStatue = Instantiate(statuePrefab, statueSpawn.position, statuePrefab.transform.rotation);
+
+            // Añade la estatua a la lista
+            spawnedStatues.Add(newStatue);
         }
         else
         {
             Debug.Log("No se instanció estatua en statueSpawn.");
         }
-
         if (decorationSpawn && Random.value < 0.8f && decorationList.Count > 0)
         {
             Debug.Log("Instanciando decoración en decorationSpawn.");
@@ -657,6 +675,98 @@ public class DungeonCreator : MonoBehaviour
         // Position the room so that roomExit.position matches targetExit.position
         Vector3 positionOffset = targetExit.position - roomExit.position;
         room.transform.position += positionOffset;
+    }
+
+    private void PlacePortalAtFarthestStatue()
+    {
+        // Asegurarnos de que al menos existe una estatua y un prefab de portal
+        if (spawnedStatues.Count == 0 || portalList.Count == 0)
+        {
+            Debug.LogWarning("No hay estatuas o no hay portales en la lista.");
+            return;
+        }
+
+        // La primera sala que instanciaste es la sala inicial
+        // Suponiendo que 'spawnedRooms[0]' es "RoomInitial.1" o su instancia
+        GameObject initialRoomInstance = spawnedRooms[0]; 
+        Vector3 initialPos = initialRoomInstance.transform.position;
+
+        // Buscar la estatua más lejana
+        GameObject farthestStatue = null;
+        float maxDistance = -1f;
+
+        foreach (var statue in spawnedStatues)
+        {
+            if (statue == null) continue; // por seguridad, si algo fue destruido ya
+
+            float dist = Vector3.Distance(statue.transform.position, initialPos);
+            if (dist > maxDistance)
+            {
+                maxDistance = dist;
+                farthestStatue = statue;
+            }
+        }
+
+        if (farthestStatue != null)
+        {
+            // Guardamos la posición y rotación de la estatua antes de destruirla
+            Vector3 statuePos = farthestStatue.transform.position;
+            Quaternion statueRot = farthestStatue.transform.rotation;
+
+            // Destruimos la estatua
+            Destroy(farthestStatue);
+            spawnedStatues.Remove(farthestStatue); // opcional, para limpiar la lista
+
+            // Instanciar el portal en esa posición
+            // Si quieres uno aleatorio de la lista, haz Random.Range(0, portalList.Count).
+            // Aquí cojo el primero, por ejemplo:
+            GameObject portalPrefab = portalList[0];
+            Instantiate(portalPrefab, statuePos, statueRot);
+
+            Debug.Log("Portal colocado en la posición de la estatua más lejana.");
+        }
+        else
+        {
+            Debug.Log("No se encontró ninguna estatua para reemplazar por el portal.");
+        }
+    }
+
+    private bool AreDoorsInRangeOfRoomInitial(float range)
+    {
+        // Intentamos localizar en la escena el objeto "RoomInitial.1"
+        GameObject initialRoomObj = GameObject.Find("RoomInitial.1");
+        if (initialRoomObj == null)
+        {
+            Debug.LogWarning("No se encontró en escena un objeto con nombre RoomInitial.1");
+            return false; // O return true si prefieres forzar que no ponga portal al no encontrarlo
+        }
+
+        // Obtenemos su posición X
+        float xInit = initialRoomObj.transform.position.x;
+        float leftLimit = xInit - range;
+        float rightLimit = xInit + range;
+
+        // Buscamos todos los objetos para ver si alguno se llama "door" (ignora mayúsculas)
+        GameObject[] allObjects = FindObjectsOfType<GameObject>();
+        foreach (GameObject obj in allObjects)
+        {
+            if (obj.name.ToLower().Contains("door"))
+            {
+                float doorX = obj.transform.position.x;
+                // Verificamos si su X está dentro del [xInit-range, xInit+range]
+                if (doorX >= leftLimit && doorX <= rightLimit)
+                {
+                    Debug.Log(
+                        $"¡Puerta detectada en X={doorX}, rango=({leftLimit} .. {rightLimit}). " +
+                        $"Cerca de RoomInitial.1 en ±{range}!"
+                    );
+                    return true;  // Encontramos al menos una puerta en ese rango
+                }
+            }
+        }
+
+        // No se encontró ninguna puerta dentro de ese rango de X
+        return false;
     }
 
 }

@@ -5,10 +5,11 @@ public class PortalTrigger : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
+        // Asegúrate de que tu XR Rig o personaje tenga la tag "Player"
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Player detectado");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            Debug.Log("Player detectado. Cargando la escena FinalRoom...");
+            SceneManager.LoadScene("FinalRoom");
         }
     }
 }
