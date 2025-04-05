@@ -3373,7 +3373,8 @@ PrefabInstance:
       propertyPath: m_Center.z
       value: 0.02969749
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 943732233001172890, guid: 2ff76e5c137430c4c8ccbba0b8c02f42, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -4661,7 +4662,8 @@ PrefabInstance:
       propertyPath: m_Center.z
       value: 0.02969749
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 943732233001172890, guid: 2ff76e5c137430c4c8ccbba0b8c02f42, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -6893,7 +6895,8 @@ PrefabInstance:
       propertyPath: m_Center.z
       value: 0.02969749
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 943732233001172890, guid: 2ff76e5c137430c4c8ccbba0b8c02f42, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -7907,7 +7910,8 @@ PrefabInstance:
       propertyPath: m_Center.z
       value: 0.02969749
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 943732233001172890, guid: 2ff76e5c137430c4c8ccbba0b8c02f42, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

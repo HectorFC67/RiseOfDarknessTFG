@@ -265,7 +265,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: c16a5c1bd1c5aa849a0a23dd8b35bffb,
         type: 3}
       propertyPath: m_Name
-      value: Ninja
+      value: NinjaRagdol
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c16a5c1bd1c5aa849a0a23dd8b35bffb,
         type: 3}
@@ -461,10 +461,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -6839009397269297267, guid: c16a5c1bd1c5aa849a0a23dd8b35bffb,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 943732233001172890}
-    - targetCorrespondingSourceObject: {fileID: -6839009397269297267, guid: c16a5c1bd1c5aa849a0a23dd8b35bffb,
-        type: 3}
-      insertIndex: -1
       addedObject: {fileID: 4568245887104026384}
     - targetCorrespondingSourceObject: {fileID: -6839009397269297267, guid: c16a5c1bd1c5aa849a0a23dd8b35bffb,
         type: 3}
@@ -646,6 +642,9 @@ MonoBehaviour:
   detectionRadius: 15
   viewAngle: 60
   chaseSpeed: 3.6
+  attackRange: 2
+  animator: {fileID: 0}
+  slashAnimationDuration: 1.08
 --- !u!1 &171470928650675478 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1082271958561512970, guid: c16a5c1bd1c5aa849a0a23dd8b35bffb,
@@ -1024,18 +1023,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 964948421597952796}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &943732233001172890
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3202862296441289873}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d650e8596d1a4834a976a2b5c6ff4c7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!33 &4568245887104026384
 MeshFilter:
   m_ObjectHideFlags: 0

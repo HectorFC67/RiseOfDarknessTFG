@@ -1132,6 +1132,8 @@ MonoBehaviour:
   - {fileID: 5128254484241848099, guid: 4f39778b7acd8cf4690e5e7fac5bb23d, type: 3}
   enemiesList:
   - {fileID: 118578669540492877, guid: 2ff76e5c137430c4c8ccbba0b8c02f42, type: 3}
+  ragdollEnemiesList:
+  - {fileID: 118578669540492877, guid: 515536e0de0cc6845af01f6725c729a4, type: 3}
   navMeshSurface: {fileID: 1138385872}
 --- !u!1 &502989396
 GameObject:

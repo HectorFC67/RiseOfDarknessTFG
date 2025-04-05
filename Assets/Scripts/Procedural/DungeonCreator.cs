@@ -30,7 +30,11 @@ public class DungeonCreator : MonoBehaviour
     public List<GameObject> decorationList;
     public List<GameObject> portalList;
 
-    public List<GameObject> enemiesList;
+    [Header("Enemigos")]
+    public List<GameObject> enemiesList;        // Para slice = true
+    public List<GameObject> ragdollEnemiesList; // Para slice = false
+
+    private List<GameObject> currentEnemiesList;
 
     [Header("NavMesh")]
     public NavMeshSurface navMeshSurface;
@@ -73,6 +77,25 @@ public class DungeonCreator : MonoBehaviour
             doorPrefab = doorPrefabDaltonic;
         }
 
+        // Elegir la lista de enemigos según slice
+        if (GameManager.Instance != null)
+        {
+            if (GameManager.Instance.slice)
+            {
+                currentEnemiesList = enemiesList;
+            }
+            else
+            {
+                currentEnemiesList = ragdollEnemiesList;
+            }
+        }
+        else
+        {
+            // Por si no hay GameManager, usa una por defecto o deja en null
+            currentEnemiesList = enemiesList;
+            Debug.LogWarning("GameManager.Instance es null, se usará enemiesList por defecto.");
+        }
+
         bool isCreated = GenerateDungeon();
         PlaceDoorsOnUnconnectedExits();
 
@@ -92,6 +115,8 @@ public class DungeonCreator : MonoBehaviour
         {
             Debug.LogWarning("No se encontró un objeto XRRig en la escena.");
         }
+
+        RemoveDoorsInRangeOfRoomInitial(1f);
 
         PlacePortalAtFarthestStatue();
 
@@ -176,19 +201,23 @@ public class DungeonCreator : MonoBehaviour
 
     void TrySpawnEnemy(GameObject room)
     {
-        if (enemiesList.Count > 0 && Random.value < enemySpawnChance)
+        if (currentEnemiesList != null
+            && currentEnemiesList.Count > 0
+            && Random.value < enemySpawnChance)
         {
+            // Buscar un transform "enemySpawn" en la sala
             Transform enemySpawnPoint = room.transform.Find("enemySpawn");
 
             if (enemySpawnPoint)
             {
-                GameObject enemyPrefab = enemiesList[Random.Range(0, enemiesList.Count)];
+                // Instanciar enemigo (sea normal o ragdoll) según la lista seleccionada
+                GameObject enemyPrefab = currentEnemiesList[Random.Range(0, currentEnemiesList.Count)];
                 Instantiate(enemyPrefab, enemySpawnPoint.position, Quaternion.identity);
-                Debug.Log("Enemigo generado.");
+                Debug.Log("Enemigo generado con prefab: " + enemyPrefab.name);
             }
         }
 
-        // Incrementar la probabilidad de spawn de enemigos, pero no exceder el límite máximo
+        // Incrementar la probabilidad para la siguiente sala, con tope max
         enemySpawnChance = Mathf.Min(enemySpawnChance + spawnIncreasePerRoom, maxEnemySpawnChance);
         Debug.Log($"Probabilidad de spawnear enemigo incrementada a: {enemySpawnChance * 100}%");
     }
@@ -731,42 +760,50 @@ public class DungeonCreator : MonoBehaviour
         }
     }
 
-    private bool AreDoorsInRangeOfRoomInitial(float range)
+    private void RemoveDoorsInRangeOfRoomInitial(float range)
     {
-        // Intentamos localizar en la escena el objeto "RoomInitial.1"
+        // 1. Buscar el objeto "RoomInitial.1"
         GameObject initialRoomObj = GameObject.Find("RoomInitial.1");
         if (initialRoomObj == null)
         {
-            Debug.LogWarning("No se encontró en escena un objeto con nombre RoomInitial.1");
-            return false; // O return true si prefieres forzar que no ponga portal al no encontrarlo
+            Debug.LogWarning("No se encontró en escena un objeto con nombre 'RoomInitial.1'.");
+            return;
         }
 
-        // Obtenemos su posición X
+        // 2. Calcular límites (leftLimit, rightLimit)
         float xInit = initialRoomObj.transform.position.x;
         float leftLimit = xInit - range;
         float rightLimit = xInit + range;
 
-        // Buscamos todos los objetos para ver si alguno se llama "door" (ignora mayúsculas)
+        // 3. Recorrer todos los objetos para encontrar puertas
         GameObject[] allObjects = FindObjectsOfType<GameObject>();
+        List<GameObject> doorsInRange = new List<GameObject>();
+
         foreach (GameObject obj in allObjects)
         {
+            // Verifica si en el nombre contiene "door" (ignora mayúsculas)
             if (obj.name.ToLower().Contains("door"))
             {
                 float doorX = obj.transform.position.x;
-                // Verificamos si su X está dentro del [xInit-range, xInit+range]
+                // Si la puerta está dentro de [leftLimit, rightLimit], la almacenamos
                 if (doorX >= leftLimit && doorX <= rightLimit)
                 {
-                    Debug.Log(
-                        $"¡Puerta detectada en X={doorX}, rango=({leftLimit} .. {rightLimit}). " +
-                        $"Cerca de RoomInitial.1 en ±{range}!"
-                    );
-                    return true;  // Encontramos al menos una puerta en ese rango
+                    doorsInRange.Add(obj);
                 }
             }
         }
 
-        // No se encontró ninguna puerta dentro de ese rango de X
-        return false;
+        // 4. Si encontramos puertas en el rango, las destruimos todas
+        if (doorsInRange.Count > 0)
+        {
+            foreach (GameObject door in doorsInRange)
+            {
+                Destroy(door);
+            }
+            Debug.Log($"Se eliminaron {doorsInRange.Count} puertas cerca de RoomInitial.1 " +
+                      $"(rango X: {leftLimit} .. {rightLimit}).");
+        }
+
     }
 
 }
