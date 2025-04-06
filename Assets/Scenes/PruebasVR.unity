@@ -666,7 +666,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 6252886acb7c4754cbaaa3e2593f252e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.0113
+      value: 2.148
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6252886acb7c4754cbaaa3e2593f252e,
         type: 3}
@@ -3676,6 +3676,74 @@ MonoBehaviour:
     m_Reference: {fileID: 6558622148059887818, guid: c348712bda248c246b8c49b3db54643f,
       type: 3}
   handAnimator: {fileID: 1127697389}
+--- !u!1001 &1166316879
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 118578669540492877, guid: 2ff76e5c137430c4c8ccbba0b8c02f42,
+        type: 3}
+      propertyPath: m_Name
+      value: Ninja
+      objectReference: {fileID: 0}
+    - target: {fileID: 787731943412604151, guid: 2ff76e5c137430c4c8ccbba0b8c02f42,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.033835
+      objectReference: {fileID: 0}
+    - target: {fileID: 787731943412604151, guid: 2ff76e5c137430c4c8ccbba0b8c02f42,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.42040682
+      objectReference: {fileID: 0}
+    - target: {fileID: 787731943412604151, guid: 2ff76e5c137430c4c8ccbba0b8c02f42,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.805
+      objectReference: {fileID: 0}
+    - target: {fileID: 787731943412604151, guid: 2ff76e5c137430c4c8ccbba0b8c02f42,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 787731943412604151, guid: 2ff76e5c137430c4c8ccbba0b8c02f42,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 787731943412604151, guid: 2ff76e5c137430c4c8ccbba0b8c02f42,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 787731943412604151, guid: 2ff76e5c137430c4c8ccbba0b8c02f42,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 787731943412604151, guid: 2ff76e5c137430c4c8ccbba0b8c02f42,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 787731943412604151, guid: 2ff76e5c137430c4c8ccbba0b8c02f42,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 787731943412604151, guid: 2ff76e5c137430c4c8ccbba0b8c02f42,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2ff76e5c137430c4c8ccbba0b8c02f42, type: 3}
 --- !u!1 &1206488041
 GameObject:
   m_ObjectHideFlags: 0
@@ -7757,6 +7825,79 @@ MonoBehaviour:
     m_HintWeight: 1
     m_MaintainTargetPositionOffset: 0
     m_MaintainTargetRotationOffset: 0
+--- !u!1001 &2071317447
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 118578669540492877, guid: 515536e0de0cc6845af01f6725c729a4,
+        type: 3}
+      propertyPath: m_Name
+      value: NinjaRagdol
+      objectReference: {fileID: 0}
+    - target: {fileID: 787731943412604151, guid: 515536e0de0cc6845af01f6725c729a4,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.56
+      objectReference: {fileID: 0}
+    - target: {fileID: 787731943412604151, guid: 515536e0de0cc6845af01f6725c729a4,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.42040682
+      objectReference: {fileID: 0}
+    - target: {fileID: 787731943412604151, guid: 515536e0de0cc6845af01f6725c729a4,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.284
+      objectReference: {fileID: 0}
+    - target: {fileID: 787731943412604151, guid: 515536e0de0cc6845af01f6725c729a4,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 787731943412604151, guid: 515536e0de0cc6845af01f6725c729a4,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 787731943412604151, guid: 515536e0de0cc6845af01f6725c729a4,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 787731943412604151, guid: 515536e0de0cc6845af01f6725c729a4,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 787731943412604151, guid: 515536e0de0cc6845af01f6725c729a4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 787731943412604151, guid: 515536e0de0cc6845af01f6725c729a4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 787731943412604151, guid: 515536e0de0cc6845af01f6725c729a4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151784350687211047, guid: 515536e0de0cc6845af01f6725c729a4,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 7effdd9bbd0cf8741af11975c990dda4, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 515536e0de0cc6845af01f6725c729a4, type: 3}
 --- !u!1001 &2107810490
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8095,7 +8236,7 @@ PrefabInstance:
     - target: {fileID: 118578669540492877, guid: 2ff76e5c137430c4c8ccbba0b8c02f42,
         type: 3}
       propertyPath: m_Name
-      value: Ninja
+      value: Ninja1
       objectReference: {fileID: 0}
     - target: {fileID: 118578669540492877, guid: 2ff76e5c137430c4c8ccbba0b8c02f42,
         type: 3}
@@ -8281,3 +8422,5 @@ SceneRoots:
   - {fileID: 516019702}
   - {fileID: 7507032}
   - {fileID: 259396968396019160}
+  - {fileID: 2071317447}
+  - {fileID: 1166316879}
