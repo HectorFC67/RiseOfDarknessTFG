@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Crate
+  - Stick
+  - Weapon
+  - EnemyWeapon
   layers:
   - Default
   - TransparentFX
