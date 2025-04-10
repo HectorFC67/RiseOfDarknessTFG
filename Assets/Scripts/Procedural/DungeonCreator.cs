@@ -7,22 +7,26 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class DungeonCreator : MonoBehaviour
 {
-    [Header("Referencia al XR")]
+    [Header("Reference XR")]
     public GameObject xrRig;
 
+    [Header("Dungeon Elements")]
     public GameObject[] rooms;
     public GameObject[] roomsDaltonic;
     public GameObject[] connectors;
     public GameObject[] connectorsDaltonic;
     public GameObject initialRoom;
+    public GameObject initialRoomStick;
     public GameObject initialRoomDaltonic;
+    public GameObject initialRoomDaltonicStick;
     public GameObject doorPrefab;
     public GameObject doorPrefabDaltonic;
 
+    [Header("Dungeon Size")]
     public int minRooms = 6;
     public int maxRooms = 10;
 
-    // Listas públicas para los objetos de decoración
+    [Header("Dungeon Decoration")]
     public List<GameObject> paintsList;
     public List<GameObject> weaponsList;
     public List<GameObject> storageList;
@@ -30,21 +34,21 @@ public class DungeonCreator : MonoBehaviour
     public List<GameObject> decorationList;
     public List<GameObject> portalList;
 
-    [Header("Enemigos")]
+    [Header("Enemies")]
     public List<GameObject> enemiesList;        // Para slice = true
     public List<GameObject> ragdollEnemiesList; // Para slice = false
-
     private List<GameObject> currentEnemiesList;
 
     [Header("NavMesh")]
     public NavMeshSurface navMeshSurface;
-    // Probabilidad inicial de spawnear enemigos (20%)
+
+    // Probabilidad inicial de spawnear enemigos
     private float enemySpawnChance = 0.9f;
 
     // Incremento de probabilidad por cada sala generada
     private float spawnIncreasePerRoom = 0.05f;
 
-    // Límite máximo de probabilidad de aparición de enemigos (90%)
+    // Límite máximo de probabilidad de aparición de enemigos
     private float maxEnemySpawnChance = 0.9f;
 
     private List<GameObject> spawnedRooms = new List<GameObject>();
@@ -68,45 +72,66 @@ public class DungeonCreator : MonoBehaviour
 
     public bool GenerateDungeonWithResult()
     {
-        // Revisa si el modo daltonic está activado
-        if (GameManager.Instance != null && GameManager.Instance.isColorBlindModeOn)
-        {
-            rooms = roomsDaltonic;
-            connectors = connectorsDaltonic;
-            initialRoom = initialRoomDaltonic;
-            doorPrefab = doorPrefabDaltonic;
-        }
-
-        // Elegir la lista de enemigos según slice
+        // Asegurarnos de que existe GameManager
         if (GameManager.Instance != null)
         {
-            if (GameManager.Instance.slice)
+            bool isDaltonic = GameManager.Instance.isColorBlindModeOn;
+            bool slice = GameManager.Instance.slice;
+
+            if (isDaltonic)
             {
-                currentEnemiesList = enemiesList;
+                // Usar la versión daltónica de rooms, connectors y doors
+                rooms = roomsDaltonic;
+                connectors = connectorsDaltonic;
+                doorPrefab = doorPrefabDaltonic;
+
+                if (slice)
+                {
+                    initialRoom = initialRoomDaltonic;
+                }
+                else
+                {
+                    initialRoom = initialRoomDaltonicStick;
+                }
             }
             else
             {
-                currentEnemiesList = ragdollEnemiesList;
+                // Modo NO daltónico
+                if (slice)
+                {
+                    initialRoom = initialRoom;
+                }
+                else
+                {
+                    initialRoom = initialRoomStick;
+                }
+            }
+
+            // Elegimos la lista de enemigos
+            if (slice)
+            {
+                currentEnemiesList = enemiesList; // enemigos normales
+            }
+            else
+            {
+                currentEnemiesList = ragdollEnemiesList; // enemigos ragdoll
             }
         }
         else
         {
-            // Por si no hay GameManager, usa una por defecto o deja en null
+            Debug.LogWarning("GameManager.Instance es null, se usarán valores por defecto.");
             currentEnemiesList = enemiesList;
-            Debug.LogWarning("GameManager.Instance es null, se usará enemiesList por defecto.");
         }
 
         bool isCreated = GenerateDungeon();
         PlaceDoorsOnUnconnectedExits();
 
-        // Al final de la generación, "horneamos" el NavMesh
         if (navMeshSurface)
         {
             navMeshSurface.BuildNavMesh();
             Debug.Log("NavMesh reconstruido tras generar el dungeon.");
         }
 
-        // Mover el XR al (0,0,0)
         if (xrRig != null)
         {
             xrRig.transform.position = Vector3.zero;
@@ -117,7 +142,6 @@ public class DungeonCreator : MonoBehaviour
         }
 
         RemoveDoorsInRangeOfRoomInitial(1f);
-
         PlacePortalAtFarthestStatue();
 
         return isCreated;

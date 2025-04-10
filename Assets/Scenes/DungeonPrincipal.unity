@@ -1062,7 +1062,11 @@ MonoBehaviour:
   - {fileID: 4042424014282950550, guid: 2c1bfb1c0eb453c4895411e031ab6476, type: 3}
   initialRoom: {fileID: 3478340288055043626, guid: 51ba939b9d0db1847b13cd2fc6af0010,
     type: 3}
+  initialRoomStick: {fileID: 3478340288055043626, guid: 15420a7a59479d5449c51fd5a07dc200,
+    type: 3}
   initialRoomDaltonic: {fileID: 3478340288055043626, guid: 99a1a92e388b68f48bf9c6dd158969d8,
+    type: 3}
+  initialRoomDaltonicStick: {fileID: 3478340288055043626, guid: b367ca3b61f3693439a1241afecc3a8d,
     type: 3}
   doorPrefab: {fileID: 6658434227317661579, guid: 4db538e79bef69d489befeb81a8cdb6a,
     type: 3}
