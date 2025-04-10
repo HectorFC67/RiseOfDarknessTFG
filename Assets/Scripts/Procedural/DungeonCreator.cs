@@ -10,7 +10,6 @@ public class DungeonCreator : MonoBehaviour
     [Header("Referencia al XR")]
     public GameObject xrRig;
 
-    [Header("Dungeon")]
     public GameObject[] rooms;
     public GameObject[] roomsDaltonic;
     public GameObject[] connectors;
@@ -19,18 +18,13 @@ public class DungeonCreator : MonoBehaviour
     public GameObject initialRoomDaltonic;
     public GameObject doorPrefab;
     public GameObject doorPrefabDaltonic;
+
     public int minRooms = 6;
     public int maxRooms = 10;
 
-    [Header("Weapons")]
-    public List<GameObject> weaponsList; // para stick = false
-    public List<GameObject> weaponStickList;  // para stick = true
-
-    private List<GameObject> selectedWeaponList;
-
     // Listas públicas para los objetos de decoración
-    [Header("Decoration")]
     public List<GameObject> paintsList;
+    public List<GameObject> weaponsList;
     public List<GameObject> storageList;
     public List<GameObject> statuesList;
     public List<GameObject> decorationList;
@@ -102,16 +96,6 @@ public class DungeonCreator : MonoBehaviour
             Debug.LogWarning("GameManager.Instance es null, se usará enemiesList por defecto.");
         }
 
-        // --- Elegir lista de armas según stick
-        if (GameManager.Instance != null && GameManager.Instance.stick)
-        {
-            selectedWeaponList = weaponStickList;
-        }
-        else
-        {
-            selectedWeaponList = weaponsList;
-        }
-
         bool isCreated = GenerateDungeon();
         PlaceDoorsOnUnconnectedExits();
 
@@ -135,29 +119,6 @@ public class DungeonCreator : MonoBehaviour
         RemoveDoorsInRangeOfRoomInitial(1f);
 
         PlacePortalAtFarthestStatue();
-
-        // Spawn de arma en InitialRoom
-        Transform spawnPoint = GameObject.Find("weaponInitialSpawn")?.transform;
-        if (spawnPoint == null)
-        {
-            Debug.LogWarning("No se encontró un GameObject llamado 'weaponInitialSpawn' en la escena.");
-        }
-        else
-        {
-            if (selectedWeaponList != null && selectedWeaponList.Count > 0)
-            {
-                int randomIndex = Random.Range(0, selectedWeaponList.Count);
-                GameObject weaponPrefab = selectedWeaponList[randomIndex];
-
-                Instantiate(weaponPrefab, spawnPoint.position, spawnPoint.rotation);
-                Debug.Log("Se ha instanciado un arma en 'weaponInitialSpawn' (" +
-                          "stick = " + GameManager.Instance.stick + ").");
-            }
-            else
-            {
-                Debug.LogWarning("La lista de armas está vacía o es nula.");
-            }
-        }
 
         return isCreated;
     }
@@ -532,10 +493,28 @@ public class DungeonCreator : MonoBehaviour
             Debug.Log("No se instanció pintura en paintsSpawn.");
         }
 
-        if (storageSpawn && Random.value < 0.8f && storageList.Count > 0)
+        if (storageSpawn && Random.value < 0.5f && storageList.Count > 0)
         {
             Debug.Log("Instanciando storage en storageSpawn.");
             GameObject storageItem = Instantiate(storageList[Random.Range(0, storageList.Count)], storageSpawn.position, Quaternion.identity);
+
+            // Instanciar arma dentro del storage
+            Transform weaponSpawn = storageItem.transform.Find("weaponSpawn");
+            if (weaponSpawn && weaponsList.Count > 0)
+            {
+                Debug.Log("Instanciando arma dentro del storage en weaponSpawn.");
+
+                // Toma la rotación del weaponSpawn para instanciar el arma
+                GameObject weapon = Instantiate(
+                    weaponsList[Random.Range(0, weaponsList.Count)],
+                    weaponSpawn.position,
+                    weaponSpawn.rotation
+                );
+            }
+            else
+            {
+                Debug.Log("No se instanció arma en weaponSpawn dentro del storage.");
+            }
         }
         else
         {

@@ -14,9 +14,7 @@ public class SliceObject : MonoBehaviour
     public Material crossSection;
     public float cutForce = 2000;
 
-    [Header("Armas para spawn en Crates")]
-    public List<GameObject> randomWeapons;        // Armas normales
-    public List<GameObject> randomWeaponsStick;   // Armas para modo stick
+    public List<GameObject> randomWeapons;
 
     void FixedUpdate()
     {
@@ -51,7 +49,9 @@ public class SliceObject : MonoBehaviour
         }
     }
 
-    // Desactiva (si existe) la IA del enemigo.
+    /// <summary>
+    /// Desactiva (si existe) la IA del enemigo.
+    /// </summary>
     public void DeactivateEnemyAI(GameObject target)
     {
         RandomMovement enemyAI = target.GetComponent<RandomMovement>();
@@ -62,7 +62,9 @@ public class SliceObject : MonoBehaviour
         }
     }
 
-    // Activa el ragdoll en el target y su padre, desactiva animación y AI.
+    /// <summary>
+    /// Activa el ragdoll en el target y su padre, desactiva animación y AI.
+    /// </summary>
     public void ActivateRagdoll(GameObject target)
     {
         // 1. Desactivar RandomMovement en el padre, si existiera
@@ -103,8 +105,10 @@ public class SliceObject : MonoBehaviour
         Debug.Log("✅ Ragdoll activado en el enemigo.");
     }
 
-    // Realiza el corte usando EzySlice en el objeto "objectToSlice".
-    // El parámetro "originalRoot" se usa para checks como el tag "Crate", o para destruir el root.
+    /// <summary>
+    /// Realiza el corte usando EzySlice en el objeto "objectToSlice".
+    /// El parámetro "originalRoot" se usa para checks como el tag "Crate", o para destruir el root.
+    /// </summary>
     public void Slice(GameObject objectToSlice, GameObject originalRoot)
     {
         if (objectToSlice == null)
@@ -125,31 +129,15 @@ public class SliceObject : MonoBehaviour
         if (hull != null)
         {
             // Si el root original tiene el tag "Crate", generamos un arma aleatoria
-            if (originalRoot.CompareTag("Crate"))
+            if (originalRoot.CompareTag("Crate") && randomWeapons != null && randomWeapons.Count > 0)
             {
-                // 1) Decidir la lista final según GameManager.Instance.stick
-                List<GameObject> finalWeaponList = randomWeapons; // Por defecto
+                Vector3 spawnPos = originalRoot.transform.position;
+                Quaternion spawnRot = originalRoot.transform.rotation;
 
-                if (GameManager.Instance != null && GameManager.Instance.stick)
-                {
-                    finalWeaponList = randomWeaponsStick;  // Si Stick = true, usar la lista de stick
-                }
+                int randomIndex = Random.Range(0, randomWeapons.Count);
+                Instantiate(randomWeapons[randomIndex], spawnPos, spawnRot);
 
-                // 2) Instanciar arma aleatoria
-                if (finalWeaponList != null && finalWeaponList.Count > 0)
-                {
-                    Vector3 spawnPos = originalRoot.transform.position;
-                    Quaternion spawnRot = originalRoot.transform.rotation;
-
-                    int randomIndex = Random.Range(0, finalWeaponList.Count);
-                    Instantiate(finalWeaponList[randomIndex], spawnPos, spawnRot);
-
-                    Debug.Log("✅ Crate cortado: se ha instanciado un arma (modo stick=" + GameManager.Instance.stick + ").");
-                }
-                else
-                {
-                    Debug.LogWarning("❌ No hay armas en la lista seleccionada o es null.");
-                }
+                Debug.Log("✅ Crate cortado: se ha instanciado un arma aleatoria.");
             }
 
             // Creamos las dos partes
@@ -173,7 +161,9 @@ public class SliceObject : MonoBehaviour
         }
     }
 
-    // Añade RigidBody, MeshCollider y fuerza de "explosión" a cada parte.
+    /// <summary>
+    /// Añade RigidBody, MeshCollider y fuerza de "explosión" a cada parte.
+    /// </summary>
     public void SetupSlicedComponent(GameObject slicedObject)
     {
         if (slicedObject == null)
@@ -201,7 +191,9 @@ public class SliceObject : MonoBehaviour
         Debug.Log("✅ SetupSlicedComponent() - Se agregó Rigidbody y MeshCollider correctamente.");
     }
 
-    // Copia la posición, rotación y escala del objeto original al nuevo trozo cortado.
+    /// <summary>
+    /// Copia la posición, rotación y escala del objeto original al nuevo trozo cortado.
+    /// </summary>
     private void ApplyOriginalTransform(GameObject original, GameObject slicedPart)
     {
         if (original == null || slicedPart == null) return;
