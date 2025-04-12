@@ -1939,6 +1939,7 @@ GameObject:
   - component: {fileID: 837693372}
   - component: {fileID: 837693371}
   - component: {fileID: 837693370}
+  - component: {fileID: 837693377}
   m_Layer: 10
   m_Name: XR Origin (XR Rig)
   m_TagString: Player
@@ -2136,6 +2137,19 @@ MonoBehaviour:
   m_CameraFloorOffsetObject: {fileID: 1791409436}
   m_RequestedTrackingOriginMode: 2
   m_CameraYOffset: 1.1176
+--- !u!114 &837693377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837693368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0467702de687d54c88b8c1d37bd8a27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxLives: 3
 --- !u!1 &846496214
 GameObject:
   m_ObjectHideFlags: 0
@@ -6657,7 +6671,7 @@ MonoBehaviour:
   isFullBodyModeOn: 0
   isBGMusicOn: 1
   isAnimSoundOn: 1
-  gameDifficulty: 2
+  selectedDifficulty: 2
   slice: 1
   stick: 0
   familyFriendly: 0

@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     public bool isBGMusicOn = true;
     public bool isAnimSoundOn = true;
 
-    public int gameDifficulty = 2;   // Por ejemplo: 0=Peaceful, 1=Easy, 2=Normal, 3=Hard, 4=Extreme
+    public int selectedDifficulty = 2; // 0=Peaceful, 1=Easy, 2=Normal, 3=Hard, 4=Extreme
     public bool slice = true;        // Opción "Slice"
     public bool stick = false;       // Opción "Stick"
     public bool familyFriendly = false;

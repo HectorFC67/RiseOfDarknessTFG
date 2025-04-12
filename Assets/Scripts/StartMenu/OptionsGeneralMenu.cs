@@ -67,7 +67,7 @@ public class OptionsGeneralMenu : MonoBehaviour
         bgMusicToggle.isOn           = GameManager.Instance.isBGMusicOn;
         animSoundToggle.isOn         = GameManager.Instance.isAnimSoundOn;
 
-        difficultyDropdown.SetValueWithoutNotify(GameManager.Instance.gameDifficulty);
+        difficultyDropdown.SetValueWithoutNotify(GameManager.Instance.selectedDifficulty);
         sliceToggle.isOn             = GameManager.Instance.slice;
         stickToggle.isOn             = GameManager.Instance.stick;
         familyFriendlyToggle.isOn    = GameManager.Instance.familyFriendly;
@@ -103,7 +103,7 @@ public class OptionsGeneralMenu : MonoBehaviour
         ApplyBGMusic(GameManager.Instance.isBGMusicOn);
         ApplyAnimSound(GameManager.Instance.isAnimSoundOn);
 
-        ApplyDifficulty(GameManager.Instance.gameDifficulty);
+        ApplyDifficulty(GameManager.Instance.selectedDifficulty);
         ApplyFamilyFriendly(GameManager.Instance.familyFriendly);
         ApplySlice(GameManager.Instance.slice);
         ApplyStick(GameManager.Instance.stick);
@@ -157,7 +157,7 @@ public class OptionsGeneralMenu : MonoBehaviour
     // -------------------------------------------------------------------------
     private void OnDifficultyChanged(int value)
     {
-        GameManager.Instance.gameDifficulty = value;
+        GameManager.Instance.selectedDifficulty = value;
         ApplyDifficulty(value);
     }
 
@@ -256,8 +256,13 @@ public class OptionsGeneralMenu : MonoBehaviour
             case 3: textDiff = "Hard"; break;
             case 4: textDiff = "Extreme"; break;
         }
+
+        // Guardar la dificultad en el GameManager
+        GameManager.Instance.selectedDifficulty = difficultyValue;
+
         Debug.Log($"[OptionsGeneralMenu] Difficulty => {textDiff}");
     }
+
 
     private void ApplySlice(bool value)
     {

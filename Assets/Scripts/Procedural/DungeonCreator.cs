@@ -116,6 +116,40 @@ public class DungeonCreator : MonoBehaviour
             {
                 currentEnemiesList = ragdollEnemiesList; // enemigos ragdoll
             }
+            // Ajustar dificultad
+            switch (GameManager.Instance.selectedDifficulty)
+            {
+                case 0: // Peaceful
+                    minRooms = 6;
+                    maxRooms = 8;
+                    enemySpawnChance = 0f;     // Sin enemigos
+                    spawnIncreasePerRoom = 0f; // No aumenta
+                    break;
+                case 1: // Easy
+                    minRooms = 8;
+                    maxRooms = 12;
+                    enemySpawnChance = 0.3f;   // Comienzo con prob. baja
+                    spawnIncreasePerRoom = 0.05f;
+                    break;
+                case 2: // Normal
+                    minRooms = 10;
+                    maxRooms = 15;
+                    enemySpawnChance = 0.5f;
+                    spawnIncreasePerRoom = 0.07f;
+                    break;
+                case 3: // Hard
+                    minRooms = 12;
+                    maxRooms = 18;
+                    enemySpawnChance = 0.7f;
+                    spawnIncreasePerRoom = 0.09f;
+                    break;
+                case 4: // Extreme
+                    minRooms = 15;
+                    maxRooms = 20;
+                    enemySpawnChance = 0.9f;   // Muy alta
+                    spawnIncreasePerRoom = 0.12f;
+                    break;
+            }
         }
         else
         {
