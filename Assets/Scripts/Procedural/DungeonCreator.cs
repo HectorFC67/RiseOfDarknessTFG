@@ -263,15 +263,30 @@ public class DungeonCreator : MonoBehaviour
             && currentEnemiesList.Count > 0
             && Random.value < enemySpawnChance)
         {
-            // Buscar un transform "enemySpawn" en la sala
-            Transform enemySpawnPoint = room.transform.Find("enemySpawn");
-
-            if (enemySpawnPoint)
+            // Buscar *todos* los transforms que contengan "enemySpawn" en el nombre
+            List<Transform> spawnPoints = new List<Transform>();
+            foreach (Transform child in room.GetComponentsInChildren<Transform>())
             {
+                if (child.name.ToLower().Contains("enemyspawn"))
+                {
+                    spawnPoints.Add(child);
+                }
+            }
+
+            // Si hay al menos un spawn point, elige uno al azar
+            if (spawnPoints.Count > 0)
+            {
+                Transform chosenSpawn = spawnPoints[Random.Range(0, spawnPoints.Count)];
+
                 // Instanciar enemigo (sea normal o ragdoll) según la lista seleccionada
                 GameObject enemyPrefab = currentEnemiesList[Random.Range(0, currentEnemiesList.Count)];
-                Instantiate(enemyPrefab, enemySpawnPoint.position, Quaternion.identity);
-                Debug.Log("Enemigo generado con prefab: " + enemyPrefab.name);
+                Instantiate(enemyPrefab, chosenSpawn.position, chosenSpawn.rotation);
+
+                Debug.Log($"Enemigo '{enemyPrefab.name}' generado en el spawn: {chosenSpawn.name}");
+            }
+            else
+            {
+                Debug.Log("No se encontraron puntos de spawn de enemigos en esta sala.");
             }
         }
 
@@ -808,7 +823,7 @@ public class DungeonCreator : MonoBehaviour
             // Si quieres uno aleatorio de la lista, haz Random.Range(0, portalList.Count).
             // Aquí cojo el primero, por ejemplo:
             GameObject portalPrefab = portalList[0];
-            Instantiate(portalPrefab, statuePos, statueRot);
+            Instantiate(portalPrefab, statuePos, Quaternion.Euler(0f, 0f, 0f));
 
             Debug.Log("Portal colocado en la posición de la estatua más lejana.");
         }
