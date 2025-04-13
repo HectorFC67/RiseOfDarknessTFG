@@ -37,6 +37,7 @@ public class DungeonCreator : MonoBehaviour
     [Header("Enemies")]
     public List<GameObject> enemiesList;        // Para slice = true
     public List<GameObject> ragdollEnemiesList; // Para slice = false
+    public List<GameObject> enemiesFamilyFriendly; // lista Family Friendly
     private List<GameObject> currentEnemiesList;
 
     [Header("NavMesh")]
@@ -108,14 +109,24 @@ public class DungeonCreator : MonoBehaviour
             }
 
             // Elegimos la lista de enemigos
-            if (slice)
+            if (GameManager.Instance.familyFriendly)
             {
-                currentEnemiesList = enemiesList; // enemigos normales
+                // Si está en modo Family Friendly, usamos la lista
+                currentEnemiesList = enemiesFamilyFriendly;
             }
             else
             {
-                currentEnemiesList = ragdollEnemiesList; // enemigos ragdoll
+                // Si no, decidimos según el modo "slice"
+                if (slice)
+                {
+                    currentEnemiesList = enemiesList;
+                }
+                else
+                {
+                    currentEnemiesList = ragdollEnemiesList;
+                }
             }
+
             // Ajustar dificultad
             switch (GameManager.Instance.selectedDifficulty)
             {

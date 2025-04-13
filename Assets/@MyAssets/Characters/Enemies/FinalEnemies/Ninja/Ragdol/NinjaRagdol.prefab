@@ -638,10 +638,10 @@ MonoBehaviour:
   agent: {fileID: 8866339228504177038}
   range: 10
   centrePoint: {fileID: 787731943412604151}
-  patrolSpeed: 3
+  patrolSpeed: 1.5
   detectionRadius: 15
   viewAngle: 60
-  chaseSpeed: 3.6
+  chaseSpeed: 2
   attackRange: 2
   animator: {fileID: 0}
   slashAnimationDuration: 1.08
