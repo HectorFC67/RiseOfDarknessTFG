@@ -9,8 +9,17 @@ public class StartingChat : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            // Activa la UI de conversaci�n
+            // Activa la UI de conversación al entrar
             conversationCanvas.SetActive(true);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            // Desactiva la UI de conversación al salir
+            conversationCanvas.SetActive(false);
         }
     }
 }
