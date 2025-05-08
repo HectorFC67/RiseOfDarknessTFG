@@ -27953,12 +27953,12 @@ MonoBehaviour:
       m_Calls: []
   m_text: "In Rise of Darkness, you awaken as a lone captive trapped deep within
     a sprawling dungeon. \n\nWith only the echoes of dripping water and distant growls
-    for company, you must navigate through claustrophobic chambers, battling lurking
-    horrors while unraveling the dungeon\u2019s dark secrets. Every chamber conquered
-    brings you closer to freedom, and each victory illuminates the path forward\u2014transforming
-    your struggle from a desperate fight for survival into a triumphant journey toward
-    the light. \n\nOnly by facing your fears and forging ahead can you finally rise
-    from the darkness and be embraced by a new dawn."
+    for company, you must navigate through claustrophobic chambers, battlingsome
+    terrible guards while unraveling the dungeon\u2019s dark secrets. Every chamber
+    conquered brings you closer to freedom, and each victory illuminates the path
+    forward\u2014transforming your struggle from a desperate fight for survival into
+    a triumphant journey toward the light. \n\nOnly by facing your fears and forging
+    ahead can you finally rise from the darkness and be embraced by a new dawn."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5b036e831c0c90547b32a8a896d80f79, type: 2}
   m_sharedMaterial: {fileID: 2427308795250815149, guid: 5b036e831c0c90547b32a8a896d80f79,
