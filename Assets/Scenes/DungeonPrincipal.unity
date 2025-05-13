@@ -569,7 +569,7 @@ PrefabInstance:
     - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1725,38 +1725,10 @@ MonoBehaviour:
   - {fileID: 602581795487524619, guid: c540ff979ab158d4d81d6e0be544f3a0, type: 3}
   - {fileID: 501970102681779696, guid: 09733cbb757b9c3408b10ba8031aa51a, type: 3}
   weaponsList:
-  - {fileID: 5181494411761360807, guid: 7efe259af5fe2f14a90724d2c5bc60d5, type: 3}
-  - {fileID: 919132149155446097, guid: 439a532aec13bc04e85ea9ffb8759869, type: 3}
-  - {fileID: 919132149155446097, guid: 775c96f25b29a464c96e04f3e961ff06, type: 3}
-  - {fileID: 919132149155446097, guid: 1f2df18c8d37e344092e26ad53b0e864, type: 3}
-  - {fileID: 919132149155446097, guid: 2b89f623a226f1443b656df4d7506e98, type: 3}
-  - {fileID: 2657625865324565839, guid: 8b619c2273fa4e1478003dbcbaf3223b, type: 3}
-  - {fileID: 919132149155446097, guid: df3f07283842c864abb844da441c0bf8, type: 3}
-  - {fileID: 919132149155446097, guid: b8429e260a2f3c2489982da2e0f2c575, type: 3}
-  - {fileID: 919132149155446097, guid: acd76795deeadd846a39bed2115bcc9b, type: 3}
-  - {fileID: 5596350662152064633, guid: 6219205689b50234cb76cf2b3526b4fb, type: 3}
-  - {fileID: 3213851043470871558, guid: 54c8c9f221349f5478057c6aa027be04, type: 3}
-  - {fileID: 2017372464273290904, guid: 0292f5558481790458c5adcc2b168185, type: 3}
-  - {fileID: 6013990982369288243, guid: 5ffa21eac0be47c409e0bab4eea08790, type: 3}
-  - {fileID: 5953977592163608830, guid: 895a7e78001484143b8a25838887b6ef, type: 3}
-  - {fileID: 1645786095522272344, guid: 949ce1035604bd64996ff12112f19191, type: 3}
-  - {fileID: 3689515951906905501, guid: 32394f2d0ec76a94399483672aecea44, type: 3}
-  - {fileID: 4214597693441333592, guid: e52959e3043254b408ed3a5eca5b3a6d, type: 3}
-  - {fileID: 8947079371753237599, guid: 97d88fb9a3565d84daf5fff081fcbb91, type: 3}
-  - {fileID: 8947079371753237599, guid: 02ffcdcce496f7b429bc8890255da4a6, type: 3}
-  - {fileID: 8947079371753237599, guid: 1dbf24f8a486a5d43aa8eef186e3375d, type: 3}
-  - {fileID: 8947079371753237599, guid: 80b057e1cc878634488547feae408d42, type: 3}
-  - {fileID: 1206807579062484, guid: e558e6a18e6d42f47b559887e56eb54a, type: 3}
-  - {fileID: 8047764633477264512, guid: a250c778e48c73742ae531b8c9a9bd17, type: 3}
-  - {fileID: 2410114350040114610, guid: 4603d2cd3ffcb6e46add7daf3a524b6c, type: 3}
-  - {fileID: 2939461966237491692, guid: 6dc5bbadc807ebe4d926b32d4cee4f6f, type: 3}
-  - {fileID: 4926703055965546900, guid: bc956f77213138048b30d54ab626e70a, type: 3}
-  - {fileID: 8133399767090564659, guid: fa7576413fbf339459d948aa3d3ebbe5, type: 3}
-  - {fileID: 323333351367080586, guid: 87b744073f89d274ea9986018a77d4e4, type: 3}
-  - {fileID: 991772141375400263, guid: a821353c6e9508646aeab10299bff878, type: 3}
-  - {fileID: 189690588361155025, guid: 959d0374e722469498950e643a6b3e6a, type: 3}
-  - {fileID: 7434734217426156271, guid: 62f13eb3a927a40439d9df3f845c4f15, type: 3}
-  - {fileID: 2258411484881710256, guid: d2a69bab98638ae41819a23ca7985832, type: 3}
+  - {fileID: 6647070228151221456, guid: 1629c7978e6e03e409a590a86f1dd6be, type: 3}
+  - {fileID: 773791175634316882, guid: 3ad094a3617fba74eb4c04a53c776d73, type: 3}
+  - {fileID: 7262746375780241020, guid: 504df7a97a6d9354fb742cc932777bcc, type: 3}
+  - {fileID: 7404023968100880307, guid: c67f69b746146a445b052cfc9a9e7df3, type: 3}
   storageList:
   - {fileID: 3538494181889467861, guid: 12ef10adfa7616b4681cf77b5a90d426, type: 3}
   statuesList:
