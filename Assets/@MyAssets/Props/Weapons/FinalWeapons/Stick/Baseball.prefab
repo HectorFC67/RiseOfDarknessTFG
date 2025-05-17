@@ -91,6 +91,10 @@ MonoBehaviour:
   randomWeapons:
   - {fileID: 6342740161679308379, guid: 91d978c3b0294b445b60ec73ca037b10, type: 3}
   - {fileID: 2166738032485494129}
+  sliceFxPrefab: {fileID: 1429954232896169633, guid: 83036083a4ebcd34f98131bd3cf6f4d2,
+    type: 3}
+  sliceSfx: {fileID: 8300000, guid: 55e1484ec76ce9f4d92d1d3f62b417db, type: 3}
+  sliceSfxVolume: 1
 --- !u!54 &6041160708287655089
 Rigidbody:
   m_ObjectHideFlags: 0

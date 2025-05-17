@@ -1602,6 +1602,10 @@ MonoBehaviour:
   attackRange: 1.75
   animator: {fileID: 2162619472281586845}
   slashAnimationDuration: 1.08
+  patrolClip: {fileID: 8300000, guid: bde7719fb60d10041a7bda1a685f791d, type: 3}
+  chaseClip: {fileID: 8300000, guid: 433d4dc2c2e6702418ea5864ce511462, type: 3}
+  attackClip: {fileID: 8300000, guid: c583dff3b78d33a4eb2c7cc79f4b7928, type: 3}
+  sfxVolume: 0.7
 --- !u!1 &4956854478673865218
 GameObject:
   m_ObjectHideFlags: 0
@@ -1661,6 +1665,9 @@ MonoBehaviour:
   cutForce: 200
   randomWeapons:
   - {fileID: 4956854478673865218}
+  sliceFxPrefab: {fileID: 0}
+  sliceSfx: {fileID: 0}
+  sliceSfxVolume: 1
 --- !u!54 &1580122765244568585
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -3012,6 +3012,8 @@ MonoBehaviour:
   - {fileID: 143128808}
   - {fileID: 1640879529}
   hitPanel: {fileID: 1938315868}
+  damageClip: {fileID: 8300000, guid: 0b7a422427d9da0459b581860e8f7512, type: 3}
+  damageVolume: 1
 --- !u!1 &846496214
 GameObject:
   m_ObjectHideFlags: 0

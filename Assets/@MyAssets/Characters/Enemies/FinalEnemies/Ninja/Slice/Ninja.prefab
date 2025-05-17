@@ -649,6 +649,10 @@ MonoBehaviour:
   attackRange: 2
   animator: {fileID: 0}
   slashAnimationDuration: 1.08
+  patrolClip: {fileID: 8300000, guid: bde7719fb60d10041a7bda1a685f791d, type: 3}
+  chaseClip: {fileID: 8300000, guid: 433d4dc2c2e6702418ea5864ce511462, type: 3}
+  attackClip: {fileID: 8300000, guid: c583dff3b78d33a4eb2c7cc79f4b7928, type: 3}
+  sfxVolume: 0.7
 --- !u!1 &171470928650675478 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1082271958561512970, guid: c16a5c1bd1c5aa849a0a23dd8b35bffb,

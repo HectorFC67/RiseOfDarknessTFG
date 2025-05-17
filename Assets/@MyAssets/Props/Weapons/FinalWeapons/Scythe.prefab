@@ -140,6 +140,9 @@ MonoBehaviour:
   - {fileID: 7262746375780241020, guid: 504df7a97a6d9354fb742cc932777bcc, type: 3}
   - {fileID: 7404023968100880307, guid: c67f69b746146a445b052cfc9a9e7df3, type: 3}
   - {fileID: 6647070228151221456}
+  sliceFxPrefab: {fileID: 4553287630450876385, guid: 15483e51212e3d74886ea57291f4639a,
+    type: 3}
+  sliceSfx: {fileID: 8300000, guid: 0a69f6ef27d18dd449ac1a1fa98d23a5, type: 3}
 --- !u!54 &5367789305037395385
 Rigidbody:
   m_ObjectHideFlags: 0

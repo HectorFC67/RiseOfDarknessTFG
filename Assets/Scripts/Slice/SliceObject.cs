@@ -16,6 +16,11 @@ public class SliceObject : MonoBehaviour
 
     public List<GameObject> randomWeapons;
 
+    public GameObject sliceFxPrefab;
+    public AudioClip sliceSfx;
+    [Range(0f, 1f)]
+    public float sliceSfxVolume = 1f;
+
     void FixedUpdate()
     {
         bool hasHit = Physics.Linecast(startSlicePoint.position, endSlicePoint.position, out RaycastHit hit, sliceableLayer);
@@ -45,7 +50,7 @@ public class SliceObject : MonoBehaviour
             //    - Si no, cortamos el target original (quedaría en manos de GetMeshFromObject)
             GameObject objectToSlice = (bakeMeshComp != null) ? bakeMeshComp.GetDynamicMeshObject() : target;
 
-            Slice(objectToSlice, target);
+            Slice(objectToSlice, target, hit.point);
         }
     }
 
@@ -109,7 +114,9 @@ public class SliceObject : MonoBehaviour
     /// Realiza el corte usando EzySlice en el objeto "objectToSlice".
     /// El parámetro "originalRoot" se usa para checks como el tag "Crate", o para destruir el root.
     /// </summary>
-    public void Slice(GameObject objectToSlice, GameObject originalRoot)
+    public void Slice(GameObject objectToSlice,
+                  GameObject originalRoot,
+                  Vector3 fxPosition)
     {
         if (objectToSlice == null)
         {
@@ -123,6 +130,8 @@ public class SliceObject : MonoBehaviour
         Vector3 velocity = velocityEstimator.GetVelocityEstimate();
         Vector3 planeNormal = Vector3.Cross(endSlicePoint.position - startSlicePoint.position, velocity);
         planeNormal.Normalize();
+        Instantiate(sliceFxPrefab, fxPosition, Quaternion.LookRotation(planeNormal));
+        AudioSource.PlayClipAtPoint(sliceSfx, fxPosition, sliceSfxVolume);
 
         // Usamos la sobrecarga con crossSection
         SlicedHull hull = objectToSlice.Slice(endSlicePoint.position, planeNormal, crossSection);

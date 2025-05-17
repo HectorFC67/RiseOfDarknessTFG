@@ -140,6 +140,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8469148480020814227, guid: c13e8023109e0b94081d09442b3dee88,
         type: 3}
+      propertyPath: sliceSfx
+      value: 
+      objectReference: {fileID: 8300000, guid: 55e1484ec76ce9f4d92d1d3f62b417db, type: 3}
+    - target: {fileID: 8469148480020814227, guid: c13e8023109e0b94081d09442b3dee88,
+        type: 3}
+      propertyPath: sliceFxPrefab
+      value: 
+      objectReference: {fileID: 1429954232896169633, guid: 83036083a4ebcd34f98131bd3cf6f4d2,
+        type: 3}
+    - target: {fileID: 8469148480020814227, guid: c13e8023109e0b94081d09442b3dee88,
+        type: 3}
       propertyPath: randomWeapons.Array.size
       value: 2
       objectReference: {fileID: 0}

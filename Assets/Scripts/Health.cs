@@ -14,6 +14,14 @@ public class Health : MonoBehaviour
     // Panel de golpe
     [SerializeField] private GameObject hitPanel;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip damageClip;
+    [Range(0f, 1f)]
+    [SerializeField] private float damageVolume = 1f;
+
+    private AudioSource audioSrc;
+
+
     void Start()
     {
         currentLives = maxLives;
@@ -28,12 +36,20 @@ public class Health : MonoBehaviour
         // Asegurarnos de que el panel de golpe se inicie desactivado
         if (hitPanel != null)
             hitPanel.SetActive(false);
+
+        // -------- AUDIO --------
+        audioSrc = gameObject.AddComponent<AudioSource>();
+        audioSrc.playOnAwake = false;
+        audioSrc.spatialBlend = 0f;     // sonido 2D (UI); pon 1f si quieres 3D
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("EnemyWeapon"))
         {
+            if (damageClip != null)
+                audioSrc.PlayOneShot(damageClip, damageVolume);
+
             currentLives--;
             Debug.Log($"Jugador golpeado. Vidas restantes: {currentLives}");
 

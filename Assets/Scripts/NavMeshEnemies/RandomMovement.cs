@@ -31,16 +31,33 @@ public class RandomMovement : MonoBehaviour
     public Animator animator;
     public float slashAnimationDuration = 1.08f;
 
+    [Header("Audio")]
+    public AudioClip patrolClip;   // sonido de patrulla (loop)
+    public AudioClip chaseClip;    // sonido de persecución (loop)
+    public AudioClip attackClip;   // sonido de cada golpe (one-shot)
+    [Range(0f, 1f)]
+    public float sfxVolume = 1f;
+
     // 2. Variables internas
     private EnemyState currentState = EnemyState.Patrol;
     private GameObject playerObj;
     private bool isAttacking = false;
+    private AudioSource audioSrc;  // fuente de audio 3D interna
+
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
-        agent.speed = patrolSpeed;  // Velocidad inicial para patrullar
+        // AudioSource 3D configurado para loops
+        audioSrc = gameObject.AddComponent<AudioSource>();
+        audioSrc.playOnAwake = false;
+        audioSrc.spatialBlend = 1f;  // 100 % 3D
+        audioSrc.loop = true;
+        audioSrc.volume = sfxVolume;
+
+        agent.speed = patrolSpeed;
+        PlayLoopClip(patrolClip);      // sonido inicial
     }
 
     void Update()
@@ -148,6 +165,11 @@ public class RandomMovement : MonoBehaviour
 
         // Realizar ataque
         isAttacking = true;
+
+        // Sonido de ataque puntual
+        if (attackClip != null)
+            audioSrc.PlayOneShot(attackClip, sfxVolume);
+
         agent.isStopped = true;
         animator.SetBool("isWalking", false);
         animator.SetBool("isRunning", false);
@@ -248,5 +270,33 @@ public class RandomMovement : MonoBehaviour
     private void ChangeState(EnemyState newState)
     {
         currentState = newState;
+
+        switch (newState)
+        {
+            case EnemyState.Patrol:
+                PlayLoopClip(patrolClip);
+                break;
+
+            case EnemyState.Chase:
+                PlayLoopClip(chaseClip);
+                break;
+
+            case EnemyState.Attack:
+                // Para ataques usamos OneShot; detenemos cualquier loop
+                audioSrc.Stop();
+                break;
+        }
+    }
+
+    // --------------------------------------------------
+    // LOOP MUSICA
+    // --------------------------------------------------
+    private void PlayLoopClip(AudioClip clip)
+    {
+        if (clip == null) return;
+
+        if (audioSrc.clip == clip && audioSrc.isPlaying) return;  // ya sonando
+        audioSrc.clip = clip;
+        audioSrc.Play();
     }
 }
