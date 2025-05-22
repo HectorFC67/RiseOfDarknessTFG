@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Crate
   - EnemyWeapon
+  - BrokenCrate
   layers:
   - Default
   - TransparentFX

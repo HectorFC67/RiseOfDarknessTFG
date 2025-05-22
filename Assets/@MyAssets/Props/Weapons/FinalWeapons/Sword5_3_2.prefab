@@ -65,6 +65,11 @@ MonoBehaviour:
   sliceFxPrefab: {fileID: 4553287630450876385, guid: 15483e51212e3d74886ea57291f4639a,
     type: 3}
   sliceSfx: {fileID: 8300000, guid: 0a69f6ef27d18dd449ac1a1fa98d23a5, type: 3}
+  sliceSfxVolume: 1
+  crateCrossSection: {fileID: 2100000, guid: c49b6e1b232245a47a8f8e445fa8ed2a, type: 2}
+  crateUseFx: 1
+  crateSliceSfx: {fileID: 8300000, guid: 2b719475be2d7654b97eea8a2985748d, type: 3}
+  crateSliceSfxVolume: 1
 --- !u!54 &8345410322070565406
 Rigidbody:
   m_ObjectHideFlags: 0

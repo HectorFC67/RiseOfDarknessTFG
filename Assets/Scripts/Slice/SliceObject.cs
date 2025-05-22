@@ -21,6 +21,13 @@ public class SliceObject : MonoBehaviour
     [Range(0f, 1f)]
     public float sliceSfxVolume = 1f;
 
+    [Header("Crates")]
+    public Material crateCrossSection;      // Material interno exclusivo
+    public bool crateUseFx = false;         // Mostrar FX en crates (false = NO)
+    public AudioClip crateSliceSfx;         // SFX exclusivo (opcional)
+    [Range(0f, 1f)]
+    public float crateSliceSfxVolume = 1f;  // Volumen para ese SFX
+
     void FixedUpdate()
     {
         bool hasHit = Physics.Linecast(startSlicePoint.position, endSlicePoint.position, out RaycastHit hit, sliceableLayer);
@@ -115,8 +122,8 @@ public class SliceObject : MonoBehaviour
     /// El parámetro "originalRoot" se usa para checks como el tag "Crate", o para destruir el root.
     /// </summary>
     public void Slice(GameObject objectToSlice,
-                  GameObject originalRoot,
-                  Vector3 fxPosition)
+                      GameObject originalRoot,
+                      Vector3 fxPosition)
     {
         if (objectToSlice == null)
         {
@@ -124,49 +131,70 @@ public class SliceObject : MonoBehaviour
             return;
         }
 
-        Debug.Log($"✅ Slice() - Intentando cortar: {objectToSlice.name}");
-
-        // Calculamos la normal del plano de corte usando la velocidad
         Vector3 velocity = velocityEstimator.GetVelocityEstimate();
         Vector3 planeNormal = Vector3.Cross(endSlicePoint.position - startSlicePoint.position, velocity);
         planeNormal.Normalize();
-        Instantiate(sliceFxPrefab, fxPosition, Quaternion.LookRotation(planeNormal));
-        AudioSource.PlayClipAtPoint(sliceSfx, fxPosition, sliceSfxVolume);
 
-        // Usamos la sobrecarga con crossSection
-        SlicedHull hull = objectToSlice.Slice(endSlicePoint.position, planeNormal, crossSection);
+        // ------------------------------------------------------------------
+        // 1. Detección de tipos
+        // ------------------------------------------------------------------
+        bool isCrate = originalRoot.CompareTag("Crate");
+        bool isBrokenCrate = originalRoot.CompareTag("BrokenCrate");
+        bool isAnyCrate = isCrate || isBrokenCrate;
+
+        // ------------------------------------------------------------------
+        // 2. Material, FX y SFX
+        // ------------------------------------------------------------------
+        Material sectionMat = (isAnyCrate && crateCrossSection != null)
+                                ? crateCrossSection
+                                : crossSection;
+
+        // ➜ FX: solo para objetos que NO sean crate ni brokenCrate
+        if (!isAnyCrate)
+            Instantiate(sliceFxPrefab, fxPosition, Quaternion.LookRotation(planeNormal));
+
+        AudioClip clip = (isAnyCrate && crateSliceSfx != null) ? crateSliceSfx : sliceSfx;
+        float vol = isAnyCrate ? crateSliceSfxVolume : sliceSfxVolume;
+        AudioSource.PlayClipAtPoint(clip, fxPosition, vol);
+
+        // ------------------------------------------------------------------
+        // 3. Corte con EzySlice
+        // ------------------------------------------------------------------
+        SlicedHull hull = objectToSlice.Slice(endSlicePoint.position, planeNormal, sectionMat);
+
         if (hull != null)
         {
-            // Si el root original tiene el tag "Crate", generamos un arma aleatoria
-            if (originalRoot.CompareTag("Crate") && randomWeapons != null && randomWeapons.Count > 0)
+            // 3.a. Spawn arma SOLO si era Crate
+            if (isCrate && randomWeapons != null && randomWeapons.Count > 0)
             {
-                Vector3 spawnPos = originalRoot.transform.position;
-                Quaternion spawnRot = originalRoot.transform.rotation;
-
-                int randomIndex = Random.Range(0, randomWeapons.Count);
-                Instantiate(randomWeapons[randomIndex], spawnPos, spawnRot);
+                Instantiate(randomWeapons[Random.Range(0, randomWeapons.Count)],
+                            originalRoot.transform.position,
+                            originalRoot.transform.rotation);
 
                 Debug.Log("✅ Crate cortado: se ha instanciado un arma aleatoria.");
             }
 
-            // Creamos las dos partes
-            GameObject upperHull = hull.CreateUpperHull(objectToSlice, crossSection);
+            // 3.b. Crear mitades
+            GameObject upperHull = hull.CreateUpperHull(objectToSlice, sectionMat);
             ApplyOriginalTransform(objectToSlice, upperHull);
             SetupSlicedComponent(upperHull);
 
-            GameObject lowerHull = hull.CreateLowerHull(objectToSlice, crossSection);
+            GameObject lowerHull = hull.CreateLowerHull(objectToSlice, sectionMat);
             ApplyOriginalTransform(objectToSlice, lowerHull);
             SetupSlicedComponent(lowerHull);
 
-            // Finalmente, destruimos el objeto que se ha cortado
-            Destroy(objectToSlice);
+            // 3.c. Etiquetar como BrokenCrate (tanto si era Crate como BrokenCrate)
+            if (isAnyCrate)
+            {
+                upperHull.tag = "BrokenCrate";
+                lowerHull.tag = "BrokenCrate";
+            }
 
-            // Si quisieras destruir completamente al enemigo (raíz):
-            // Destroy(originalRoot);
+            Destroy(objectToSlice);  // Eliminar original
         }
         else
         {
-            Debug.Log("❌ Slice() - No se generó hull (posiblemente la malla no es válida).");
+            Debug.Log("❌ Slice() - No se generó hull (posible malla no válida).");
         }
     }
 
